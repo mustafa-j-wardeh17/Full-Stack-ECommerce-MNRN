@@ -32,24 +32,32 @@ export class UsersController {
     @Param("otp") otp: string,
     @Param("email") email: string,
   ) {
-    return await this.usersService.verifyEmail(otp,email)
+    return await this.usersService.verifyEmail(otp, email)
   }
 
   @Get('/send-otp-email/:email')
-  async sendOtpEmail(@Param('email') email:string){
+  async sendOtpEmail(@Param('email') email: string) {
     return await this.usersService.sendOtpEmail(email)
   }
 
 
+  @Get('/logout')
+  async logout(@Res() response: Response) {
+    
+    response.clearCookie('_digi_auth_token');
+
+    return response.status(HttpStatus.OK).json(
+      {
+        success: true,
+        message: 'Logout successfully'
+      }
+    )
+  }
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

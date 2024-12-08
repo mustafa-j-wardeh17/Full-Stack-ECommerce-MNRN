@@ -14,9 +14,7 @@ export class UsersService {
     @Inject(UserRepository) private readonly userDB: UserRepository
   ) { }
 
-  findAll() {
-    return `This action returns all users`;
-  }
+
 
   async create(createUserDto: CreateUserDto) {
     try {
@@ -188,10 +186,11 @@ export class UsersService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+ 
+  findAll() {
+    return `This action returns all users`;
   }
-
+  
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
