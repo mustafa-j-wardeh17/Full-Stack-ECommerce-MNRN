@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@types/config": "^3.3.5",
     "backend": "file:",
+    "class-validator": "^0.14.1",
     "config": "^3.3.12",
     "mongoose": "^8.8.4",
     "reflect-metadata": "^0.2.0",
