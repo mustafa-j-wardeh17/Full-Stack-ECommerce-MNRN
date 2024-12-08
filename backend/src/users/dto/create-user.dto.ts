@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { userTypes } from "src/shared/schema/users";
 
 export class CreateUserDto {
@@ -24,4 +24,8 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     secretToken?: string;
+
+    @IsBoolean()
+    @IsOptional()
+    isVerified?: boolean
 }
