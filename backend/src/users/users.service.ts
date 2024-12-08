@@ -128,7 +128,7 @@ export class UsersService {
       }
       if (userExists.otpExpiryTime < new Date()) {
         throw new Error('Otp expired');
-    }
+      }
 
       userExists.isVerified = true
       await this.userDB.updateOne(
@@ -138,6 +138,50 @@ export class UsersService {
       return {
         success: true,
         message: 'Email verified successfully'
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async sendOtpEmail(email: string) {
+    try {
+      const user = await this.userDB.findOne({
+        email
+      })
+
+      if (!user) {
+        throw new Error('User not fount')
+      }
+      if (user.isVerified) {
+        throw new Error('Email already verified');
+      }
+      const otp = Math.floor(Math.random() * 900000) + 100000
+      const otpExpiryTime = new Date();
+      otpExpiryTime.setMinutes(otpExpiryTime.getMinutes() + 5)
+      await this.userDB.updateOne(
+        { email },
+        {
+          otp,
+          otpExpiryTime
+        }
+      )
+      sendEmail(
+        user.email,
+        config.get('emailService.emailTemplates.verifyEmail'),
+        'Email verification - PS_Store',
+        {
+          cusomerName: user.name,
+          cusomerEmail: user.email,
+          otp
+        },
+      )
+      return {
+        success: true,
+        message: 'Otp sent successfully',
+        result: {
+          email: user.email
+        }
       }
     } catch (error) {
       throw error

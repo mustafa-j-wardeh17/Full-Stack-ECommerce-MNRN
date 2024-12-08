@@ -35,6 +35,10 @@ export class UsersController {
     return await this.usersService.verifyEmail(otp,email)
   }
 
+  @Get('/send-otp-email/:email')
+  async sendOtpEmail(@Param('email') email:string){
+    return await this.usersService.sendOtpEmail(email)
+  }
 
 
   @Get()
