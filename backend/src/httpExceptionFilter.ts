@@ -1,4 +1,4 @@
-import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
 
 
@@ -8,7 +8,7 @@ export interface HttpExceptionResponse {
     error: string;      
 }
 
-
+@Catch()
 export class AllExceptionFilter implements ExceptionFilter {
 
     constructor(private readonly httpAdapterHost: HttpAdapterHost) {
