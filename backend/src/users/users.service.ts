@@ -231,8 +231,63 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updatePasswordOrName(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const { oldPassword, newPassword, name } = updateUserDto
+      if (!name && !newPassword) {
+        throw new Error("Please provide name or password")
+      }
+
+      const user = await this.userDB.findOne({ _id: id })
+
+      if (!user) {
+        throw new Error('User not found')
+      }
+
+      if (newPassword) {
+        const isPasswordMatch = await comparePassword(
+          oldPassword,
+          user.password
+        )
+
+        if (!isPasswordMatch) {
+          throw new Error('Invalid current password')
+        }
+
+        const password = await generateHashPassword(newPassword)
+        await this.userDB.updateOne(
+          {
+            _id: id,
+          },
+          {
+            password
+          }
+        )
+      }
+      if (name) {
+        await this.userDB.updateOne(
+          {
+            _id: id
+          },
+          {
+            name
+          }
+        )
+      }
+
+      return {
+        success: true,
+        message: 'User updated successfully',
+        result: {
+          name: user.name,
+          email: user.email,
+          type: user.type,
+          id: user._id.toString()
+        }
+      }
+    } catch (error) {
+      throw error
+    }
   }
 
   remove(id: number) {
