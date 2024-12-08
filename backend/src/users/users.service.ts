@@ -227,10 +227,6 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
   async updatePasswordOrName(id: string, updateUserDto: UpdateUserDto) {
     try {
       const { oldPassword, newPassword, name } = updateUserDto
@@ -290,6 +286,17 @@ export class UsersService {
     }
   }
 
+  async findAll(type: string) {
+    try {
+      const users = await this.userDB.findMany({ type })
+      return {
+        success: true,
+        result: { users }
+      }
+    } catch (error) {
+      throw error
+    }
+  }
   remove(id: number) {
     return `This action removes a #${id} user`;
   }

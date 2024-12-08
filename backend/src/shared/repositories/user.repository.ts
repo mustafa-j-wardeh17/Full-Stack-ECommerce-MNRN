@@ -20,4 +20,8 @@ export class UserRepository {
     async updateOne(query: any, data: Record<string, any>) {
         return await this.userModel.updateOne(query, data)
     }
+
+    async findMany(query: any) {
+        return await this.userModel.find(query)
+    }
 }

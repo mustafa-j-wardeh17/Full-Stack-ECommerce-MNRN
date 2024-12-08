@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -59,15 +59,15 @@ export class UsersController {
     return await this.usersService.forgotPassword(forgotPassword.email)
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-
   @Patch('/update-name-password/:id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updatePasswordOrName(id, updateUserDto);
+  }
+
+
+  @Get()
+  findAll(@Query('type') type: string) {
+    return this.usersService.findAll(type);
   }
 
   @Delete(':id')
