@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -41,9 +41,9 @@ export class UsersController {
   }
 
 
-  @Get('/logout')
+  @Put('/logout')
   async logout(@Res() response: Response) {
-    
+
     response.clearCookie('_digi_auth_token');
 
     return response.status(HttpStatus.OK).json(
@@ -53,6 +53,12 @@ export class UsersController {
       }
     )
   }
+
+  @Get('/forgot-password')
+  async forgotPassword(@Body() forgotPassword: { email: string }) {
+    return await this.usersService.forgotPassword(forgotPassword.email)
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();

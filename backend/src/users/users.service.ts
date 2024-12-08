@@ -186,11 +186,51 @@ export class UsersService {
     }
   }
 
- 
+  async forgotPassword(email: string) {
+    try {
+      const user = await this.userDB.findOne({ email })
+      if (!user) {
+        throw new Error('User not fount')
+      }
+
+      let password = Math.random().toString(36).substring(2, 12);
+      const tempPassword = password
+      password = await generateHashPassword(password);
+      await this.userDB.updateOne({
+        _id: user._id
+      },
+        {
+          password
+        }
+      )
+      sendEmail(
+        user.email,
+        config.get('emailService.emailTemplates.forgotPassword'),
+        'Forgot password - PS_Store',
+        {
+          cusomerName: user.name,
+          cusomerEmail: user.email,
+          newPassword: password,
+          loginLink: config.get('loginLink'),
+        },
+      )
+      return {
+        success: true,
+        message: 'Password sent to your email successfully',
+        result: {
+          email: user.email,
+          password: tempPassword // delete just for test
+        }
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
   findAll() {
     return `This action returns all users`;
   }
-  
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
