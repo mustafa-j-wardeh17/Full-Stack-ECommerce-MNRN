@@ -4,8 +4,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { userTypes } from 'src/shared/schema/users';
 import config from 'config'
 import { UserRepository } from 'src/shared/repositories/user.repository';
-import { generateHashPassword } from 'src/utility/password-manager';
+import { comparePassword, generateHashPassword } from 'src/utility/password-manager';
 import { sendEmail } from 'src/utility/mail-handler';
+import { generateAuthToken } from 'src/utility/token-generator';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +28,7 @@ export class UsersService {
       //check is it for admin
       if (createUserDto.type === userTypes.ADMIN && createUserDto.secretToken !== config.get('adminSecretToken')) {
         throw new Error('Not allowed to create admin')
-      } else {
+      } else if (createUserDto.type !== userTypes.CUSTOMER) {
         createUserDto.isVerified = true;
       }
       // check if user already exists
@@ -78,9 +79,68 @@ export class UsersService {
 
   async login(email: string, password: string) {
     try {
-     
+      const userExists = await this.userDB.findOne({
+        email
+      })
+
+      if (!userExists) {
+        throw new Error('User not found')
+      }
+
+      if (!userExists.isVerified) {
+        throw new Error('Please verify your email')
+      }
+
+      const isPasswordMatch = await comparePassword(password, userExists.password)
+      if (!isPasswordMatch) {
+        throw new Error('Invalid email or password')
+      }
+
+      const token = await generateAuthToken(userExists._id as string)
+      return {
+        success: true,
+        message: 'Login successfull',
+        result: {
+          user: {
+            name: userExists.name,
+            email: userExists.email,
+            type: userExists.type,
+            id: userExists._id.toString(),
+          },
+          token
+        }
+      }
     } catch (error) {
-      
+      throw error
+    }
+  }
+
+  async verifyEmail(otp: string, email: string) {
+    try {
+      const userExists = await this.userDB.findOne({
+        email
+      })
+      if (!userExists) {
+        throw new Error('User not found')
+      }
+      if (userExists.otp != otp) {
+        throw new Error('Invalid otp')
+      }
+      if (userExists.otpExpiryTime < new Date()) {
+        throw new Error('Otp expired');
+    }
+
+      userExists.isVerified = true
+      await this.userDB.updateOne(
+        { email },
+        { isVerified: true }
+      )
+      return {
+        success: true,
+        message: 'Email verified successfully'
+      }
+    } catch (error) {
+      throw error
     }
   }
 

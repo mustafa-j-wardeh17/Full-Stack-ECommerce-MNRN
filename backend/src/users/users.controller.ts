@@ -27,6 +27,16 @@ export class UsersController {
     return loginRes
   }
 
+  @Get('/verify-email/:otp/:email')
+  async verifyEmail(
+    @Param("otp") otp: string,
+    @Param("email") email: string,
+  ) {
+    return await this.usersService.verifyEmail(otp,email)
+  }
+
+
+
   @Get()
   findAll() {
     return this.usersService.findAll();
