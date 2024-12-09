@@ -21,8 +21,12 @@ export class ProductRepository {
     }
     async findOneAndUpdate(query: any, update: any) {
         const product = await this.productModel.findOneAndUpdate(query, update, {
-          new: true,
+            new: true,
         });
         return product;
-      }
+    }
+
+    async findByIdAndDelete(id: string) {
+        return await this.productModel.findByIdAndDelete(id)
+    }
 }
