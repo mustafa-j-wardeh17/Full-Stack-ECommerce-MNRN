@@ -12,8 +12,8 @@ export class ProductsController {
   @Post()
   @HttpCode(201)
   @Roles(userTypes.ADMIN)
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    return await this.productsService.create(createProductDto);
   }
 
   @Get()

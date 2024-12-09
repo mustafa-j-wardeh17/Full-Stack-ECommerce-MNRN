@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 @Module({
   imports: [MongooseModule.forRoot(config.get('mongodbUrl'), {
     w: 1,
+    
   }), UsersModule, ProductsModule],
   controllers: [AppController],
   providers: [AppService,
