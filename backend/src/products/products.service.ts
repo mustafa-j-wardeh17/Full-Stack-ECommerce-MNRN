@@ -26,7 +26,57 @@ export class ProductsService {
 
       return {
         message: "Product created successfully",
-        result: createdProductInDB,
+        result: {
+          product: createdProductInDB
+        },
+        success: true
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateProduct(id: string, updateProductDto: UpdateProductDto) {
+    try {
+      const findProduct = await this.productDb.findById(id)
+      if (!findProduct) {
+        throw new Error('Product does not exist')
+      }
+      const updateProduct = await this.productDb.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        updateProductDto
+
+      )
+      if (!updateProductDto.stripeProductId) {
+        await this.stripeClient.products.update(
+          findProduct.stripeProductId,
+          {
+            name: updateProduct.productName,
+            description: updateProduct.description
+          }
+        )
+      }
+      return {
+        message: 'Product updated successfully',
+        result: updateProduct,
+        success: true
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async findOne(id: string) {
+    try {
+      const findProduct = await this.productDb.findById(id)
+      if (!findProduct) {
+        throw new Error('Product does not exist')
+      }
+      return {
+        message: 'Product fetched successfully',
+        result: findProduct,
         success: true
       }
     } catch (error) {
@@ -38,13 +88,9 @@ export class ProductsService {
     return `This action returns all products`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
+
+
 
   remove(id: number) {
     return `This action removes a #${id} product`;
