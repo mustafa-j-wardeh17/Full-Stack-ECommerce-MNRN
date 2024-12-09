@@ -50,7 +50,6 @@ export class ProductRepository {
         options.limit = options.limit || 12;
         options.skip = options.skip || 0;
 
-        console.log('options.skip is ===> ', options.skip)
         if (query.search) {
             query.productName = new RegExp(query.search, 'i');
             delete query.search;

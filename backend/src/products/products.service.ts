@@ -151,11 +151,6 @@ export class ProductsService {
         options.skip = +criteria.skip;
         delete criteria.skip;
       }
-      
-
-      // Log the corrected values
-      console.log('Criteria:', criteria);
-      console.log('Options:', options);
       //https://example.com/products?search=laptop&category=electronics&platformType=web&baseType=digital&homepage=true
       // Example values
       // criteria = {
