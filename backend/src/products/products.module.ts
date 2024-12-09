@@ -32,15 +32,7 @@ import { RolesGuard } from 'src/middleware/roles.guard';
       },
     ]),
     StripeModule.forRoot(StripeModule, {
-      apiKey: config.get('stripe.publishable_key'),
-      // webhookConfig: {
-      //   stripeSecrets: {
-      //     account: 'whsec_***',
-      //     accountTest: 'whsec_***',
-      //     connect: 'whsec_***',
-      //     connectTest: 'whsec_***',
-      //   },
-      // },
+      apiKey: config.get('stripe.secret_key'),
     }),
   ]
 })
