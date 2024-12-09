@@ -40,6 +40,7 @@
     "form-data": "^4.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.4",
+    "qs-to-mongo": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "stripe": "^17.4.0"

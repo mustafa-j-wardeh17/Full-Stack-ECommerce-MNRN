@@ -5,6 +5,8 @@ import { ProductRepository } from 'src/shared/repositories/product.repository';
 import { InjectStripeClient } from '@golevelup/nestjs-stripe';
 import Stripe from 'stripe';
 import { Products } from 'src/shared/schema/products';
+import qs2m from 'qs-to-mongo';
+import { GetProductQueryDto } from './dto/get-product-query-dto';
 
 @Injectable()
 export class ProductsService {
@@ -12,7 +14,7 @@ export class ProductsService {
     @Inject(ProductRepository) private readonly productDb: ProductRepository,
     @InjectStripeClient() private readonly stripeClient: Stripe
   ) { }
-  async create(createProductDto: CreateProductDto): Promise<{
+  async createProduct(createProductDto: CreateProductDto): Promise<{
     message: string,
     result: {
       product: Products
@@ -125,15 +127,79 @@ export class ProductsService {
         message: 'Product has been deleted successfully',
         success: true,
         result: null
-
       }
     } catch (error) {
       throw error
     }
   }
 
-  findAll() {
-    return `This action returns all products`;
+  async findAllProducts(query: GetProductQueryDto): Promise<{
+    message: string,
+    success: boolean,
+    result: any
+  }> {
+    try {
+      let callForHomePage = false;
+      if (query.homepage == `1`) {
+        callForHomePage = true;
+      }
+      delete query.homepage;
+      const { criteria, options, links } = qs2m(query);
+      //https://example.com/products?search=laptop&category=electronics&platformType=web&baseType=digital&homepage=true
+      // Example values
+      // criteria = {
+      //   search: laptop, // Using regex for partial matching if configured
+      //   category: "electronics",
+      //   platformType: "web",
+      //   baseType: "digital"
+      // };
+
+      // options = {
+      //   limit: 10,  // Default limit for pagination
+      //   skip: 0,    // Offset for pagination
+      //   sort: { createdAt: -1 }, // Default sorting by creation date (descending)
+      // };
+
+      if (callForHomePage) {
+        const products = await this.productDb.findProductWithGroupBy();
+        return {
+          message:
+            products.length > 0
+              ? 'Products fetched successfully'
+              : 'No products found',
+          result: {
+            products
+          },
+          success: true,
+        };
+      }
+
+      const { totalProductCount, products } = await this.productDb.find(
+        criteria,
+        options,
+      );
+      return {
+        message:
+          products.length > 0
+            ? 'Products fetched successfully'
+            : 'No products found',
+        result: {
+          metadata: {
+            skip: options.skip || 0,
+            limit: options.limit || 10,
+            total: totalProductCount,
+            pages: options.limit
+              ? Math.ceil(totalProductCount / options.limit)
+              : 1,
+            links: links('/', totalProductCount),
+          },
+          products,
+        },
+        success: true,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
 
