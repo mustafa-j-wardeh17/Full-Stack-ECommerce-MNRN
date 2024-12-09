@@ -24,4 +24,8 @@ export class UserRepository {
     async findMany(query: any) {
         return await this.userModel.find(query)
     }
+
+    async findById(id: string) {
+        return await this.userModel.findById(id)
+    }
 }
