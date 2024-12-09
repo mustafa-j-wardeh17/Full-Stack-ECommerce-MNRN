@@ -3,7 +3,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Products } from "../schema/products";
 import { Document, Model } from "mongoose";
 import { CreateProductDto } from "src/products/dto/create-product.dto";
-import { UpdateProductDto } from "src/products/dto/update-product.dto";
 import { ParsedOptions } from "qs-to-mongo/dist/query/options-to-mongo";
 
 
@@ -47,10 +46,11 @@ export class ProductRepository {
     }
 
     async find(query: Record<string, any>, options: ParsedOptions) {
-        options.sort = options.sort || { _id: 1 };
+        options.sort = options.sort || { _id: 1 }; // propery name like sort=-productName for desc and sort=productName for asc sorting
         options.limit = options.limit || 12;
         options.skip = options.skip || 0;
 
+        console.log('options.skip is ===> ', options.skip)
         if (query.search) {
             query.productName = new RegExp(query.search, 'i');
             delete query.search;

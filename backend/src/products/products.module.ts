@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -41,6 +41,16 @@ export class ProductsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
+      .exclude( // for these 2 routes we are not gonna use the auth validation
+        {
+          path: `${config.get('appPrefix')}/products`,
+          method: RequestMethod.GET
+        },
+        {
+          path: `${config.get('appPrefix')}/products:id`,
+          method: RequestMethod.GET
+        }
+      )
       .forRoutes(ProductsController);
   }
 }

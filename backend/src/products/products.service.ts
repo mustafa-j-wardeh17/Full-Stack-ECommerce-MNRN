@@ -140,11 +140,22 @@ export class ProductsService {
   }> {
     try {
       let callForHomePage = false;
-      if (query.homepage == `1`) {
+      if (query.homepage == `true`) {
         callForHomePage = true;
       }
       delete query.homepage;
       const { criteria, options, links } = qs2m(query);
+
+      // Move `skip` from criteria to options
+      if (criteria.skip) {
+        options.skip = +criteria.skip;
+        delete criteria.skip;
+      }
+      
+
+      // Log the corrected values
+      console.log('Criteria:', criteria);
+      console.log('Options:', options);
       //https://example.com/products?search=laptop&category=electronics&platformType=web&baseType=digital&homepage=true
       // Example values
       // criteria = {
