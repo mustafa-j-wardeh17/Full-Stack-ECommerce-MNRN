@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Response } from 'express'
+import { Roles } from 'src/middleware/role.decorator';
+import { userTypes } from 'src/shared/schema/users';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -64,7 +66,7 @@ export class UsersController {
     return this.usersService.updatePasswordOrName(id, updateUserDto);
   }
 
-
+  @Roles(userTypes.ADMIN)
   @Get()
   findAll(@Query('type') type: string) {
     return this.usersService.findAll(type);

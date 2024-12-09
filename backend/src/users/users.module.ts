@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UserSchema } from 'src/shared/schema/users';
 import { RolesGuard } from 'src/middleware/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthMiddleware } from 'src/middleware/aut';
+import { AuthMiddleware } from 'src/middleware/auth';
 
 @Module({
   controllers: [UsersController],
@@ -28,6 +28,6 @@ export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: '/', method: RequestMethod.GET });
+      .forRoutes({ path: '/users', method: RequestMethod.GET });
   }
 }

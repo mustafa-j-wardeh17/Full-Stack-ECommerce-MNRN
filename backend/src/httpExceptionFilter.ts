@@ -4,8 +4,8 @@ import { HttpAdapterHost } from "@nestjs/core";
 
 export interface HttpExceptionResponse {
     statusCode: number;
-    message: string;    
-    error: string;      
+    message: string;
+    error: string;
 }
 
 @Catch()
@@ -27,21 +27,21 @@ export class AllExceptionFilter implements ExceptionFilter {
             ? exception.getStatus() // Use the status code from the HttpException.
             : HttpStatus.INTERNAL_SERVER_ERROR; // Default to 500 
 
-        console.log(`Exception :: ==> ${exception}`); 
+        console.log(`Exception :: ==> ${exception}`);
 
         // Determine the response body of the exception.
         const exceptionResponse = exception instanceof HttpException
-            ? ctx.getResponse() // Extract the response from the HttpException.
+            ? exception.getResponse() // Extract the response from the HttpException.
             : String(exception); // Otherwise, use the exception as a string.
 
         // Prepare the response body to be sent back to the client.
         const responseBody = {
             statusCode: httpStatus,
-            timeStamp: new Date().toISOString(), 
-            path: httpAdapter.getRequestUrl(ctx.getRequest()), 
+            timeStamp: new Date().toISOString(),
+            path: httpAdapter.getRequestUrl(ctx.getRequest()),
             message:
-                (exceptionResponse as HttpExceptionResponse).message || // Use the `message` from the exception, if available.
                 (exceptionResponse as HttpExceptionResponse).error ||   // Or fallback to the `error` field.
+                (exceptionResponse as HttpExceptionResponse).message || // Use the `message` from the exception, if available.
                 exceptionResponse ||                                    // Or use the raw exception response.
                 'Something went wrong!',                                // Default message if no details are available.
             errorResponse: exceptionResponse // Include the raw exception for debugging purposes.

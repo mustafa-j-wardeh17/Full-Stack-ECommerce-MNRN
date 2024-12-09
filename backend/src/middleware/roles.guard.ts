@@ -7,18 +7,15 @@ import { userTypes } from 'src/shared/schema/users';
 export class RolesGuard implements CanActivate {
     constructor(private reflector: Reflector) { }
 
-    canActivate(context: ExecutionContext): boolean {
-        const requiredRoles = this.reflector.getAllAndOverride<userTypes[]>(ROLES_KEY, [
-            context.getHandler(),
-            context.getClass()
-        ])
-
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const requiredRoles = this.reflector.getAllAndOverride<userTypes[]>(
+            ROLES_KEY,
+            [context.getHandler(), context.getClass()],
+        );
         if (!requiredRoles) {
             return true;
         }
-
-        const { user } = context.switchToHttp().getRequest();
-
+        const { user } = await context.switchToHttp().getRequest();
         return requiredRoles.some((role) => user.type?.includes(role));
     }
 }
