@@ -5,6 +5,7 @@ import { TransformationInterception } from './responseInterceptor';
 import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix(config.get('appPrefix')) // to customize the api prefix
   app.use(cookieParser()) // to apply working with cookies
   app.useGlobalInterceptors(new TransformationInterception())
   await app.listen(config.get('port'));
