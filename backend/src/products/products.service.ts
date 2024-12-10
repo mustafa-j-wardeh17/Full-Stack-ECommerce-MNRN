@@ -99,7 +99,8 @@ export class ProductsService {
   async findOne(id: string): Promise<{
     message: string,
     result: {
-      product: Products
+      product: Products,
+      relatedProducts: Products[]
     },
     success: boolean
   }> {
@@ -108,10 +109,17 @@ export class ProductsService {
       if (!findProduct) {
         throw new Error('Product does not exist')
       }
+      const relatedProducts = await this.productDb.findRelatedProducts(
+        {
+          category: findProduct.category,
+          _id: { $ne: id }
+        }
+      )
       return {
         message: 'Product fetched successfully',
         result: {
-          product: findProduct
+          product: findProduct,
+          relatedProducts
         },
         success: true
       }
