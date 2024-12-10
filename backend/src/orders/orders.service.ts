@@ -7,7 +7,8 @@ import { ProductRepository } from 'src/shared/repositories/product.repository';
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import config from 'config'
 import { userTypes } from 'src/shared/schema/users';
-import { Orders } from 'src/shared/schema/order';
+import { Orders, orderStatus, paymentStatus } from 'src/shared/schema/order';
+import { sendEmail } from 'src/utility/mail-handler';
 
 
 @Injectable()
@@ -131,7 +132,159 @@ export class OrdersService {
     }
   }
 
+  async webhook(rawBody: Buffer, sig: string) {
+    try {
+      let event;
+      try {
+        event = this.stripeClient.webhooks.constructEventAsync(
+          rawBody,
+          sig,
+          config.get('stripe.webhookSecret')
+        )
+      } catch (error: any) {
+        throw new BadRequestException('Webhook Error:', error.message)
+      }
 
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const orderData = await this.createOrderObject(session);
+        const order = await this.create(orderData);
+        if (session.payment_status === paymentStatus.paid) {
+          if (order.orderStatus !== orderStatus.completed) {
+            for (const item of order.orderedItems) {
+              const licenses = await this.getLicense(orderData.orderId, item);
+              item.licenses = licenses;
+            }
+          }
+          await this.fullfillOrder(
+            session.id,
+            {
+              orderStatus: orderStatus.completed,
+              isOrderDelivered: true,
+              ...orderData,
+            }
+          );
+          this.sendOrderEmail(
+            orderData.customerEmail,
+            orderData.orderId,
+            `${config.get('emailService.emailTemplates.orderSuccess')}${order._id
+            }`,
+          );
+        }
+      } else {
+        throw new Error('Unhandled event type');
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async createOrderObject(session: Stripe.Checkout.Session) {
+    try {
+      const lineItems = await this.stripeClient.checkout.sessions.listLineItems(
+        session.id,
+      );
+      const orderData = {
+        orderId: Math.floor(new Date().valueOf() * Math.random()) + '',
+        userId: session.metadata?.userId?.toString(),
+        customerAddress: session.customer_details?.address,
+        customerEmail: session.customer_email,
+        customerPhoneNumber: session.customer_details?.phone,
+        paymentInfo: {
+          paymentMethod: session.payment_method_types[0],
+          paymentIntentId: session.payment_intent,
+          paymentDate: new Date(),
+          paymentAmount: session.amount_total / 100,
+          paymentStatus: session.payment_status,
+        },
+        orderDate: new Date(),
+        checkoutSessionId: session.id,
+        orderedItems: lineItems.data.map((item) => {
+          item.price.metadata.quantity = item.quantity + '';
+          return item.price.metadata;
+        }),
+      };
+      return orderData;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async create(createOrderDto: Record<string, any>) {
+    try {
+      const orderExists = await this.orderDB.findOne({
+        checkoutSessionId: createOrderDto.checkoutSessionId,
+      });
+      if (orderExists) return orderExists;
+      const result = await this.orderDB.create(createOrderDto);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getLicense(orderId: string, item: Record<string, any>) {
+    try {
+      const product = await this.productDB.findById(item.productId);
+
+      const skuDetails = product.skuDetails.find(
+        (sku) => sku.skuCode === item.skuCode,
+      );
+
+      const licenses = await this.productDB.findLicenses(
+        {
+          productSku: skuDetails._id,
+          isSold: false,
+        },
+        item.quantity,
+      );
+
+      const licenseIds = licenses.map((license) => license._id);
+
+      await this.productDB.updateLicenseMany(
+        {
+          _id: {
+            $in: licenseIds,
+          },
+        },
+        {
+          isSold: true,
+          orderId,
+        },
+      );
+
+      return licenses.map((license) => license.licenseKey);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async fullfillOrder(
+    checkoutSessionId: string,
+    updateOrderDto: Record<string, any>,
+  ) {
+    try {
+      return await this.orderDB.findOneAndUpdate(
+        { checkoutSessionId },
+        updateOrderDto,
+        { new: true },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async sendOrderEmail(email: string, orderId: string, orderLink: string) {
+    await sendEmail(
+      email,
+      config.get('emailService.emailTemplates.orderSuccess'),
+      'Order Success - Digizone',
+      {
+        orderId,
+        orderLink,
+      },
+    );
+  }
   remove(id: number) {
     return `This action removes a #${id} order`;
   }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Query, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, Req, Headers } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { checkoutDtoArr } from './dto/checkout.dto';
 
@@ -27,7 +27,7 @@ export class OrdersController {
   }
 
   @Post('webhook')
-  async webhook(@Body() body: any) {
-    //return await this.ordersService.webhook(body)
+  async webhook(@Body() rawBody: Buffer, @Headers('stripe-signature') sig: string) {
+    return await this.ordersService.webhook(rawBody, sig)
   }
 }

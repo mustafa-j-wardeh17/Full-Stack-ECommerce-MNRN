@@ -22,4 +22,13 @@ export class OrdersRepository {
         const createdOrder = await this.orderModel.create(order)
         return createdOrder
     }
+    
+    async findOneAndUpdate(query: any, update: any, options: any) {
+        const order = await this.orderModel.findOneAndUpdate(
+          query,
+          update,
+          options,
+        );
+        return order;
+      }
 }
