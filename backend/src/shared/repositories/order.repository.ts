@@ -7,6 +7,6 @@ import { Document, Model } from "mongoose";
 @Injectable()
 export class OrdersRepository {
     constructor(
-        @InjectModel(Orders.name) private readonly orderModel: Model<Orders & Document>,
+        @InjectModel(Orders.name) private readonly orderModel: Model<Orders>,
     ) { }
 }

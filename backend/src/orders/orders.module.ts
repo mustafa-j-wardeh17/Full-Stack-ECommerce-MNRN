@@ -12,13 +12,18 @@ import { Users, UserSchema } from 'src/shared/schema/users';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/middleware/roles.guard';
 import { StripeModule } from '@golevelup/nestjs-stripe';
+import { UserRepository } from 'src/shared/repositories/user.repository';
+import { ProductRepository } from 'src/shared/repositories/product.repository';
 
 @Module({
   controllers: [OrdersController],
-  providers: [OrdersService, OrdersRepository, {
-    provide: APP_GUARD,
-    useClass: RolesGuard
-  }],
+  providers: [OrdersService,
+    UserRepository,
+    ProductRepository,
+    OrdersRepository, {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    }],
   imports: [
     StripeModule.forRoot(StripeModule, {
       apiKey: config.get('stripe.secret_key'),
