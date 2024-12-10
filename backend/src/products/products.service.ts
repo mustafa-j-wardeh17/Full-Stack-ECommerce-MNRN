@@ -10,6 +10,8 @@ import { GetProductQueryDto } from './dto/get-product-query-dto';
 import cloudinary from 'cloudinary'
 import config from 'config'
 import { unlinkSync } from 'fs';
+import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
+import { License } from 'src/shared/schema/license';
 
 @Injectable()
 export class ProductsService {
@@ -112,7 +114,7 @@ export class ProductsService {
       const relatedProducts = await this.productDb.findRelatedProducts(
         {
           category: findProduct.category,
-          _id: { $ne: id }
+          _id: { $ne: id } // without using this item
         }
       )
       return {
@@ -290,7 +292,202 @@ export class ProductsService {
   }
 
 
+  // this is for create one or multiple sku for an product
+  async updateProductSku(productId: string, data: ProductSkuDtoArr) {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
 
+      const skuCode = Math.random().toString(36).substring(2, 5) + Date.now();
+      for (let i = 0; i < data.skuDetails.length; i++) {
+        if (!data.skuDetails[i].stripePriceId) {
+          const stripPriceDetails = await this.stripeClient.prices.create({
+            unit_amount: data.skuDetails[i].price * 100,
+            currency: 'usd',
+            product: product.stripeProductId,
+            metadata: {
+              skuCode: skuCode,
+              lifetime: data.skuDetails[i].lifetime + '',
+              productId: productId,
+              price: data.skuDetails[i].price,
+              productName: product.productName,
+              productImage: product.image,
+            },
+          });
+          data.skuDetails[i].stripePriceId = stripPriceDetails.id;
+        }
+        data.skuDetails[i].skuCode = skuCode;
+      }
 
+      await this.productDb.findOneAndUpdate(
+        { _id: productId },
+        { $push: { skuDetails: data.skuDetails } }, // use push to push data to empty element to avoid error
+      );
 
+      return {
+        message: 'Product sku updated successfully',
+        success: true,
+        result: null,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProductSkuById(
+    productId: string,
+    skuId: string,
+    data: ProductSkuDto,
+  ) {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const sku = product.skuDetails.find((sku) => sku._id == skuId);
+      if (!sku) {
+        throw new Error('Sku does not exist');
+      }
+
+      if (data.price !== sku.price) {
+        const priceDetails = await this.stripeClient.prices.create({
+          unit_amount: data.price * 100,
+          currency: 'inr',
+          product: product.stripeProductId,
+          metadata: {
+            skuCode: sku.skuCode,
+            lifetime: data.lifetime + '',
+            productId: productId,
+            price: data.price,
+            productName: product.productName,
+            productImage: product.image,
+          },
+        });
+
+        data.stripePriceId = priceDetails.id;
+      }
+
+      // because we can't set all data particularly so we can do one this 
+      // we can individually update the data by adding 'skuDetails' before every key
+      const dataForUpdate = {};
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          dataForUpdate[`skuDetails.$.${key}`] = data[key];
+        }
+      }
+
+      const result = await this.productDb.findOneAndUpdate(
+        { _id: productId, 'skuDetails._id': skuId },
+        { $set: dataForUpdate },
+      );
+
+      return {
+        message: 'Product sku updated successfully',
+        success: true,
+        result,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addProductSkuLicense(
+    productId: string,
+    skuId: string,
+    licenseKey: string,
+  ): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      license: License
+    },
+  }> {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const sku = product.skuDetails.find((sku) => sku._id == skuId);
+      if (!sku) {
+        throw new Error('Sku does not exist');
+      }
+
+      const result = await this.productDb.createLicense(
+        productId,
+        skuId,
+        licenseKey,
+      );
+
+      return {
+        message: 'License key added successfully',
+        success: true,
+        result: {
+          license: result
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeProductSkuLicense(id: string): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      license: any
+    }
+  }> {
+    try {
+      const result = await this.productDb.removeLicense(id);
+
+      return {
+        message: 'License key removed successfully',
+        success: true,
+        result: {
+          license: result
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getProductSkuLicenses(productId: string, skuId: string): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      licenses: License[]
+    }
+  }> {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const sku = product.skuDetails.find((sku) => sku._id == skuId);
+      if (!sku) {
+        throw new Error('Sku does not exist');
+      }
+
+      const result = await this.productDb.findLicense({
+        product: productId,
+        productSku: skuId,
+      });
+
+      return {
+        message: 'Licenses fetched successfully',
+        success: true,
+        result: {
+          licenses: result
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

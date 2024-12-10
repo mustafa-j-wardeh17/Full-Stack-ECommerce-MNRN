@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Query, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -7,6 +7,7 @@ import { userTypes } from 'src/shared/schema/users';
 import { GetProductQueryDto } from './dto/get-product-query-dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import config from 'config';
+import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -55,7 +56,54 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.productsService.remove(id);
+  }
+
+  @Post(':productId/skus')
+  @Roles(userTypes.ADMIN)
+  async updateProductSku(
+    @Param('productId') productId: string,
+    @Body() updateProductSkuDto: ProductSkuDtoArr
+  ) {
+    return await this.productsService.updateProductSku(productId, updateProductSkuDto)
+  }
+
+  @Put(':productId/skus/:skuId')
+  @Roles(userTypes.ADMIN)
+  async updateProductSkuById(
+    @Param('productId') productId: string,
+    @Param('skuId') skuId: string,
+    @Body() updateProductSkuDto: ProductSkuDto,
+  ) {
+    return await this.productsService.updateProductSkuById(
+      productId,
+      skuId,
+      updateProductSkuDto,
+    );
+  }
+
+  @Post(':productId/skus/:skuId/license')
+  @Roles(userTypes.ADMIN)
+  async addProductLicense(
+    @Param('productId') productId: string,
+    @Param('skuId') skuId: string,
+    @Body('licenseKey') licenseKey: string
+  ) {
+    return await this.productsService.addProductSkuLicense(
+      productId,
+      skuId,
+      licenseKey
+    )
+  }
+
+  @Delete('licenses/:licenseKeyId')
+  @Roles(userTypes.ADMIN)
+  async deleteProductLicense(
+    @Body('licenseKeyId') licenseId: string
+  ) {
+    return await this.productsService.removeProductSkuLicense(
+      licenseId
+    )
   }
 }
