@@ -116,5 +116,32 @@ export class ProductRepository {
         return license;
     }
 
+    async updateLicense(query: any, update: any) {
+        const license = await this.licenseModel.findOneAndUpdate(query, update, {
+            new: true,
+        });
+        return license;
+    }
 
+    async updateLicenseMany(query: any, data: any) {
+        const license = await this.licenseModel.updateMany(query, data);
+        return license;
+    }
+
+    async deleteSku(id: string, skuId: string) {
+        return await this.productModel.updateOne(
+            { _id: id },
+            {
+                $pull: {
+                    skuDetails: { _id: skuId },
+                },
+            },
+        );
+    }
+
+    async deleteAllLicences(productId: string, skuId: string) {
+        if (productId)
+            return await this.licenseModel.deleteMany({ product: productId });
+        return await this.licenseModel.deleteMany({ productSku: skuId });
+    }
 }

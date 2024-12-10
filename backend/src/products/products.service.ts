@@ -486,8 +486,50 @@ export class ProductsService {
           licenses: result
         },
       };
+    }
+    catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProductSkuLicense(
+    productId: string,
+    skuId: string,
+    licenseKeyId: string,
+    licenseKey: string,
+  ): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      license: License
+    }
+  }> {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const sku = product.skuDetails.find((sku) => sku._id == skuId);
+      if (!sku) {
+        throw new Error('Sku does not exist');
+      }
+
+      const result = await this.productDb.updateLicense(
+        { _id: licenseKeyId },
+        { licenseKey: licenseKey },
+      );
+
+      return {
+        message: 'License key updated successfully',
+        success: true,
+        result: {
+          license: result
+        }
+      };
     } catch (error) {
       throw error;
     }
   }
+  
 }
