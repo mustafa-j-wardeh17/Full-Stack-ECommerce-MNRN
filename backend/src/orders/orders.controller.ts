@@ -17,8 +17,8 @@ export class OrdersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.ordersService.findOne(id);
   }
 
   @Post('checkout')

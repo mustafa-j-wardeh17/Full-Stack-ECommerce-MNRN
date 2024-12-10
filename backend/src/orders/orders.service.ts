@@ -110,8 +110,25 @@ export class OrdersService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: string): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      order: Orders
+    }
+  }> {
+    try {
+      const result = await this.orderDB.findOne({ _id: id });
+      return {
+        success: true,
+        message: `Order with id = ${id} has been fetched successfully`,
+        result: {
+          order: result
+        }
+      }
+    } catch (error) {
+      throw error
+    }
   }
 
 
