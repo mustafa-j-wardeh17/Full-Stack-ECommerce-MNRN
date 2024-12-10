@@ -9,4 +9,17 @@ export class OrdersRepository {
     constructor(
         @InjectModel(Orders.name) private readonly orderModel: Model<Orders>,
     ) { }
+
+    async find(query: any) {
+        return await this.orderModel.find(query)
+    }
+
+    async findOne(query: any) {
+        return await this.orderModel.findOne(query)
+    }
+
+    async create(order: any) {
+        const createdOrder = await this.orderModel.create(order)
+        return createdOrder
+    }
 }

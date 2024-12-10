@@ -10,9 +10,10 @@ export class OrdersController {
   @Get()
   findAll(
     @Query('status') status: string,
-    @Req() req: any
+    @Req() req: Record<string, any>
   ) {
-    return this.ordersService.findAll();
+    console.log(req.user)
+    return this.ordersService.findAll(status, req.user);
   }
 
   @Get(':id')
@@ -23,5 +24,10 @@ export class OrdersController {
   @Post('checkout')
   async checkout(@Body() body: checkoutDtoArr, @Req() req: any) {
     return await this.ordersService.checkout(body, req.user);
+  }
+
+  @Post('webhook')
+  async webhook(@Body() body: any) {
+    //return await this.ordersService.webhook(body)
   }
 }

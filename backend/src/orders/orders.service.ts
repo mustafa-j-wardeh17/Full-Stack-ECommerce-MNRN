@@ -6,6 +6,8 @@ import { OrdersRepository } from 'src/shared/repositories/order.repository';
 import { ProductRepository } from 'src/shared/repositories/product.repository';
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import config from 'config'
+import { userTypes } from 'src/shared/schema/users';
+import { Orders } from 'src/shared/schema/order';
 
 
 @Injectable()
@@ -17,7 +19,11 @@ export class OrdersService {
     @Inject(UserRepository) private readonly userDB: UserRepository,
 
   ) { }
-  async checkout(body: checkoutDtoArr, user: Record<string, any>) {
+  async checkout(body: checkoutDtoArr, user: Record<string, any>): Promise<{
+    message: string,
+    success: boolean,
+    result: string
+  }> {
     try {
       const lineItems = [];
       const cartItems = body.checkoutDetails;
@@ -70,8 +76,38 @@ export class OrdersService {
     }
   }
 
-  findAll() {
-    return `This action returns all orders`;
+  async findAll(status: string, user: Record<string, any>): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      orders: Orders[]
+    }
+  }> {
+    try {
+      const userDetails = await this.userDB.findOne({
+        _id: user._id.toString()
+      })
+
+      const query = {} as Record<string, any>;
+
+      if (userDetails.type === userTypes.CUSTOMER) {
+        query.userId = user._id.toString()
+      }
+
+      if (status) {
+        query.status = status;
+      }
+      const orders = await this.orderDB.find(query)
+      return {
+        message: "Order fetched successfully",
+        success: true,
+        result: {
+          orders: orders
+        }
+      }
+    } catch (error) {
+      throw error
+    }
   }
 
   findOne(id: number) {
