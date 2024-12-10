@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Roles } from 'src/middleware/role.decorator';
 import { userTypes } from 'src/shared/schema/users';
 import { GetProductQueryDto } from './dto/get-product-query-dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import config from 'config';
 
 @Controller('products')
 export class ProductsController {
@@ -35,7 +37,22 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
-
+  @Post(':id/image')
+  @Roles(userTypes.ADMIN)
+  @UseInterceptors(// to upload files
+    FileInterceptor('productImage', {
+      dest: config.get('fileStoragePath'),
+      limits: {
+        fileSize: 3145728,// 3MB
+      }
+    })
+  )
+  async uploadProductImage(
+    @Param('id') id: string,
+    @UploadedFile() file: ParameterDecorator
+  ) {
+    return await this.productsService.uploadProductImage(id, file)
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

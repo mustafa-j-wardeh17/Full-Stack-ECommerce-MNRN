@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UploadedFile } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepository } from 'src/shared/repositories/product.repository';
@@ -7,13 +7,24 @@ import Stripe from 'stripe';
 import { Products } from 'src/shared/schema/products';
 import qs2m from 'qs-to-mongo';
 import { GetProductQueryDto } from './dto/get-product-query-dto';
+import cloudinary from 'cloudinary'
+import config from 'config'
+import { unlinkSync } from 'fs';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @Inject(ProductRepository) private readonly productDb: ProductRepository,
-    @InjectStripeClient() private readonly stripeClient: Stripe
-  ) { }
+    @InjectStripeClient() private readonly stripeClient: Stripe,
+  ) {
+    // setup cloudinary
+    cloudinary.v2.config({
+      cloud_name: config.get('cloudinary.cloud_name'),
+      api_key: config.get('cloudinary.api_key'),
+      api_secret: config.get('cloudinary.secret_key'),
+    })
+  }
+
   async createProduct(createProductDto: CreateProductDto): Promise<{
     message: string,
     result: {
@@ -208,6 +219,67 @@ export class ProductsService {
     }
   }
 
+  async uploadProductImage(id: string, file: any): Promise<{
+    message: string,
+    success: boolean,
+    result: string
+  }> {
+    try {
+      const findProduct = await this.productDb.findById(id)
+      if (!findProduct) {
+        throw new Error('Product does not exist')
+      }
+
+      // destroy the exist image if found
+      if (findProduct.imageDetails?.publicId) {
+        await cloudinary.v2.uploader.destroy(findProduct.imageDetails.publicId, {
+          invalidate: true
+        })
+      }
+
+      // upload new image 
+      const resOfCloudinary = await cloudinary.v2.uploader.upload(file.path, {
+        folder: config.get('cloudinary.folder_path'),
+        public_id: `${config.get('cloudinary.folder_path')}${Date.now()}`,
+        transformation: [
+          {
+            width: config.get('cloudinary.bigSize').toString().split('X')[0],
+            height: config.get('cloudinary.bigSize').toString().split('X')[1],
+            crop: 'fill'
+          },
+          { quality: 'auto' }
+        ],
+      })
+
+      unlinkSync(file.path);
+
+      // upload to db
+      await this.productDb.findOneAndUpdate({
+        _id: id,
+      },
+        {
+          imageDetails: resOfCloudinary,
+          image: resOfCloudinary.secure_url
+        }
+      )
+
+      // edit image in stripe client
+      await this.stripeClient.products.update(
+        findProduct.stripeProductId,
+        {
+          images: [resOfCloudinary.secure_url]
+        }
+      )
+
+      return {
+        message: 'Image uploaded successfully',
+        success: true,
+        result: resOfCloudinary.secure_url
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 
 
 
