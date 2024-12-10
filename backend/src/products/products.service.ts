@@ -437,19 +437,20 @@ export class ProductsService {
   async removeProductSkuLicense(id: string): Promise<{
     message: string,
     success: boolean,
-    result: {
-      license: any
-    }
+    result: null
   }> {
     try {
+
+      const license = await this.productDb.findLicenseById(id);
+      if (!license) {
+        throw new Error('License does not exist');
+      }
       const result = await this.productDb.removeLicense(id);
 
       return {
         message: 'License key removed successfully',
         success: true,
-        result: {
-          license: result
-        },
+        result: null,
       };
     } catch (error) {
       throw error;
@@ -474,7 +475,7 @@ export class ProductsService {
         throw new Error('Sku does not exist');
       }
 
-      const result = await this.productDb.findLicense({
+      const result = await this.productDb.findLicenses({
         product: productId,
         productSku: skuId,
       });
@@ -531,5 +532,5 @@ export class ProductsService {
       throw error;
     }
   }
-  
+
 }

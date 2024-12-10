@@ -85,6 +85,13 @@ export class ProductRepository {
         return products;
     }
 
+    async findLicenseById(licenseId: string) {
+
+
+        const license = await this.licenseModel.findById(licenseId)
+
+        return license;
+    }
     async createLicense(productId: string,
         skuId: string,
         licenseKey: string) {
@@ -107,7 +114,7 @@ export class ProductRepository {
         return license;
     }
 
-    async findLicense(query: any, limit?: number) {
+    async findLicenses(query: any, limit?: number) {
         if (limit && limit > 0) {
             const license = await this.licenseModel.find(query).limit(limit);
             return license;
