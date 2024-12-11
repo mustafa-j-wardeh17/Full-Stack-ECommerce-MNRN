@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, Query, Req, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, Req, Headers, InternalServerErrorException } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { checkoutDtoArr } from './dto/checkout.dto';
+import getRawBody from 'raw-body'; 
 
 
 @Controller('orders')
@@ -24,9 +25,17 @@ export class OrdersController {
   async checkout(@Body() body: checkoutDtoArr, @Req() req: any) {
     return await this.ordersService.checkout(body, req.user);
   }
+  
 
-  @Post('webhook')
-  async webhook(@Body() rawBody: Buffer, @Headers('stripe-signature') sig: string) {
-    return await this.ordersService.webhook(rawBody, sig)
+  @Post('/webhook')
+  async webhook(
+    @Body() rawBody: Buffer,
+    @Headers('stripe-signature') sig: string,
+  ) {
+    return await this.ordersService.webhook(rawBody, sig);
   }
+
+
+
+
 }

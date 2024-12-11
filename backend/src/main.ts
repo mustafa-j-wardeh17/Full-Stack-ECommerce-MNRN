@@ -3,9 +3,9 @@ import { AppModule } from './app.module';
 import config from 'config'
 import { TransformationInterception } from './responseInterceptor';
 import cookieParser from 'cookie-parser';
+
+import * as bodyParser from 'body-parser';
 import { NextFunction, raw, Request, Response } from 'express';
-import csurf from 'csurf';
-const ROOT_IGNORED_PATHS = ['/api/v1/orders/webhook'];
 
 
 async function bootstrap() {
@@ -13,18 +13,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // To migrate webhook
-  app.use('/api/v1/orders/webhook', raw({ type: '*/*' }))
+  app.use('/api/v1/orders/webhook', bodyParser.raw({ type: 'application/json' }));
 
-  // const csrfMiddleware = csurf({
-  //   cookie: true,
-  // });
-
-  // app.use((req: Request, res: Response, next: NextFunction) => {
-  //   if (ROOT_IGNORED_PATHS.includes(req.path)) {
-  //     return next();
-  //   }
-  //   return csrfMiddleware(req, res, next);
-  // });
 
   app.setGlobalPrefix(config.get('appPrefix'));
   app.useGlobalInterceptors(new TransformationInterception());

@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query, Req, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
 import { userTypes } from 'src/shared/schema/users';
+import { decodeAuthToken } from 'src/utility/token-generator';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -62,7 +63,15 @@ export class UsersController {
   }
 
   @Patch('/update-name-password/:id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Req() req: any) {
+    const token = req.cookies._digi_auth_token;
+    if (!token) {
+      throw new UnauthorizedException()
+    }
+    const user: any = await decodeAuthToken(token)
+    if (user.id !== id) {
+      throw new UnauthorizedException()
+    }
     return this.usersService.updatePasswordOrName(id, updateUserDto);
   }
 

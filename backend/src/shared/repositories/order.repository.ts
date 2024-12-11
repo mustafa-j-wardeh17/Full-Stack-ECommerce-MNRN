@@ -15,20 +15,21 @@ export class OrdersRepository {
     }
 
     async findOne(query: any) {
-        return await this.orderModel.findOne(query)
-    }
+        const order = await this.orderModel.findOne(query);
+        return order;
+      }
 
     async create(order: any) {
         const createdOrder = await this.orderModel.create(order)
         return createdOrder
     }
-    
+
     async findOneAndUpdate(query: any, update: any, options: any) {
         const order = await this.orderModel.findOneAndUpdate(
-          query,
-          update,
-          options,
+            query,
+            update,
+            options,
         );
         return order;
-      }
+    }
 }

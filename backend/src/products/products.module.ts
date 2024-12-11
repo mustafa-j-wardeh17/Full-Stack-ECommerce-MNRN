@@ -54,6 +54,10 @@ export class ProductsModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude( // for these 2 routes we are not gonna use the auth validation
         {
+          path: 'api/v1/orders/webhook', // Exclude Stripe webhook route
+          method: RequestMethod.POST,
+        },
+        {
           path: `${config.get('appPrefix')}/products`,
           method: RequestMethod.GET
         },

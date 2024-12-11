@@ -13,12 +13,18 @@ import { sendEmail } from 'src/utility/mail-handler';
 
 @Injectable()
 export class OrdersService {
+  private stripeClient: Stripe;
+
   constructor(
-    @InjectStripeClient() private readonly stripeClient: Stripe,
+    //@InjectStripeClient() private readonly stripeClient: Stripe,
     @Inject(OrdersRepository) private readonly orderDB: OrdersRepository,
     @Inject(ProductRepository) private readonly productDB: ProductRepository,
     @Inject(UserRepository) private readonly userDB: UserRepository,
-  ) { }
+  ) {
+    this.stripeClient = new Stripe(
+      config.get('stripe.secret_key')
+    );
+  }
 
   /**
    * Creates a checkout session for payment using Stripe.
@@ -150,52 +156,81 @@ export class OrdersService {
     try {
       let event;
       try {
-        event = this.stripeClient.webhooks.constructEventAsync(
+        // Verify the webhook signature and construct the event
+        event = this.stripeClient.webhooks.constructEvent(
           rawBody,
           sig,
-          config.get('stripe.webhookSecret')
+          config.get('stripe.webhookSecret'),
         );
-
-      } catch (error: any) {
-        throw new BadRequestException('Webhook Error:', error.message);
+      } catch (err) {
+        // Log detailed error and throw custom BadRequestException
+        console.error('Error verifying webhook signature:', err);
+        throw new BadRequestException('Webhook Error: ' + err.message);
       }
+
+      console.log('Received Event:', event.type);
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         const orderData = await this.createOrderObject(session);
         const order = await this.create(orderData);
 
+        // Check if payment is successful
         if (session.payment_status === paymentStatus.paid) {
           if (order.orderStatus !== orderStatus.completed) {
             for (const item of order.orderedItems) {
               const licenses = await this.getLicense(orderData.orderId, item);
               item.licenses = licenses;
             }
-
           }
-          await this.fullfillOrder(
-            session.id,
-            {
-              orderStatus: orderStatus.completed,
-              isOrderDelivered: true,
-              ...orderData,
-            }
-          );
-          this.sendOrderEmail(
-            orderData.customerEmail,
-            orderData.orderId,
-            `${config.get('emailService.emailTemplates.orderSuccess')}${order._id}`,
-          );
 
+          // Fulfill the order and update its status
+          await this.fullfillOrder(session.id, {
+            orderStatus: orderStatus.completed,
+            isOrderDelivered: true,
+            ...orderData,
+          });
+
+          // this.sendOrderEmail(
+          //   orderData.customerEmail,
+          //   orderData.orderId,
+          //   `${config.get('emailService.emailTemplates.orderSuccess')}${order._id}`,
+          // );
+        }
+        return {
+          message: "Payment checkout session successfully created",
+          success: true,
+          result: null
+        }
+      } else if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+        // Log the payment intent data for debugging
+        console.log('Payment Intent Succeeded:', paymentIntent.id);
+
+        // Handle further logic based on payment intent success if needed
+        // (e.g., mark the order as paid, notify the customer, etc.)
+        // Example:
+        if (paymentIntent.status === 'succeeded') {
+          // You can add specific actions here like updating the order status
+          console.log('Payment Intent succeeded. Proceeding with the next steps...');
+        }
+        return {
+          message: "Payment checkout session successfully created",
+          success: true,
+          result: null
         }
       } else {
-        throw new Error('Unhandled event type');
+        // Log unhandled event types
+        console.log('Unhandled event type:', event.type);
+        return {
+          success: false
+        }
       }
     } catch (error) {
       throw error;
     }
   }
-
   /**
    * Creates an order object from a Stripe checkout session.
    */

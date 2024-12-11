@@ -13,6 +13,8 @@ import { unlinkSync } from 'fs';
 import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 import { License } from 'src/shared/schema/license';
 import { OrdersRepository } from 'src/shared/repositories/order.repository';
+import mongoose from 'mongoose';
+import { Orders } from 'src/shared/schema/order';
 
 @Injectable()
 export class ProductsService {
@@ -565,10 +567,18 @@ export class ProductsService {
         );
       }
 
-      const order = await this.OrderDb.findOne({
-        customerId: user._id,
-        'orderedItems.productId': productId,
-      });
+      // 6755b5f1e98885ae1a1a7c63
+      console.log(user._id)
+      const orders = await this.OrderDb.find(
+        { customerId: user._id.toString(), }
+      );
+      console.log(orders)
+
+      const order = orders.find((order: Orders) => order.orderedItems.find(order => order.productId === productId))
+
+      if (!order) {
+        throw new BadRequestException('You have not purchased this product');
+      }
 
       // To avoid reviewing for unpushased cusomer
       if (!order) {
