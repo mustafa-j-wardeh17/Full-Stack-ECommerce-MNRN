@@ -18,8 +18,12 @@ export class OrdersService {
     @Inject(OrdersRepository) private readonly orderDB: OrdersRepository,
     @Inject(ProductRepository) private readonly productDB: ProductRepository,
     @Inject(UserRepository) private readonly userDB: UserRepository,
-
   ) { }
+
+  /**
+   * Creates a checkout session for payment using Stripe.
+   * Validates stock availability and prepares line items for the session.
+   */
   async checkout(body: checkoutDtoArr, user: Record<string, any>): Promise<{
     message: string,
     success: boolean,
@@ -77,6 +81,9 @@ export class OrdersService {
     }
   }
 
+  /**
+   * Fetches all orders based on status and user type.
+   */
   async findAll(status: string, user: Record<string, any>): Promise<{
     message: string,
     success: boolean,
@@ -87,30 +94,33 @@ export class OrdersService {
     try {
       const userDetails = await this.userDB.findOne({
         _id: user._id.toString()
-      })
+      });
 
       const query = {} as Record<string, any>;
 
       if (userDetails.type === userTypes.CUSTOMER) {
-        query.userId = user._id.toString()
+        query.userId = user._id.toString();
       }
 
       if (status) {
         query.status = status;
       }
-      const orders = await this.orderDB.find(query)
+      const orders = await this.orderDB.find(query);
       return {
         message: "Order fetched successfully",
         success: true,
         result: {
           orders: orders
         }
-      }
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
+  /**
+   * Fetches details of a single order by its ID.
+   */
   async findOne(id: string): Promise<{
     message: string,
     success: boolean,
@@ -126,12 +136,16 @@ export class OrdersService {
         result: {
           order: result
         }
-      }
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
+  /**
+   * Handles Stripe webhook events, particularly checkout session completion.
+   * Processes orders and fulfills them accordingly.
+   */
   async webhook(rawBody: Buffer, sig: string) {
     try {
       let event;
@@ -140,9 +154,9 @@ export class OrdersService {
           rawBody,
           sig,
           config.get('stripe.webhookSecret')
-        )
+        );
       } catch (error: any) {
-        throw new BadRequestException('Webhook Error:', error.message)
+        throw new BadRequestException('Webhook Error:', error.message);
       }
 
       if (event.type === 'checkout.session.completed') {
@@ -167,18 +181,20 @@ export class OrdersService {
           this.sendOrderEmail(
             orderData.customerEmail,
             orderData.orderId,
-            `${config.get('emailService.emailTemplates.orderSuccess')}${order._id
-            }`,
+            `${config.get('emailService.emailTemplates.orderSuccess')}${order._id}`,
           );
         }
       } else {
         throw new Error('Unhandled event type');
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
+  /**
+   * Creates an order object from a Stripe checkout session.
+   */
   async createOrderObject(session: Stripe.Checkout.Session) {
     try {
       const lineItems = await this.stripeClient.checkout.sessions.listLineItems(
@@ -210,6 +226,9 @@ export class OrdersService {
     }
   }
 
+  /**
+   * Creates a new order in the database.
+   */
   async create(createOrderDto: Record<string, any>) {
     try {
       const orderExists = await this.orderDB.findOne({
@@ -223,6 +242,9 @@ export class OrdersService {
     }
   }
 
+  /**
+   * Retrieves licenses for ordered items and marks them as sold.
+   */
   async getLicense(orderId: string, item: Record<string, any>) {
     try {
       const product = await this.productDB.findById(item.productId);
@@ -285,7 +307,5 @@ export class OrdersService {
       },
     );
   }
-  remove(id: number) {
-    return `This action removes a #${id} order`;
-  }
+
 }

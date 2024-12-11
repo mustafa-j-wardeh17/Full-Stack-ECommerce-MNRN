@@ -12,7 +12,6 @@ export class OrdersController {
     @Query('status') status: string,
     @Req() req: Record<string, any>
   ) {
-    console.log(req.user)
     return this.ordersService.findAll(status, req.user);
   }
 

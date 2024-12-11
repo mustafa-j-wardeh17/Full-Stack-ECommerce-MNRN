@@ -38,6 +38,7 @@ import { License, LicenseSchema } from 'src/shared/schema/license';
     ]),
     StripeModule.forRoot(StripeModule, {
       apiKey: config.get('stripe.secret_key'),
+      apiVersion: '2024-11-20.acacia'
     }),
   ]
 })
