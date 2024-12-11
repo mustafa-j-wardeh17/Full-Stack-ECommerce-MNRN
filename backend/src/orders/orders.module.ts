@@ -26,7 +26,7 @@ import { ProductRepository } from 'src/shared/repositories/product.repository';
     }],
   imports: [
     StripeModule.forRoot(StripeModule, {
-      apiKey: config.get('stripe.secret_key'),
+      apiKey: config.get('stripe.secret_key')
     }),
     MongooseModule.forFeature([
       { name: Products.name, schema: ProductSchema },

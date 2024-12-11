@@ -155,6 +155,7 @@ export class OrdersService {
           sig,
           config.get('stripe.webhookSecret')
         );
+
       } catch (error: any) {
         throw new BadRequestException('Webhook Error:', error.message);
       }
@@ -163,12 +164,14 @@ export class OrdersService {
         const session = event.data.object as Stripe.Checkout.Session;
         const orderData = await this.createOrderObject(session);
         const order = await this.create(orderData);
+
         if (session.payment_status === paymentStatus.paid) {
           if (order.orderStatus !== orderStatus.completed) {
             for (const item of order.orderedItems) {
               const licenses = await this.getLicense(orderData.orderId, item);
               item.licenses = licenses;
             }
+
           }
           await this.fullfillOrder(
             session.id,
@@ -183,6 +186,7 @@ export class OrdersService {
             orderData.orderId,
             `${config.get('emailService.emailTemplates.orderSuccess')}${order._id}`,
           );
+
         }
       } else {
         throw new Error('Unhandled event type');
