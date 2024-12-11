@@ -138,17 +138,31 @@ event = this.stripeClient.webhooks.constructEventAsync(
 
 ---
 
-## Testing Webhooks on Local Server
+## Using the Stripe CLI for Local Development
 
-To test webhooks on a local server, use tools like [ngrok](https://ngrok.com/) or [localtunnel](https://theboroer.github.io/localtunnel-www/) to expose your local server to Stripe's webhook delivery system.
+The Stripe CLI is a powerful tool for local development and testing. Below are the commands to set up and test webhooks on your local server:
 
-Example command to run ngrok:
+### Log in to Stripe CLI
+
+Run the following command to authenticate your Stripe CLI with your Stripe account:
 
 ```bash
-ngrok http 3000
+stripe login
 ```
 
-Configure the public URL provided by ngrok as the webhook endpoint in the Stripe dashboard.
+### Forward Webhook Events to Local Server
+
+Use the following command to listen for webhook events and forward them to your local server:
+
+```bash
+stripe listen --forward-to localhost:3100/api/v1/orders/webhook
+```
+
+This command listens for events from Stripe and forwards them to the specified local endpoint (`localhost:3100/api/v1/orders/webhook`).
+
+> **Note:** Ensure your server is running locally and the specified endpoint is correctly set up to handle incoming webhook events.
+
+By using the Stripe CLI, you can test your integration efficiently without needing an external tunneling tool.
 
 ---
 
