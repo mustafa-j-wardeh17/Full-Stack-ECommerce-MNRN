@@ -1,4 +1,4 @@
-import { Inject, Injectable, UploadedFile } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UploadedFile } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepository } from 'src/shared/repositories/product.repository';
@@ -12,11 +12,13 @@ import config from 'config'
 import { unlinkSync } from 'fs';
 import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 import { License } from 'src/shared/schema/license';
+import { OrdersRepository } from 'src/shared/repositories/order.repository';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @Inject(ProductRepository) private readonly productDb: ProductRepository,
+    @Inject(OrdersRepository) private readonly OrderDb: OrdersRepository,
     @InjectStripeClient() private readonly stripeClient: Stripe,
   ) {
     // setup cloudinary
@@ -533,4 +535,139 @@ export class ProductsService {
     }
   }
 
+
+  async addProductReview(
+    productId: string,
+    rating: number,
+    review: string,
+    user: Record<string, any>,
+  ): Promise<{
+    message: string,
+    success: boolean,
+    result: {
+      product: Products
+    },
+  }> {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      if (
+        product.feedbackDetails.find(
+          (value: { customerId: string }) =>
+            value.customerId === user._id.toString(),
+        )
+      ) {
+        throw new BadRequestException(
+          'You have already gave the review for this product',
+        );
+      }
+
+      const order = await this.OrderDb.findOne({
+        customerId: user._id,
+        'orderedItems.productId': productId,
+      });
+
+      // To avoid reviewing for unpushased cusomer
+      if (!order) {
+        throw new BadRequestException('You have not purchased this product');
+      }
+
+      // Iterate through each element in `product.feedbackDetails` and extract the rating
+      const ratings: any[] = [];
+      product.feedbackDetails.forEach((comment: { rating: any }) =>
+        ratings.push(comment.rating),
+      );
+
+      // If there are any ratings in the `ratings` array, calculate the average
+      let avgRating = String(rating);
+      if (ratings.length > 0) {
+        avgRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(
+          2,
+        );
+      }
+
+      const reviewDetails = {
+        rating: rating,
+        feedbackMsg: review,
+        customerId: user._id,
+        customerName: user.name,
+      };
+
+      const result = await this.productDb.findOneAndUpdate(
+        { _id: productId },
+        {
+          $set: { avgRating }, // to set new avg rating
+          $push: { feedbackDetails: reviewDetails } // to push a new element to feedbackDetails array
+        },
+      );
+
+      return {
+        message: 'Product review added successfully',
+        success: true,
+        result: {
+          product: result
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeProductReview(productId: string,
+    reviewId: string): Promise<{
+      message: string,
+      success: boolean,
+      result: {
+        product: Products
+      },
+    }> {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const review = product.feedbackDetails.find(
+        (review) => review._id == reviewId,
+      );
+      if (!review) {
+        throw new Error('Review does not exist');
+      }
+
+      const ratings: any[] = []; // push all rating to ratings expect my review rating
+      product.feedbackDetails.forEach((comment) => {
+        if (comment._id.toString() !== reviewId) {
+          ratings.push(comment.rating);
+        }
+      });
+
+      let avgRating = '0';
+      if (ratings.length > 0) {
+        avgRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(
+          2,
+        );
+      }
+
+      const result = await this.productDb.findOneAndUpdate(
+        { _id: productId },
+        {
+          $set: { avgRating }, // set new average after pulling my review
+          $pull: { feedbackDetails: { _id: reviewId } } // pull review from array
+        },
+      );
+
+      return {
+        message: 'Product review removed successfully',
+        success: true,
+        result: {
+          product: result
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

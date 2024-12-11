@@ -47,7 +47,7 @@ export class Orders {
     @Prop({ required: true })
     orderId: string;
 
-    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Users' })
+    @Prop({ required: true })
     userId: string;
 
     @Prop({ required: true, type: Object })

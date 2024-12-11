@@ -12,11 +12,13 @@ import { UserRepository } from 'src/shared/repositories/user.repository';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/middleware/roles.guard';
 import { License, LicenseSchema } from 'src/shared/schema/license';
+import { Orders, OrderSchema } from 'src/shared/schema/order';
+import { OrdersRepository } from 'src/shared/repositories/order.repository';
 
 @Module({
   controllers: [ProductsController],
 
-  providers: [ProductsService, ProductRepository, UserRepository, {
+  providers: [ProductsService, ProductRepository, UserRepository, OrdersRepository, {
     provide: APP_GUARD,
     useClass: RolesGuard
   }],
@@ -34,6 +36,10 @@ import { License, LicenseSchema } from 'src/shared/schema/license';
       {
         name: License.name,
         schema: LicenseSchema
+      },
+      {
+        name: Orders.name,
+        schema: OrderSchema
       },
     ]),
     StripeModule.forRoot(StripeModule, {

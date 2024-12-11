@@ -142,12 +142,12 @@ export class ProductsController {
     @Body('review') review: string,
     @Req() req: any,
   ) {
-    // return await this.productsService.addProductReview(
-    //   productId,
-    //   rating,
-    //   review,
-    //   req.user,
-    // );
+    return await this.productsService.addProductReview(
+      productId,
+      rating,
+      review,
+      req.user,
+    );
   }
 
   @Delete('/:productId/reviews/:reviewId')
@@ -155,6 +155,6 @@ export class ProductsController {
     @Param('productId') productId: string,
     @Param('reviewId') reviewId: string,
   ) {
-    // return await this.productsService.removeProductReview(productId, reviewId);
+    return await this.productsService.removeProductReview(productId, reviewId);
   }
 }
