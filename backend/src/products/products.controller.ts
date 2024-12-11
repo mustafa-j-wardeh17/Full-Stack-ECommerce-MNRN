@@ -134,5 +134,27 @@ export class ProductsController {
     );
   }
 
+  @Post('/:productId/reviews')
+  @Roles(userTypes.CUSTOMER)
+  async addProductReview(
+    @Param('productId') productId: string,
+    @Body('rating') rating: number,
+    @Body('review') review: string,
+    @Req() req: any,
+  ) {
+    // return await this.productsService.addProductReview(
+    //   productId,
+    //   rating,
+    //   review,
+    //   req.user,
+    // );
+  }
 
+  @Delete('/:productId/reviews/:reviewId')
+  async removeProductReview(
+    @Param('productId') productId: string,
+    @Param('reviewId') reviewId: string,
+  ) {
+    // return await this.productsService.removeProductReview(productId, reviewId);
+  }
 }
