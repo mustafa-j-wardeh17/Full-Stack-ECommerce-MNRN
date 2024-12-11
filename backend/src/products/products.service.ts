@@ -567,15 +567,10 @@ export class ProductsService {
         );
       }
 
-      // 6755b5f1e98885ae1a1a7c63
-      console.log(user._id)
-      const orders = await this.OrderDb.find(
-        { customerId: user._id.toString(), }
-      );
-      console.log(orders)
-
-      const order = orders.find((order: Orders) => order.orderedItems.find(order => order.productId === productId))
-
+      const order = await this.OrderDb.findOne({
+        userId: user._id.toString(),
+        'orderedItems.productId': productId,
+      });
       if (!order) {
         throw new BadRequestException('You have not purchased this product');
       }

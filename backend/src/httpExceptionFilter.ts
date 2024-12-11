@@ -27,7 +27,6 @@ export class AllExceptionFilter implements ExceptionFilter {
             ? exception.getStatus() // Use the status code from the HttpException.
             : HttpStatus.INTERNAL_SERVER_ERROR; // Default to 500 
 
-        console.log(`Exception :: ==> ${exception}`);
 
         // Determine the response body of the exception.
         const exceptionResponse = exception instanceof HttpException

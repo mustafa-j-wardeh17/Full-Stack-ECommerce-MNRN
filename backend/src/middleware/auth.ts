@@ -12,7 +12,6 @@ export class AuthMiddleware implements NestMiddleware {
 
     async use(req: Request | any, res: Response, next: NextFunction) {
         try {
-            console.log('Request path:', req.path);
             if (req.path === '/api/v1/orders/webhook') {
                 console.log('Skipping AuthMiddleware for webhook');
                 return next(); // Skip for webhook

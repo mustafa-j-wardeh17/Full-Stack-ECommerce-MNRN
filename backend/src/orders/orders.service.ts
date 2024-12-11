@@ -13,17 +13,14 @@ import { sendEmail } from 'src/utility/mail-handler';
 
 @Injectable()
 export class OrdersService {
-  private stripeClient: Stripe;
 
   constructor(
-    //@InjectStripeClient() private readonly stripeClient: Stripe,
+    @InjectStripeClient() private readonly stripeClient: Stripe,
     @Inject(OrdersRepository) private readonly orderDB: OrdersRepository,
     @Inject(ProductRepository) private readonly productDB: ProductRepository,
     @Inject(UserRepository) private readonly userDB: UserRepository,
   ) {
-    this.stripeClient = new Stripe(
-      config.get('stripe.secret_key')
-    );
+
   }
 
   /**
@@ -164,11 +161,9 @@ export class OrdersService {
         );
       } catch (err) {
         // Log detailed error and throw custom BadRequestException
-        console.error('Error verifying webhook signature:', err);
         throw new BadRequestException('Webhook Error: ' + err.message);
       }
 
-      console.log('Received Event:', event.type);
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
@@ -205,9 +200,6 @@ export class OrdersService {
       } else if (event.type === 'payment_intent.succeeded') {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-        // Log the payment intent data for debugging
-        console.log('Payment Intent Succeeded:', paymentIntent.id);
-
         // Handle further logic based on payment intent success if needed
         // (e.g., mark the order as paid, notify the customer, etc.)
         // Example:
@@ -221,11 +213,9 @@ export class OrdersService {
           result: null
         }
       } else {
-        // Log unhandled event types
-        console.log('Unhandled event type:', event.type);
-        return {
-          success: false
-        }
+
+        throw new Error('Unhandled event type:');
+
       }
     } catch (error) {
       throw error;
