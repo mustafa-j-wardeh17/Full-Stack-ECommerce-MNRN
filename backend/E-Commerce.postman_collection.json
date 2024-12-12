@@ -1,0 +1,825 @@
+{
+	"info": {
+		"_postman_id": "b7e5fa77-98a1-4631-a271-772912fcff95",
+		"name": "E-Commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31279546"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test Customer\",\r\n    \"email\": \"mostafa.warda172@gmail.com\",\r\n    \"password\": \"pass1234\",\r\n    \"type\": \"customer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test Customer\",\r\n    \"email\": \"mostafa.wa0025@gmail.com\",\r\n    \"password\": \"pass1234\",\r\n    \"type\": \"admin\",\r\n    \"secretToken\":\"admin@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/verify-email/954570/mostafa.wardeh2000@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"verify-email",
+								"954570",
+								"mostafa.wardeh2000@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"mostafa.wardeh2000@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendOtpEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/send-otp-email/email3@email.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"send-otp-email",
+								"email3@email.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logoutUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update name password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mustafa Wardeh\",\r\n    \"oldPassword\": \"\",\r\n    \"newPassword\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users/update-name-password/6755b5f1e98885ae1a1a7c63",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"update-name-password",
+								"6755b5f1e98885ae1a1a7c63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users by type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mustafa Abu Wardeh\",\r\n    \"oldPassword\": \"\",\r\n    \"newPassword\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/users?type=customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "customer"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "License",
+					"item": [
+						{
+							"name": "addProductSkuLicense",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"licenseKey\": \"FFFFF-FFFFF-FFFFF-FFFFF-FHHHH\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/6756d9c84942aeb4443f45a3/skus/6759e829e100ba52d5a4b3b9/license",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"6756d9c84942aeb4443f45a3",
+										"skus",
+										"6759e829e100ba52d5a4b3b9",
+										"license"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProductSkuLicenses",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"licenseKey\": \"12345-12345-12345-54321\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/6756fdf59f30761c55ed246a/skus/6757f91dacdd87bdba932962/licenses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"6756fdf59f30761c55ed246a",
+										"skus",
+										"6757f91dacdd87bdba932962",
+										"licenses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProductLicense",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/licenses/67580e18d7a4e7b85141c11c",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"licenses",
+										"67580e18d7a4e7b85141c11c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProductSkuLicense",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"licenseKey\": \"12345-12345-12345-00001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/6756fdf59f30761c55ed246a/skus/6757f91dacdd87bdba932962/licenses/67580f4ae37ee93ea16022f2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"6756fdf59f30761c55ed246a",
+										"skus",
+										"6757f91dacdd87bdba932962",
+										"licenses",
+										"67580f4ae37ee93ea16022f2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reviews",
+					"item": [
+						{
+							"name": "Add Product Review",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\": 5,\r\n    \"review\": \"first review\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/6756d9c84942aeb4443f45a3/reviews",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"6756d9c84942aeb4443f45a3",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delet Product Review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\": 5,\r\n    \"review\": \"first review\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3100/api/v1/products/6756d9c84942aeb4443f45a3/reviews/675a0100dcdcd596c5b637ca",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3100",
+									"path": [
+										"api",
+										"v1",
+										"products",
+										"6756d9c84942aeb4443f45a3",
+										"reviews",
+										"675a0100dcdcd596c5b637ca"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Example Product 44\",\r\n  \"description\": \"This is an example 44 product description.\",\r\n  \"category\": \"Application Software\", \r\n  \"platformType\": \"Android\", \r\n  \"baseType\": \"Mobile\", \r\n  \"productUrl\": \"https://example.com/product\",\r\n  \"downloadUrl\": \"https://example.com/download\",\r\n  \"requirementSpecification\": [\r\n    { \"OS\": \"11.1\", \"RAM\": \"32GB\", \"DiskSpace\": \"1TB\" }\r\n  ],\r\n  \"highlights\": [\r\n    \"Feature 1\",\r\n    \"Feature 2\",\r\n    \"Feature 3\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateproduct",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Example Product -updated\",\r\n  \"description\": \"This is an example 2 product description.\",\r\n  \"category\": \"Application Software\", \r\n  \"platformType\": \"Android\", \r\n  \"baseType\": \"Mobile\", \r\n  \"productUrl\": \"https://example.com/product\",\r\n  \"downloadUrl\": \"https://example.com/download\",\r\n  \"requirementSpecification\": [\r\n    { \"OS\": \"11.1\", \"RAM\": \"16GB\", \"DiskSpace\": \"500MB\" }\r\n  ],\r\n  \"highlights\": [\r\n    \"Feature 1\",\r\n    \"Feature 2\",\r\n    \"Feature 3\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756cd9c06005103f6c27084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756cd9c06005103f6c27084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findOneProduct",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Example Product w\",\r\n  \"description\": \"This is an example 2 product description.\",\r\n  \"category\": \"Application Software\", \r\n  \"platformType\": \"Android\", \r\n  \"baseType\": \"Mobile\", \r\n  \"productUrl\": \"https://example.com/product\",\r\n  \"downloadUrl\": \"https://example.com/download\",\r\n  \"requirementSpecification\": [\r\n    { \"OS\": \"11.1\", \"RAM\": \"8GB\", \"DiskSpace\": \"500MB\" }\r\n  ],\r\n  \"highlights\": [\r\n    \"Feature 1\",\r\n    \"Feature 2\",\r\n    \"Feature 3\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756d9c84942aeb4443f45a3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756d9c84942aeb4443f45a3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Example Product w\",\r\n  \"description\": \"This is an example 2 product description.\",\r\n  \"category\": \"Application Software\", \r\n  \"platformType\": \"Android\", \r\n  \"baseType\": \"Mobile\", \r\n  \"productUrl\": \"https://example.com/product\",\r\n  \"downloadUrl\": \"https://example.com/download\",\r\n  \"requirementSpecification\": [\r\n    { \"OS\": \"11.1\", \"RAM\": \"8GB\", \"DiskSpace\": \"500MB\" }\r\n  ],\r\n  \"highlights\": [\r\n    \"Feature 1\",\r\n    \"Feature 2\",\r\n    \"Feature 3\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Example Product w\",\r\n  \"description\": \"This is an example 2 product description.\",\r\n  \"category\": \"Application Software\", \r\n  \"platformType\": \"Android\", \r\n  \"baseType\": \"Mobile\", \r\n  \"productUrl\": \"https://example.com/product\",\r\n  \"downloadUrl\": \"https://example.com/download\",\r\n  \"requirementSpecification\": [\r\n    { \"OS\": \"11.1\", \"RAM\": \"8GB\", \"DiskSpace\": \"500MB\" }\r\n  ],\r\n  \"highlights\": [\r\n    \"Feature 1\",\r\n    \"Feature 2\",\r\n    \"Feature 3\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756cd9c06005103f6c27084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756cd9c06005103f6c27084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadProductImage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "productImage",
+									"type": "file",
+									"src": "postman-cloud:///1efb6c87-3851-4270-89c9-c3530e2267ed"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756fdf59f30761c55ed246a/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756fdf59f30761c55ed246a",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create one or multiple sku for a product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skuDetails\": [\r\n    {\r\n      \"skuName\": \"Pro\",\r\n      \"price\": 800,\r\n      \"validity\": 120,\r\n      \"lifetime\": false\r\n    },\r\n    {\r\n      \"skuName\": \"Gold\",\r\n      \"price\": 2100,\r\n      \"validity\": 365,\r\n      \"lifetime\": true\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756d9c84942aeb4443f45a3/skus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756d9c84942aeb4443f45a3",
+								"skus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProductSku",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"skuName\": \"Gold Plan\",\r\n    \"price\": 500,\r\n    \"validity\": 365,\r\n    \"lifetime\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/products/6756fdf59f30761c55ed246a/skus/6757f91dacdd87bdba932962",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"6756fdf59f30761c55ed246a",
+								"skus",
+								"6757f91dacdd87bdba932962"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Fetch orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3100/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Order Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3100/api/v1/orders/orderId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"orderId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order checkout(Stripe)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"checkoutDetails\": [\r\n        {\r\n            \"skuPriceId\": \"price_1QUvbSJlEV4xI8felHHEGd9I\",\r\n            \"quantity\": 1,\r\n            \"skuId\": \"6759e829e100ba52d5a4b3b9\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3100/api/v1/orders/checkout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3100",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

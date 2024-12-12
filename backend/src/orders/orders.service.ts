@@ -213,9 +213,7 @@ export class OrdersService {
           result: null
         }
       } else {
-
         throw new Error('Unhandled event type:');
-
       }
     } catch (error) {
       throw error;
