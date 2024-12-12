@@ -29,8 +29,8 @@ Follow these steps to set up and run the application:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/e-commerce-backend.git
-   cd e-commerce-backend
+   git clone https://github.com/mustafa-j-wardeh17/Full-Stack-ECommerce-MNRN.git
+   cd Full-Stack-ECommerce-MNRN/backend
    ```
 
 2. Install dependencies:
