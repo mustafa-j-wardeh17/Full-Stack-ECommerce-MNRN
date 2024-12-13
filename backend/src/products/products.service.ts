@@ -13,8 +13,7 @@ import { unlinkSync } from 'fs';
 import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 import { License } from 'src/shared/schema/license';
 import { OrdersRepository } from 'src/shared/repositories/order.repository';
-import mongoose from 'mongoose';
-import { Orders } from 'src/shared/schema/order';
+
 
 @Injectable()
 export class ProductsService {

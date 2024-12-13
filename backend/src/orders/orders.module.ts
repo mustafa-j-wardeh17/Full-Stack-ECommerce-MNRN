@@ -14,13 +14,15 @@ import { RolesGuard } from 'src/middleware/roles.guard';
 import { StripeModule } from '@golevelup/nestjs-stripe';
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import { ProductRepository } from 'src/shared/repositories/product.repository';
+import { MailerService } from 'src/middleware/mailer';
 
 @Module({
   controllers: [OrdersController],
   providers: [OrdersService,
     UserRepository,
     ProductRepository,
-    OrdersRepository, {
+    OrdersRepository,
+    MailerService, {
       provide: APP_GUARD,
       useClass: RolesGuard
     }],

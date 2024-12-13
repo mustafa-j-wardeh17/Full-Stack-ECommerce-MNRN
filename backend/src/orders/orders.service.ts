@@ -8,7 +8,7 @@ import { UserRepository } from 'src/shared/repositories/user.repository';
 import config from 'config'
 import { userTypes } from 'src/shared/schema/users';
 import { Orders, orderStatus, paymentStatus } from 'src/shared/schema/order';
-import { sendEmail } from 'src/utility/mail-handler';
+import { MailerService } from 'src/middleware/mailer';
 
 
 @Injectable()
@@ -19,6 +19,7 @@ export class OrdersService {
     @Inject(OrdersRepository) private readonly orderDB: OrdersRepository,
     @Inject(ProductRepository) private readonly productDB: ProductRepository,
     @Inject(UserRepository) private readonly userDB: UserRepository,
+    @Inject(MailerService) private readonly mailer: MailerService
   ) {
 
   }
@@ -185,12 +186,13 @@ export class OrdersService {
             isOrderDelivered: true,
             ...orderData,
           });
-
-          // this.sendOrderEmail(
-          //   orderData.customerEmail,
-          //   orderData.orderId,
-          //   `${config.get('emailService.emailTemplates.orderSuccess')}${order._id}`,
-          // );
+          const user = await this.userDB.findById(orderData.userId)
+          this.sendOrderEmail(
+            orderData.customerEmail,
+            user.name,
+            orderData.orderId,
+            `${config.get('frontendbase')}orders/success/${order._id}`,
+          );
         }
         return {
           message: "Payment checkout session successfully created",
@@ -323,16 +325,21 @@ export class OrdersService {
     }
   }
 
-  async sendOrderEmail(email: string, orderId: string, orderLink: string) {
-    await sendEmail(
-      email,
-      config.get('emailService.emailTemplates.orderSuccess'),
-      'Order Success - Digizone',
-      {
-        orderId,
-        orderLink,
-      },
-    );
+  async sendOrderEmail(email: string, customerName: string, orderId: string, orderLink: string) {
+    await this.mailer.sendMail({
+      to: [{ name: customerName, address: email }], // Replace `customerName` with the appropriate variable if available
+      subject: 'Order Success - PS_Store',
+      html: `
+        <p>Dear ${customerName},</p>
+        <p>Thank you for shopping with us! Your order has been successfully placed.</p>
+        <p><strong>Order ID:</strong> ${orderId}</p>
+        <p>You can view your order details using the link below:</p>
+        <a href="${orderLink}" target="_blank">View Order</a>
+        <p>If you have any questions, feel free to contact us.</p>
+        <p>Best regards,</p>
+        <p>The PS_Store Team</p>
+      `,
+    });
   }
 
 }

@@ -74,6 +74,7 @@ export class UsersController {
     if (user.id !== id) {
       throw new UnauthorizedException()
     }
+    console.log('id===>', id)
     return this.usersService.updatePasswordOrName(id, updateUserDto);
   }
 
