@@ -5,7 +5,6 @@ import { userTypes } from 'src/shared/schema/users';
 import config from 'config'
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import { comparePassword, generateHashPassword } from 'src/utility/password-manager';
-import { sendEmail } from 'src/utility/mail-handler';
 import { generateAuthToken } from 'src/utility/token-generator';
 import { MailerService } from 'src/middleware/mailer';
 
@@ -53,16 +52,25 @@ export class UsersService {
       })
 
       if (newUser.type !== userTypes.ADMIN) {
-        sendEmail(
-          newUser.email,
-          config.get('emailService.emailTemplates.verifyEmail'),
-          'Email verification - PS_Store',
-          {
-            customerName: newUser.name,
-            customerEmail: newUser.email,
-            otp,
-          }
-        )
+        try {
+          await this.mailer.sendMail({
+            to: [{ name: newUser.name, address: newUser.email }], // Recipient's email
+            subject: 'Email verification - PS_Store', // Email subject
+            html: `
+              <p>Dear ${newUser.name},</p>
+              <p>Thank you for registering at PS_Store. Please use the following OTP to verify your email:</p>
+              <h2>${otp}</h2>
+              <p>This OTP will expire in 5 minutes.</p>
+              <p>Best regards,</p>
+              <p>The PS_Store Team</p>
+            `, // Email body
+          });
+
+          console.log('Verification email sent successfully');
+        } catch (error) {
+          console.error('Failed to send verification email:', error);
+          throw new Error('Could not send verification email');
+        }
       }
 
       return {
@@ -166,16 +174,18 @@ export class UsersService {
           otpExpiryTime
         }
       )
-      sendEmail(
-        user.email,
-        config.get('emailService.emailTemplates.verifyEmail'),
-        'Email verification - PS_Store',
-        {
-          cusomerName: user.name,
-          cusomerEmail: user.email,
-          otp
-        },
-      )
+      await this.mailer.sendMail({
+        to: [{ name: user.name, address: user.email }], // Recipient's email
+        subject: 'Email verification - PS_Store', // Email subject
+        html: `
+          <p>Dear ${user.name},</p>
+          <p>Thank you for registering at PS_Store. Please use the following OTP to verify your email:</p>
+          <h2>${otp}</h2>
+          <p>This OTP will expire in 5 minutes.</p>
+          <p>Best regards,</p>
+          <p>The PS_Store Team</p>
+        `, // Email body
+      });
       return {
         success: true,
         message: 'Otp sent successfully',
@@ -205,17 +215,20 @@ export class UsersService {
           password
         }
       )
-      sendEmail(
-        user.email,
-        config.get('emailService.emailTemplates.forgotPassword'),
-        'Forgot password - PS_Store',
-        {
-          cusomerName: user.name,
-          cusomerEmail: user.email,
-          newPassword: password,
-          loginLink: config.get('loginLink'),
-        },
-      )
+      // Send email with the new password
+      await this.mailer.sendMail({
+        to: [{ name: user.name, address: user.email }],
+        subject: 'Forgot password - PS_Store',
+        html: `
+        <p>Dear ${user.name},</p>
+        <p>We received a request to reset your password. Your temporary password is:</p>
+        <h2>${tempPassword}</h2>
+        <p>Please use the link below to log in and update your password:</p>
+        <a href="${config.get('loginLink')}" target="_blank">Login Here</a>
+        <p>Best regards,</p>
+        <p>The PS_Store Team</p>
+  `,
+      });
       return {
         success: true,
         message: 'Password sent to your email successfully',
