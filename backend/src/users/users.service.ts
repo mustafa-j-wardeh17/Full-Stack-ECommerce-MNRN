@@ -7,11 +7,13 @@ import { UserRepository } from 'src/shared/repositories/user.repository';
 import { comparePassword, generateHashPassword } from 'src/utility/password-manager';
 import { sendEmail } from 'src/utility/mail-handler';
 import { generateAuthToken } from 'src/utility/token-generator';
+import { MailerService } from 'src/middleware/mailer';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(UserRepository) private readonly userDB: UserRepository
+    @Inject(UserRepository) private readonly userDB: UserRepository,
+    @Inject(MailerService) private readonly mailer: MailerService
   ) { }
 
 

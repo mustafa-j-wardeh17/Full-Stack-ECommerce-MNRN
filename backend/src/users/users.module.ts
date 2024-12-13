@@ -7,10 +7,11 @@ import { Users, UserSchema } from 'src/shared/schema/users';
 import { RolesGuard } from 'src/middleware/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthMiddleware } from 'src/middleware/auth';
+import { MailerService } from 'src/middleware/mailer';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, UserRepository,
+  providers: [UsersService, UserRepository, MailerService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard

@@ -6,9 +6,11 @@ import { Request, Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
 import { userTypes } from 'src/shared/schema/users';
 import { decodeAuthToken } from 'src/utility/token-generator';
+import Mail from 'nodemailer/lib/mailer';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
+
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {

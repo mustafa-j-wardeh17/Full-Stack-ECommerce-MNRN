@@ -8,10 +8,16 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
 @Module({
-  imports: [MongooseModule.forRoot(config.get('mongodbUrl'), {
+  imports: [
+    
+    MongooseModule.forRoot(config.get('mongodbUrl'), {
     w: 1,
     
-  }), UsersModule, ProductsModule, OrdersModule],
+  }), 
+  UsersModule, 
+  ProductsModule, 
+  OrdersModule
+],
   controllers: [AppController],
   providers: [AppService,
     {

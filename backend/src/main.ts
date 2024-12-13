@@ -5,7 +5,6 @@ import { TransformationInterception } from './responseInterceptor';
 import cookieParser from 'cookie-parser';
 
 import * as bodyParser from 'body-parser';
-import { NextFunction, raw, Request, Response } from 'express';
 
 
 async function bootstrap() {
