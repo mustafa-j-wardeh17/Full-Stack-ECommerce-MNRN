@@ -76,7 +76,11 @@ Follow these steps to set up and run the application:
               "successUrl": "http://localhost:3000/order-success",
               "cancelUrl": "http://localhost:3000/order-cancel",
               "webhookSecret": "whsec_<your-webhook-secret>"
-          }
+          },
+          "nodemailer":{
+            "email":"<email>",
+            "pass":"<password>"
+         }
       }
       ```
 
