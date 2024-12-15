@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, Req, RequestMethod } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -58,11 +58,11 @@ export class ProductsModule implements NestModule {
           method: RequestMethod.POST,
         },
         {
-          path: `${config.get('appPrefix')}/products`,
-          method: RequestMethod.GET
+          path: `/products`,
+          method:RequestMethod.GET
         },
         {
-          path: `${config.get('appPrefix')}/products:id`,
+          path: `/products/:id`,
           method: RequestMethod.GET
         }
       )

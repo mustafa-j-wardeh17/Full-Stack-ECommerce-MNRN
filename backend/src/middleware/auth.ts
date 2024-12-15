@@ -12,10 +12,6 @@ export class AuthMiddleware implements NestMiddleware {
 
     async use(req: Request | any, res: Response, next: NextFunction) {
         try {
-            if (req.path === '/api/v1/orders/webhook') {
-                console.log('Skipping AuthMiddleware for webhook');
-                return next(); // Skip for webhook
-            }
             const token = req.cookies._digi_auth_token;
             if (!token) {
                 throw new UnauthorizedException('missing auth token');
