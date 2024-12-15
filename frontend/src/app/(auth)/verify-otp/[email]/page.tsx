@@ -38,7 +38,7 @@ const VerifyOTP = ({ params: { email } }: { params: { email: string } }) => {
                         </button>
                     </form>
                     <p className="text-sm text-gray-500 mt-6 text-center">
-                        Didn't receive the code?{' '}
+                        Didn&apos;t receive the code?{' '}
                         <a href="#" className="text-indigo-600 font-medium hover:underline">
                             Resend OTP
                         </a>

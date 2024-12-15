@@ -73,7 +73,7 @@ const Login = () => {
                         </button>
                     </form>
                     <p className="text-sm text-gray-500 mt-6 text-center">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <a href="sign-up" className="text-indigo-500 hover:underline">
                             Sign up
                         </a>

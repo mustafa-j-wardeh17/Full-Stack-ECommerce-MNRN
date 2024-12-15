@@ -8,7 +8,7 @@ const ForgotPassword = () => {
                 <div className="md:w-1/2 h-full w-full flex flex-col itece justify-center px-10 py-8">
                     <h2 className="text-4xl font-bold text-gray-800 mb-4">Forgot Password?</h2>
                     <p className="text-gray-500 mb-6 text-md">
-                        Enter your email address and we'll send you instructions to reset your password.
+                        Enter your email address and we&apos;ll send you instructions to reset your password.
                     </p>
                     <form className="space-y-5">
                         {/* Email Input */}
