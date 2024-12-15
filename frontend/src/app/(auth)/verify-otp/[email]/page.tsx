@@ -1,9 +1,8 @@
 import Image from "next/image";
 
-type VerifyOTPProps = {
-    params: { email: string };
-};
-const VerifyOTP = async ({ params }: VerifyOTPProps) => {
+type tParams = Promise<{ email: string[] }>
+
+export default async function VerifyOTP({ params }: { params: tParams }) {
     const { email } = await params
     console.log(email)
     // if email verify then go out 
@@ -65,4 +64,3 @@ const VerifyOTP = async ({ params }: VerifyOTPProps) => {
     );
 };
 
-export default VerifyOTP;
