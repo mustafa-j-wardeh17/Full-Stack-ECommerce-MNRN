@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-const VerifyOTP = ({ params: { email } }: { params: { email: string } }) => {
+type VerifyOTPProps = {
+    params: { email: string };
+};
+const VerifyOTP = async ({ params }: VerifyOTPProps) => {
+    const { email } = await params
     console.log(email)
     // if email verify then go out 
     return (
