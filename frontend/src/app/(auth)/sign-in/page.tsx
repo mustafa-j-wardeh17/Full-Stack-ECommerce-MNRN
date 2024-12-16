@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Error from 'next/error';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -37,8 +38,8 @@ const Login = () => {
             } else {
                 setError(data.message || 'Login failed. Please check your credentials.');
             }
-        } catch (err:any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError('An error occurred. Please try again later.');
         } finally {
             setLoading(false);
         }
