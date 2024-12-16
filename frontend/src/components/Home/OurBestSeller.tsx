@@ -17,17 +17,17 @@ const BestSellers = () => {
     ];
 
     return (
-        <section className="mt-12 px-4">
+        <section className="my-12 px-4">
             <h2 className="text-3xl font-semibold text-primary/80 w-full text-center mb-6">
-                Best Sellers
+                Best Sells
             </h2>
 
             {/* Grid for displaying the products */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="flex flex-row flex-wrap gap-6 justify-center">
                 {products.map((product) => (
                     <div
                         key={product.id}
-                        className="relative  overflow-hidden "
+                        className="relative  overflow-hidden min-w-[250px]"
                     >
                         {/* Image Container */}
                         <div className="relative group justify-center items-center overflow-hidden w-full bg-primary-foreground hover:bg-primary/10 h-72 hover:scale-105 rounded-lg">
@@ -43,25 +43,25 @@ const BestSellers = () => {
                             {/* Star and Eye Icons */}
                             <div className="flex flex-col justify-center items-center space-y-2 absolute top-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
                                 {/* Star Icon in a white circle */}
-                                <div className="bg-secondary text-primary rounded-full p-2 w-[30px] h-[30px] flex items-center justify-center">
+                                <button className="cursor-pointer bg-secondary hover:bg-primary-foreground/30 text-primary rounded-full p-2 w-[30px] h-[30px] flex items-center justify-center">
                                     <FaStar className="text-primary" size={15} />
-                                </div>
+                                </button>
 
                                 {/* Eye Icon in a white circle */}
-                                <div className="bg-secondary text-primary rounded-full p-2 w-[30px] h-[30px] flex items-center justify-center">
+                                <button className="cursor-pointer bg-secondary hover:bg-primary-foreground/30 text-primary rounded-full p-2 w-[30px] h-[30px] flex items-center justify-center">
                                     <FaEye className="text-primary" size={15} />
-                                </div>
+                                </button>
                             </div>
 
                             {/* Add to Cart Button */}
-                            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[80%] bg-secondary text-primary rounded-xl p-3 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center justify-center">
-                                <a href={product.link} className="text-lg font-semibold">Add to Cart</a>
+                            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[80%] bg-secondary text-primary rounded-xl lg:p-3 p-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center justify-center">
+                                <a href={product.link} className="lg:text-lg text-md font-semibold">Add to Cart</a>
                             </div>
                         </div>
 
                         {/* Product Info */}
                         <div className="mt-3">
-                            <h3 className="text-xl font-semibold text-primary">{product.name}</h3>
+                            <h3 className="lg:text-xl text-lg font-semibold text-primary">{product.name}</h3>
                             <p className="text-sm text-gray-500">{product.description}</p>
                             <p className="mt-2 text-sm font-semibold text-primary">{product.price}</p>
                         </div>

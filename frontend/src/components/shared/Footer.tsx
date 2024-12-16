@@ -7,21 +7,23 @@ const Footer = () => {
             <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center space-y-8 md:space-y-0">
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
-                    <Image src="/klogo.svg" alt="PS Store" width={120} height={40} />
+                    <div className='relative w-[135px] h-[44px] flex justify-start invert'>
+                        <Image src="/logo.png" alt="PS Store" fill/>
+                    </div>
                     <ul className="space-y-4 text-sm">
                         <li><a href="tel:+17045550127" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> (704) 555-0127</a></li>
                         <li><a href="mailto:psstore@example.com" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-envelope mr-2"></i> krist@example.com</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> 3891 Ranchview Dr, Richardson, CA 62639</a></li>
+                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> 3891 CA 62639</a></li>
                     </ul>
                     <div className="flex space-x-4 mt-4">
-                        <div className='w-[40px] h-[20px] bg-secondary flex items-center justify-center'>
-                            <Image src="/visa.svg" alt="Visa" width={30} height={15} />
+                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
+                            <Image src="/visa.svg" alt="Visa" width={25} height={15} />
                         </div>
-                        <div className='w-[40px] h-[20px] bg-secondary flex items-center justify-center'>
-                            <Image src="/mastercard.svg" alt="Visa" width={30} height={15} />
+                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
+                            <Image src="/mastercard.svg" alt="mastercard" width={25} height={15} />
                         </div>
-                        <div className='w-[40px] h-[20px] bg-secondary flex items-center justify-center'>
-                            <Image src="/paypal.svg" alt="Visa" width={30} height={15} />
+                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
+                            <Image src="/paypal.svg" alt="paypal" width={25} height={15} />
                         </div>
                     </div>
                 </div>
@@ -51,7 +53,7 @@ const Footer = () => {
                 </div>
 
                 {/* Subscribe Section */}
-                <div className="flex flex-col space-y-6 text-sm">
+                <div className="flex w-full max-w-[300px] flex-col space-y-6 text-sm">
                     <h3 className="text-lg font-semibold">Subscribe</h3>
                     <div className="flex flex-col space-y-4">
                         <input type="email" placeholder="Your Email" className="p-3 rounded-lg border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300" />

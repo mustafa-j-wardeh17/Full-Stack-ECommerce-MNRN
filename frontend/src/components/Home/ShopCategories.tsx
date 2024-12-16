@@ -77,8 +77,8 @@ const ShopCategories = () => {
 
                         {/* Button and hover effect */}
                         <div className="absolute bottom-0 w-[70%] bg-secondary text-primary rounded-xl p-3 transform translate-y-full group-hover:-translate-y-6 transition-all duration-300 ease-out flex items-center justify-center">
-                            <a href={`/category/${index}`} className="text-lg font-semibold">
-                                Go to Category {index + 1}
+                            <a href={`/category/${index}`} className="lg:text-lg text-md font-semibold">
+                               Category {index + 1}
                             </a>
                         </div>
                     </div>
