@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const ForgotPassword = () => {
     return (
-        <div className="flex items-center justify-center w-full  py-3">
-            <div className="flex flex-col md:flex-row w-full max-w-5xl rounded-3xl overflow-hidden md:shadow-xl relative">
+        <div className="flex items-center justify-center w-full h-screen">
+            <div className="flex flex-col md:flex-row justify-end w-full   overflow-hidden  relative h-full">
                 {/* Left Section: Forgot Password Form */}
-                <div className="w-full md:w-1/2  md:bg-primary/5 flex flex-col items-center justify-center px-6 py-8">
+                <div className="h-full w-full 2xl:w-[40%] md:w-1/2 bg-primary-foreground flex flex-col items-center justify-center px-6 py-8">
                     <h2 className="text-4xl font-bold text-primary mb-4">Forgot Password?</h2>
-                    <p className="text-primary/70 text-center mb-8 text-lg">
+                    <p className="text-primary/70 text-center mb-8 text-lg max-w-[550px]">
                         Enter your email address and we&apos;ll send you instructions to reset your password.
                     </p>
                     <form className="space-y-5 w-full max-w-[400px]">
@@ -15,7 +15,7 @@ const ForgotPassword = () => {
                         <div>
                             <label
                                 htmlFor="email"
-                                className="text-sm font-semibold text-primary/70"
+                                className="text-primary font-bold"
                             >
                                 Email
                             </label>
@@ -29,23 +29,23 @@ const ForgotPassword = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="w-full bg-indigo-600 text-white font-semibold p-3 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-lg transform hover:scale-105"
+                            className="w-full bg-primary text-secondary font-semibold p-3 rounded-lg hover:bg-primary/90 transition duration-300 shadow-md flex items-center justify-center"
                         >
                             Send Instructions
                         </button>
                     </form>
                     <p className="text-sm text-primary/50 mt-6 text-center">
                         Remembered your password?{' '}
-                        <a href="sign-in" className="text-indigo-600 font-medium hover:underline">
+                        <a href="sign-in" className="text-primary font-bold hover:underline">
                             Sign in
                         </a>
                     </p>
                 </div>
                 {/* Right Section: Illustration */}
-                <div className="hidden md:flex bg-indigo-500 absolute right-0 rounded-r-3xl overflow-hidden items-center justify-center md:w-1/2 h-full w-full">
+                <div className="h-full md:w-1/2 2xl:w-[60%]  w-full hidden md:flex bg-primary absolute left-0  overflow-hidden items-center justify-center">
 
                     <Image
-                        src="https://res.cloudinary.com/dsos2uuov/image/upload/v1733815775/ps_store/products/ps_store/products/1733815774182.avif" // Replace with your illustration URL
+                        src="/forgot-password.png" // Replace with your illustration URL
                         alt="Illustration"
                         fill
                     />
