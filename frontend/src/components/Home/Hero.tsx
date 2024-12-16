@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const Hero = () => {
     return (
-        <section className="relative bg-primary-foreground  rounded-2xl overflow-hidden">
+        <section className="relative bg-primary-foreground  rounded-2xl mt-8 overflow-hidden">
             {/* Background Image */}
             {/* <div className="absolute inset-0 -z-10">
                 <Image
@@ -48,11 +48,13 @@ const Hero = () => {
                     {/* Right Image */}
                     <div className="relative w-full lg:w-1/2 max-w-lg min-w-[400px] rounded-xl overflow-hidden">
                         <Image
-                            src="/hero.png" // Replace with your product image
+                            src="/hero.png"
                             alt="Featured Product"
                             width={600}
                             height={600}
-                            className="object-cover"
+                            priority
+                            className="rounded-xl"
+                            style={{ objectFit: 'cover' }}
                         />
                     </div>
                 </div>

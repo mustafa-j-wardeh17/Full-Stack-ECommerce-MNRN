@@ -51,13 +51,13 @@ const ShopCategories = () => {
                 <div className="flex space-x-2">
                     <button
                         onClick={handlePrev}
-                        className="bg-primary-foreground p-2 w-[30px] h-[30px] flex items-center justify-center rounded-md aspect-square text-primary hover:bg-primary hover:text-secondary"
+                        className="bg-primary-foreground border p-2 w-[30px] h-[30px] flex items-center justify-center rounded-md aspect-square text-primary hover:bg-primary hover:text-secondary"
                     >
                         &#8592;
                     </button>
                     <button
                         onClick={handleNext}
-                        className="bg-primary-foreground p-2 w-[30px] h-[30px] flex items-center justify-center rounded-md aspect-square text-primary hover:bg-primary hover:text-secondary"
+                        className="bg-primary-foreground border p-2 w-[30px] h-[30px] flex items-center justify-center rounded-md aspect-square text-primary hover:bg-primary hover:text-secondary"
                     >
                         &#8594;
                     </button>
@@ -76,7 +76,7 @@ const ShopCategories = () => {
                         />
 
                         {/* Button and hover effect */}
-                        <div className="absolute bottom-0 w-[70%] bg-secondary text-primary rounded-xl p-3 transform translate-y-full group-hover:-translate-y-6 transition-all duration-300 ease-out flex items-center justify-center">
+                        <div className="absolute bottom-0 w-[70%] bg-secondary text-primary rounded-xl lg:p-3 p-2 transform translate-y-full group-hover:-translate-y-6 transition-all duration-300 ease-out flex items-center justify-center">
                             <a href={`/category/${index}`} className="lg:text-lg text-md font-semibold">
                                Category {index + 1}
                             </a>

@@ -8,7 +8,7 @@ const Footer = () => {
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
                     <div className='relative w-[135px] h-[44px] flex justify-start invert'>
-                        <Image src="/logo.png" alt="PS Store" fill/>
+                        <Image src="/logo.png" alt="PS Store" width={135} height={44} />
                     </div>
                     <ul className="space-y-4 text-sm">
                         <li><a href="tel:+17045550127" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> (704) 555-0127</a></li>
@@ -16,14 +16,14 @@ const Footer = () => {
                         <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> 3891 CA 62639</a></li>
                     </ul>
                     <div className="flex space-x-4 mt-4">
-                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
-                            <Image src="/visa.svg" alt="Visa" width={25} height={15} />
+                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                            <Image src="/visa.svg" alt="Visa" width={26} height={18} />
                         </div>
-                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
-                            <Image src="/mastercard.svg" alt="mastercard" width={25} height={15} />
+                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                            <Image src="/mastercard.svg" alt="Mastercard" width={26} height={18} />
                         </div>
-                        <div className='w-[45px] h-[28px] rounded-sm bg-secondary relative flex items-center justify-center overflow-hidden'>
-                            <Image src="/paypal.svg" alt="paypal" width={25} height={15} />
+                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                            <Image src="/paypal.svg" alt="Paypal" width={26} height={18} />
                         </div>
                     </div>
                 </div>

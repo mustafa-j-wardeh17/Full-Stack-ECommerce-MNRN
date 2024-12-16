@@ -30,14 +30,14 @@ const BestSellers = () => {
                         className="relative  overflow-hidden min-w-[250px]"
                     >
                         {/* Image Container */}
-                        <div className="relative group justify-center items-center overflow-hidden w-full bg-primary-foreground hover:bg-primary/10 h-72 hover:scale-105 rounded-lg">
+                        <div className="relative group justify-center items-center w-full bg-primary-foreground hover:bg-primary/10 h-72  rounded-lg overflow-hidden">
                             {/* Image */}
                             <Image
                                 src={product.image}
                                 alt={product.name}
                                 layout="fill"
                                 objectFit="cover"
-                                className="transition-all duration-300 ease-in-out group-hover:opacity-80"
+                                className="transition-all duration-300 ease-in-out group-hover:opacity-80 hover:scale-105"
                             />
 
                             {/* Star and Eye Icons */}
