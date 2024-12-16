@@ -17,7 +17,8 @@ const eslintConfig = [
       '@next/next/no-page-custom-font': 'off',
       "no-unused-vars": 'warn',
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "warn"
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "off"
     },
   }),
 ]
