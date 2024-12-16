@@ -121,7 +121,7 @@ const Navbar = () => {
                             size={28}
                             className="text-primary cursor-pointer hover:text-green-500 transition"
                             onClick={() => {
-                                user && user.email ? router.push('/my-account') : router.push('/sign-in');
+                                router.push('/sign-in');
                                 setShowMenu(false);
                             }}
                         />
