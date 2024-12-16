@@ -1,4 +1,5 @@
 import Hero from "@/components/Home/Hero";
+import BestSellers from "@/components/Home/OurBestSeller";
 import ShopCategories from "@/components/Home/ShopCategories";
 
 export default async function Home() {
@@ -9,6 +10,7 @@ export default async function Home() {
     <div >
       <Hero />
       <ShopCategories />
+      <BestSellers />
       {"result.result"}
     </div>
   );

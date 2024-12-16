@@ -67,7 +67,7 @@ const ShopCategories = () => {
             {/* Images Container */}
             <div className="flex overflow-hidden gap-6">
                 {getVisibleImages().map((image, index) => (
-                    <div key={index} className="w-full aspect-[11/12] bg-primary-foreground rounded-md flex items-center justify-center relative sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 h-full overflow-hidden group">
+                    <div key={index} className="w-full hover:bg-primary/10 aspect-[11/12] bg-primary-foreground rounded-md flex items-center justify-center relative sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 h-full overflow-hidden group">
                         <Image
                             src={image}
                             alt={`Category ${index + 1}`}
@@ -76,7 +76,7 @@ const ShopCategories = () => {
                         />
 
                         {/* Button and hover effect */}
-                        <div className="absolute bottom-0 w-[70%] bg-primary rounded-xl text-secondary p-3 transform translate-y-full group-hover:-translate-y-6 transition-all duration-300 ease-out flex items-center justify-center">
+                        <div className="absolute bottom-0 w-[70%] bg-secondary text-primary rounded-xl p-3 transform translate-y-full group-hover:-translate-y-6 transition-all duration-300 ease-out flex items-center justify-center">
                             <a href={`/category/${index}`} className="text-lg font-semibold">
                                 Go to Category {index + 1}
                             </a>
