@@ -19,9 +19,9 @@ const Hero = () => {
 
             {/* Content Wrapper */}
             <div className="container mx-auto px-4 md:py-1 py-10 sm:px-8 lg:px-16 xl:px-20">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-8 min-h-screen">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-8 max-h-[170vh]">
                     {/* Left Content */}
-                    <div className="text-center lg:text-left max-w-2xl">
+                    <div className="text-center lg:text-left max-w-2xl lg:mt-0 mt-8 ">
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary leading-tight">
                             Welcome to <span className="text-green-500">PS Market</span>
                         </h1>

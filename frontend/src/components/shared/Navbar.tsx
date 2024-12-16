@@ -27,7 +27,7 @@ const Navbar = () => {
     return (
         <>
             {/* Top Header */}
-            <div className="flex items-center justify-between py-3 px-4 ">
+            <div className="flex  items-center justify-between py-3 px-4 ">
                 {/* Logo */}
                 <div className="flex items-center">
                     <h3
