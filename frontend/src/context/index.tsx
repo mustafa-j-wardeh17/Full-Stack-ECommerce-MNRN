@@ -107,29 +107,29 @@ const Provider = ({ children }: Props) => {
         cartDispatch({ type: 'GET_CART_ITEMS', payload: cartItems });
     }, []);
 
-    const handleLogout = async () => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/logout`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (response.ok) {
-                console.log('/401 error > logout');
-                dispatch({
-                    type: 'LOGOUT',
-                    payload: undefined,
-                });
-                localStorage.removeItem('_digi_user');
-                router.push('/auth');
-            } else {
-                throw new Error('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error during logout:', error);
-        }
-    };
+    // const handleLogout = async () => {
+    //     try {
+    //         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/logout`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //         });
+    //         if (response.ok) {
+    //             console.log('/401 error > logout');
+    //             dispatch({
+    //                 type: 'LOGOUT',
+    //                 payload: undefined,
+    //             });
+    //             localStorage.removeItem('_digi_user');
+    //             router.push('/auth');
+    //         } else {
+    //             throw new Error('Logout failed');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error during logout:', error);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchCsrfToken = async () => {

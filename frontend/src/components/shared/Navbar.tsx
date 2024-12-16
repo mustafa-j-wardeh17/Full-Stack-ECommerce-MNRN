@@ -15,7 +15,6 @@ const Navbar = () => {
 
     const {
         state: { user },
-        cartItems,
     } = useContext(Context);
 
     const router = useRouter();
