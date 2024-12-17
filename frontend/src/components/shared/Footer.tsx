@@ -66,13 +66,13 @@ const Footer = () => {
                 <div className='w-full h-[1px] bg-primary/40'/>
                 <div className='flex items-center w-full  justify-between'>
                     <div className="sm:flex hidden space-x-4 ">
-                        <div className="w-10 h-[30px] py-1 bg-primary flex items-center justify-center rounded-sm">
+                        <div className="w-10 h-[30px] py-1 bg-secondary border border-primary/40 flex items-center justify-center rounded-sm">
                             <Image src="/visa.svg" alt="Visa" width={24} height={12} />
                         </div>
-                        <div className="w-10 h-[30px] py-1 bg-primary flex items-center justify-center rounded-sm">
+                        <div className="w-10 h-[30px] py-1 bg-secondary border border-primary/40 flex items-center justify-center rounded-sm">
                             <Image src="/mastercard.svg" alt="Mastercard" width={20} height={12} />
                         </div>
-                        <div className="w-10 h-[30px] py-1 bg-primary flex items-center justify-center rounded-sm">
+                        <div className="w-10 h-[30px] py-1 bg-secondary border border-primary/40 flex items-center justify-center rounded-sm">
                             <Image src="/paypal.svg" alt="Paypal" width={20} height={12} />
                         </div>
                     </div>
