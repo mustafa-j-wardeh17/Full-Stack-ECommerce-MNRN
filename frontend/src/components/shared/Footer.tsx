@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ArrowRightIcon } from 'lucide-react';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 
 const Footer = () => {
     return (
@@ -77,10 +77,10 @@ const Footer = () => {
                         </div>
                     </div>
                     <p className="text-sm">©2024 PS_Store All Rights Reserved</p>
-                    <div className="flex justify-center space-x-2 text-primary">
-                        <a href="#"><FaFacebook className='hover:scale-110 hover:text-primary/80' /></a>
-                        <a href="#"><FaInstagram className='hover:scale-110 hover:text-primary/80' /></a>
-                        <a href="#"><FaTwitter className='hover:scale-110 hover:text-primary/80' /></a>
+                    <div className="flex justify-center space-x-4 text-primary">
+                        <a href="#"><FaFacebookF size={18} className='hover:scale-110 hover:text-primary/80' /></a>
+                        <a href="#"><FaInstagram size={18} className='hover:scale-110 hover:text-primary/80' /></a>
+                        <a href="#"><FaTwitter size={18} className='hover:scale-110 hover:text-primary/80' /></a>
                     </div>
                 </div>
             </div>
