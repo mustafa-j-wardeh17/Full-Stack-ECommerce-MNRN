@@ -39,7 +39,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Navigation Links (Hidden on Small Devices) */}
-                <div className="hidden md:flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-6">
                     <Link href="/" className="text-primary/85 hover:text-green-500 transition">
                         Home
                     </Link>

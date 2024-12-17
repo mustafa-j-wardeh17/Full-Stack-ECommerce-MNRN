@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast'
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div>
+        <div className='min-h-screen flex flex-col justify-between'>
             <div className="container  mx-auto px-4">
                 <Navbar />
                 {children}

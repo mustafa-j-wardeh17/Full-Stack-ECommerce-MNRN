@@ -3,11 +3,11 @@ import Image from 'next/image';
 
 const Footer = () => {
     return (
-        <footer className="bg-black text-white py-6">
+        <footer className="text-primary bg-primary-foreground py-6 border-t">
             <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center space-y-8 md:space-y-0">
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
-                    <div className='relative w-[135px] h-[44px] flex justify-start invert'>
+                    <div className='relative w-[135px] h-[44px] flex justify-start dark:invert'>
                         <Image src="/logo.png" alt="PS Store" width={135} height={44} />
                     </div>
                     <ul className="space-y-4 text-sm">
@@ -16,13 +16,13 @@ const Footer = () => {
                         <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> 3891 CA 62639</a></li>
                     </ul>
                     <div className="flex space-x-4 mt-4">
-                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                        <div className="w-12 h-auto py-1 bg-secondary flex items-center justify-center rounded-sm">
                             <Image src="/visa.svg" alt="Visa" width={26} height={18} />
                         </div>
-                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                        <div className="w-12 h-auto py-1 bg-secondary flex items-center justify-center rounded-sm">
                             <Image src="/mastercard.svg" alt="Mastercard" width={26} height={18} />
                         </div>
-                        <div className="w-12 h-auto py-1 bg-white flex items-center justify-center rounded-sm">
+                        <div className="w-12 h-auto py-1 bg-secondary flex items-center justify-center rounded-sm">
                             <Image src="/paypal.svg" alt="Paypal" width={26} height={18} />
                         </div>
                     </div>

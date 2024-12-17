@@ -27,7 +27,7 @@ const BestSellers = () => {
                 {products.map((product) => (
                     <div
                         key={product.id}
-                        className="relative  overflow-hidden min-w-[250px]"
+                        className="relative  overflow-hidden "
                     >
                         {/* Image Container */}
                         <div className="relative group justify-center items-center w-full bg-primary-foreground hover:bg-primary/10 h-72  rounded-lg overflow-hidden">
