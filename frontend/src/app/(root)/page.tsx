@@ -1,5 +1,5 @@
 import Hero from "@/components/Home/Hero";
-import BestSellers from "@/components/Home/OurBestSeller";
+import BestSells from "@/components/Home/OurBestSells";
 import ShopCategories from "@/components/Home/ShopCategories";
 
 interface ResultInterface {
@@ -16,7 +16,7 @@ export default async function Home() {
     <div >
       <Hero />
       <ShopCategories />
-      <BestSellers />
+      <BestSells />
       {
         products.map((item: any, idx: number) => (
           <p key={idx}>

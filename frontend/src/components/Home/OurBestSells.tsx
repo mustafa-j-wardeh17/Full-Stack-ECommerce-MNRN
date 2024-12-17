@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { FaStar, FaEye } from 'react-icons/fa'; // Star and Eye icons from react-icons
 
-const BestSellers = () => {
+const BestSells = () => {
     // Sample data for Best Sellers
     const products = [
         { id: 1, name: 'Product 1', image: '/hero.png', description: 'This is a great product.', price: '$99.99', link: '/product/1' },
@@ -23,7 +23,7 @@ const BestSellers = () => {
             </h2>
 
             {/* Grid for displaying the products */}
-            <div className="flex flex-row flex-wrap gap-6 justify-center">
+            <div className='grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1  gap-6 '>
                 {products.map((product) => (
                     <div
                         key={product.id}
@@ -74,4 +74,4 @@ const BestSellers = () => {
     );
 };
 
-export default BestSellers;
+export default BestSells;
