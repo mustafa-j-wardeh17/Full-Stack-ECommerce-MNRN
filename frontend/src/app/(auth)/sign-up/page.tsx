@@ -72,7 +72,7 @@ const SignUp = () => {
                 <div className="h-full md:w-1/2 2xl:w-[60%]  w-full hidden md:flex bg-primary-foreground absolute left-0  overflow-hidden items-center justify-center">
                     <Image
                         src="/sign-up.png"
-                        alt="Illustration"
+                        alt="sign-up"
                         fill
                     />
                 </div>

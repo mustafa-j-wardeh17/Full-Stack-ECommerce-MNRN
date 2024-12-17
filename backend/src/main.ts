@@ -12,12 +12,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.enableCors()
+
   // To migrate webhook
   app.use('/api/v1/orders/webhook', bodyParser.raw({ type: 'application/json' }));
 
   const csrfMiddleware = csurf({
     cookie: true
   });
+
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (ROOT_IGNORED_PATHS.includes(req.path)) {
       return next();
@@ -25,6 +27,7 @@ async function bootstrap() {
     return csrfMiddleware(req, res, next)
   })
 
+  
   app.setGlobalPrefix(config.get('appPrefix'));
   app.useGlobalInterceptors(new TransformationInterception());
   await app.listen(config.get('port'), () => {

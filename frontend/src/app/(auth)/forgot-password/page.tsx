@@ -42,11 +42,11 @@ const ForgotPassword = () => {
                     </p>
                 </div>
                 {/* Right Section: Illustration */}
-                <div className="h-full md:w-1/2 2xl:w-[60%]  w-full hidden md:flex bg-primary absolute left-0  overflow-hidden items-center justify-center">
+                <div className="h-full md:w-1/2 2xl:w-[60%]  w-full hidden md:flex bg-primary-foreground absolute left-0  overflow-hidden items-center justify-center">
 
                     <Image
                         src="/forgot-password.png" // Replace with your illustration URL
-                        alt="Illustration"
+                        alt="forgot-password"
                         fill
                     />
                 </div>
