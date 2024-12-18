@@ -7,7 +7,7 @@ import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 const Footer = () => {
     return (
         <footer className="text-primary bg-primary-foreground py-6 border-t">
-            <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center space-y-8 md:space-y-0">
+            <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center md:gap-8 gap-6">
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
                     <div className='relative w-[135px] h-[44px] flex justify-start dark:invert'>

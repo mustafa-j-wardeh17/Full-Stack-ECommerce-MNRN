@@ -28,11 +28,12 @@ const Navbar = () => {
     const navLinks = [
         { label: 'Home', href: '/' },
         { label: 'Shop', href: '/shop' },
-        { label: 'About Us', href: '/about' },
+        { label: 'About Us', href: '/about-us' },
         { label: 'Contact Us', href: '/contact' },
     ];
 
-    const isActive = (path: string) => pathname === path;
+    const isActive = (path: string) => path === '/' ? pathname === path : pathname.includes(path);
+    const isIconActive = (path: string) => pathname === path
 
     return (
         <>
@@ -54,8 +55,7 @@ const Navbar = () => {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`text-primary/85 hover:text-primary transition ${isActive(link.href) ? 'font-bold border-b-2 border-primary' : ''
-                                }`}
+                            className={`text-primary/85 hover:text-primary transition ${isActive(link.href) ? 'font-bold border-b-2 border-primary' : ''}`}
                         >
                             {link.label}
                         </Link>
@@ -69,16 +69,32 @@ const Navbar = () => {
                         size={20}
                         onClick={() => setShowSearch(true)}
                     />
-                    <HeartIcon className=" sm:flex hidden text-primary/70 cursor-pointer hover:text-primary transition" size={20} />
-                    <ShoppingBag className=" sm:flex hidden text-primary/70 cursor-pointer hover:text-primary transition" size={20} />
+                    <Link href={'/my-account/my-wishlist'}>
+                        <HeartIcon
+                            className={`${isIconActive('/my-account/my-wishlist') ? 'text-primary font-bold ' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                            size={20}
+                        />
+                    </Link>
 
-                    <BsPersonCircle
-                        size={28}
-                        className="sm:flex hidden text-primary cursor-pointer hover:text-primary transition"
-                        onClick={() =>
-                            user && user.email ? router.push('/my-account') : router.push('/sign-in')
-                        }
-                    />
+                    <Link href={'/my-account/my-orders'}>
+                        <ShoppingBag
+                            className={`${isIconActive('/my-account/my-orders') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                            size={20}
+                        />
+                    </Link>
+
+                    <Link href={'/my-account/personal-information'}>
+                        <BsPersonCircle
+                            size={20}
+                            className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                            onClick={() =>
+                                user && user.email ? router.push('/my-account/personal-information') : router.push('/my-account/personal-information')
+                            }
+                        />
+                    </Link>
+
+
+
 
                     {/* Hamburger Menu Icon (Visible on Small Devices) */}
                     <Menu
@@ -126,8 +142,8 @@ const Navbar = () => {
                         <HeartIcon className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
                         <ShoppingBag className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
                         <BsPersonCircle
-                            size={28}
-                            className="text-primary cursor-pointer hover:text-primary transition"
+                            size={24}
+                            className="text-primary/70 cursor-pointer hover:text-primary transition"
                             onClick={() => {
                                 router.push('/sign-in');
                                 setShowMenu(false);
