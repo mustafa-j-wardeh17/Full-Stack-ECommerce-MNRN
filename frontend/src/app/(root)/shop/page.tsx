@@ -31,9 +31,11 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
 
     const base = (Object.values(baseType).includes(resolvedSearchParams.baseType as baseType)
         ? resolvedSearchParams.baseType
-        : '') as baseType | '';
+        : '') as baseType | 'createdAt';
 
     const skip = ((Number(resolvedSearchParams.page) - 1) * 12) || 0;
+
+    const sort = resolvedSearchParams.sort || '';
 
     const queryParams = new URLSearchParams();
 
@@ -41,6 +43,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
     if (platform) queryParams.append('platformType', platform);
     if (base) queryParams.append('baseType', base);
     if (skip) queryParams.append('skip', skip.toString());
+    if (sort) queryParams.append('sort', sort);
     try {
         const response = await fetch(`http://localhost:3100/api/v1/products?${queryParams.toString()}`, {
             cache: 'no-store', // Avoid caching for fresh data

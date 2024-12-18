@@ -25,7 +25,6 @@ const page = async ({ params }: { params: tParams }) => {
     const product = result.result.product
     const relatedProducts = result.result.relatedProducts
 
-    console.log(product)
 
     return (
       <div className='2xl:px-10 my-8'>
