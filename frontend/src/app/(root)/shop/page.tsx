@@ -1,59 +1,87 @@
-import ProductCard, { productProps } from '@/components/productCard';
+import ProductCard from '@/components/productCard';
 import { FilterBy } from '@/components/shop/FilterBy';
 import { SortBy } from '@/components/shop/SortBy';
-import React from 'react'
+import { baseType, categoryType, platformType } from '@/util/constant';
+import { Product } from '@/util/types';
+import React from 'react';
 import { CiGrid41 } from "react-icons/ci";
 
-const page = () => {
-    const products: productProps[] = [
-        { id: 1, name: 'Product 1', image: '/hero.png', description: 'This is a great product.', price: '$99.99', link: '/product/1' },
-        { id: 2, name: 'Product 2', image: '/hero.png', description: 'This is a great product.', price: '$89.99', link: '/product/2' },
-        { id: 3, name: 'Product 3', image: '/hero.png', description: 'This is a great product.', price: '$79.99', link: '/product/3' },
-        { id: 4, name: 'Product 4', image: '/hero.png', description: 'This is a great product.', price: '$69.99', link: '/product/4' },
-        { id: 5, name: 'Product 5', image: '/hero.png', description: 'This is a great product.', price: '$59.99', link: '/product/5' },
-        { id: 6, name: 'Product 6', image: '/hero.png', description: 'This is a great product.', price: '$49.99', link: '/product/6' },
-        { id: 7, name: 'Product 7', image: '/hero.png', description: 'This is a great product.', price: '$39.99', link: '/product/7' },
-        { id: 8, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 9, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 10, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 11, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 12, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 13, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 14, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 15, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-        { id: 16, name: 'Product 8', image: '/hero.png', description: 'This is a great product.', price: '$29.99', link: '/product/8' },
-    ];
-    return (
-        <div>
-            {/* BreadCrumb */}
-            <div className='flex lg:flex-row relative flex-col gap-6 my-8'>
-                <div className='lg:w-1/5 w-full'>
-                    <FilterBy />
-                </div>
-                <div className='lg:w-4/5 w-full flex flex-col gap-6'>
+interface ProductsInterface {
+    result: {
+        products: Product[];
+    };
+}
+type tSearchParams = Promise<{ [key: string]: string | undefined }>;
 
-                    <div className='flex flex-row justify-between md:text-[14px] text-[12px]'>
-                        <div className='flex items-center gap-3'>
-                            <CiGrid41 size={20} />
-                            <p>Showing 1-16 of 72 items</p>
-                        </div>
-                        <SortBy />
+const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
+    const resolvedSearchParams = await searchParams;  
+
+    const category = (Object.values(categoryType).includes(resolvedSearchParams.category as categoryType)
+        ? resolvedSearchParams.category
+        : '') as categoryType | '';
+
+    const platform = (Object.values(platformType).includes(resolvedSearchParams.platformType as platformType)
+        ? resolvedSearchParams.platformType
+        : '') as platformType | '';
+
+    const base = (Object.values(baseType).includes(resolvedSearchParams.baseType as baseType)
+        ? resolvedSearchParams.baseType
+        : '') as baseType | '';
+
+    const queryParams = new URLSearchParams();
+
+    if (category) queryParams.append('category', category);
+    if (platform) queryParams.append('platformType', platform);
+    if (base) queryParams.append('baseType', base);
+    try {
+        const response = await fetch(`http://localhost:3100/api/v1/products?${queryParams.toString()}`, {
+            cache: 'no-store', // Avoid caching for fresh data
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch products: ${response.statusText}`);
+        }
+
+        const result: ProductsInterface = await response.json();
+
+        return (
+            <div>
+                {/* BreadCrumb */}
+                <div className="flex lg:flex-row relative flex-col gap-6 my-8">
+                    {/* Filter Sidebar */}
+                    <div className="lg:w-1/5 w-full">
+                        <FilterBy />
                     </div>
 
-                    <div className='grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1  gap-6 '>
-                        {
-                            products.map((product: productProps) =>
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                />
-                            )
-                        }
+                    {/* Product List */}
+                    <div className="lg:w-4/5 w-full flex flex-col gap-6">
+                        {/* Sorting and Product Count */}
+                        <div className="flex flex-row justify-between md:text-[14px] text-[12px]">
+                            <div className="flex items-center gap-3">
+                                <CiGrid41 size={20} />
+                                <p>Showing 1-{Math.min(result.result.products.length, 16)} of {result.result.products.length} items</p>
+                            </div>
+                            <SortBy />
+                        </div>
+
+                        {/* Product Grid */}
+                        <div className="grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+                            {result.result.products.map((product: Product) => (
+                                <ProductCard key={product._id} product={product} />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
-}
+        );
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return (
+            <div className="text-center text-red-500">
+                <p>Error loading products. Please try again later.</p>
+            </div>
+        );
+    }
+};
 
-export default page
+export default page;

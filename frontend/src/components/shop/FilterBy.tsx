@@ -91,8 +91,8 @@ export function FilterBy() {
                 <div className="flex flex-col gap-3 mb-4">
                     <h3 className="font-bold text-lg">Base</h3>
                     <RadioGroup
-                        defaultValue={searchParams.get('base') || 'All'}
-                        onValueChange={(value) => handleFilterChange('base', value)}
+                        defaultValue={searchParams.get('baseType') || 'All'}
+                        onValueChange={(value) => handleFilterChange('baseType', value)}
                     >
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="All" id="base1" />
@@ -113,8 +113,8 @@ export function FilterBy() {
                 <div className="flex flex-col gap-3">
                     <h3 className="font-bold text-lg">Platform</h3>
                     <RadioGroup
-                        defaultValue={searchParams.get('platform') || 'All'}
-                        onValueChange={(value) => handleFilterChange('platform', value)}
+                        defaultValue={searchParams.get('platformType') || 'All'}
+                        onValueChange={(value) => handleFilterChange('platformType', value)}
                     >
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="All" id="platform1" />
