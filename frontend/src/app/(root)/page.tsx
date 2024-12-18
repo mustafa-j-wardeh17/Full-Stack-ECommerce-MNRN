@@ -1,29 +1,29 @@
 import Hero from "@/components/Home/Hero";
 import BestSells from "@/components/Home/OurBestSells";
 import ShopCategories from "@/components/Home/ShopCategories";
+import { Product } from "@/util/types";
 
 interface ResultInterface {
   result: {
-    products: any[]
+    products: [
+      {
+        latestProducts: Product[],
+        topRatedProducts: Product[]
+      }
+    ]
   }
 }
 export default async function Home() {
-  const response = await fetch('https://mnrn-shop-backend.onrender.com/api/v1/products')
+  const response = await fetch('https://mnrn-shop-backend.onrender.com/api/v1/products?homepage=true')
   const result: ResultInterface = await response.json() || ''
-  const products: any[] = result.result.products
 
   return (
     <div >
       <Hero />
       <ShopCategories />
-      <BestSells />
-      {
-        products.map((item: any, idx: number) => (
-          <p key={idx}>
-            {item._id}
-          </p>
-        ))
-      }
+      <BestSells type={'latest'} bestSells={result.result.products[0].latestProducts} />
+      <BestSells bestSells={result.result.products[0].topRatedProducts} />
+
     </div>
   );
 }

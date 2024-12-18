@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-const ProductDescriptionsRequiermentsReviews = () => {
+const ProductDescriptionsRequiermentsReviews = ({ description, requirement }: { description: string, requirement?: Record<string, any>[] }) => {
     const [select, setSelect] = useState<'Reviews' | 'Requierments' | 'Descriptions'>('Descriptions');
 
     return (
@@ -10,31 +10,28 @@ const ProductDescriptionsRequiermentsReviews = () => {
             <div className="flex justify-start gap-6 border-b border-gray-300 dark:border-gray-600 mb-6">
                 <button
                     onClick={() => setSelect('Descriptions')}
-                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${
-                        select === 'Descriptions'
-                            ? 'text-primary border-b-4 border-primary'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-primary'
-                    }`}
+                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${select === 'Descriptions'
+                        ? 'text-primary border-b-4 border-primary'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-primary'
+                        }`}
                 >
                     Descriptions
                 </button>
                 <button
                     onClick={() => setSelect('Requierments')}
-                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${
-                        select === 'Requierments'
-                            ? 'text-primary border-b-4 border-primary'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-primary'
-                    }`}
+                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${select === 'Requierments'
+                        ? 'text-primary border-b-4 border-primary'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-primary'
+                        }`}
                 >
                     Requirements
                 </button>
                 <button
                     onClick={() => setSelect('Reviews')}
-                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${
-                        select === 'Reviews'
-                            ? 'text-primary border-b-4 border-primary'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-primary'
-                    }`}
+                    className={`relative py-2 sm:text-lg text-sm font-medium transition-all duration-300 ${select === 'Reviews'
+                        ? 'text-primary border-b-4 border-primary'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-primary'
+                        }`}
                 >
                     Reviews
                 </button>
@@ -47,23 +44,25 @@ const ProductDescriptionsRequiermentsReviews = () => {
                     <div className="fade-in">
                         <h3 className="text-xl font-semibold text-primary mb-2">Product Description</h3>
                         <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                            This is a beautifully designed product with features that will exceed your expectations. Built with
-                            precision and crafted for excellence, it delivers unmatched performance.
+                            {
+                                description
+                            }
                         </p>
                     </div>
                 )}
 
                 {/* Requirements */}
-                {select === 'Requierments' && (
+                {select === 'Requierments' && requirement && (
                     <div className="fade-in">
                         <h3 className="text-xl font-semibold text-primary mb-2">System Requirements</h3>
                         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-                            <li>Operating System: Windows 10 / macOS 11+</li>
-                            <li>RAM: 8GB minimum</li>
-                            <li>Storage: 500MB available space</li>
-                            <li>Processor: Intel i5 or equivalent</li>
-                            <li>Internet: Required for updates</li>
+                            {requirement.map((req, index) => (
+                                Object.entries(req).map(([key, value]) => (
+                                    <li key={`${index}-${key}`}>{`${key}: ${value}`}</li>
+                                ))
+                            ))}
                         </ul>
+
                     </div>
                 )}
 

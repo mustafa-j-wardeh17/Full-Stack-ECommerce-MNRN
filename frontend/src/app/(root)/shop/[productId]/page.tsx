@@ -5,11 +5,23 @@ import React from 'react'
 import { FiMinus, FiPlus } from "react-icons/fi";
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
+import { Product } from '@/util/types';
 
+interface ResultInterface {
+  result: {
+    product: Product,
+    relatedProducts: Product[]
+  }
+}
 type tParams = Promise<{ productId: string[] }>
 const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
-  const product = { id: 1, highlights: ['first hightlight', 'second hightlight', 'third hightlight'], name: 'Product 1', image: '/hero.png', description: 'This is a great product.', price: '$99.99', link: '/product/1' }
+  const response = await fetch(`https://mnrn-shop-backend.onrender.com/api/v1/products/${productId}`)
+  const result: ResultInterface = await response.json()
+  const product = result.result.product
+  const relatedProducts = result.result.relatedProducts
+
+  console.log(product)
 
   return (
     <div className='2xl:px-10 my-8'>
@@ -30,7 +42,7 @@ const page = async ({ params }: { params: tParams }) => {
         <div className='flex items-center justify-center 2xl:w-2/5 lg:w-1/2 w-full bg-secondary dark:bg-neutral-900'>
           <Image
             src={product.image}
-            alt={`Product ${product.id} image`}
+            alt={`Product ${product._id} image`}
             width={400}
             height={400}
             className='w-full max-w-[400px] aspect-square'
@@ -38,7 +50,7 @@ const page = async ({ params }: { params: tParams }) => {
         </div>
         <div className='flex flex-col justify-center gap-4 2xl:w-3/5 lg:w-1/2 w-full '>
           <div className='flex items-center justify-between'>
-            <h1 className='text-2xl font-bold'>{product.name}</h1>
+            <h1 className='text-2xl font-bold'>{product.productName}</h1>
             <p className='p-2 rounded-md bg-green-200/40 text-green-500  font-bold text-xs flex items-center justify-center'>In Stock</p>
           </div>
           <p>{product.description}</p>
@@ -52,10 +64,10 @@ const page = async ({ params }: { params: tParams }) => {
               5.0 (126 Reviews)
             </span>
           </div>
-          <p>{product.price}</p>
+          <p>00</p>
           <ul className='list-disc pl-8 gap-2'>
             {
-              product.highlights.map((item: string) => (
+              product.highlights && product.highlights.map((item: string) => (
                 <li
                   key={item}
                 >
@@ -85,9 +97,9 @@ const page = async ({ params }: { params: tParams }) => {
         </div>
       </div>
 
-      <ProductDescriptionsRequiermentsReviews />
+      <ProductDescriptionsRequiermentsReviews description={product.description} requirement={product.requirementSpecification || []} />
 
-      <RelatedProducts />
+      <RelatedProducts relatedProducts={relatedProducts} />
     </div>
   )
 }
