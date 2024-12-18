@@ -3,7 +3,7 @@ import React from 'react'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { BsBoxSeam } from 'react-icons/bs'
-import { CiLogout } from 'react-icons/ci'
+import { CiLogout, CiHeart } from 'react-icons/ci'
 import { IoPersonOutline } from 'react-icons/io5'
 import { usePathname } from 'next/navigation'
 
@@ -31,13 +31,19 @@ const MyAccountNavigation = () => {
                     href="/my-account/my-orders"
                     className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-orders') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
-                    <BsBoxSeam />My Orders
+                    <BsBoxSeam size={22} />My Orders
+                </Link>
+                <Link
+                    href="/my-account/my-wishlist"
+                    className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-wishlist') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                >
+                    <CiHeart size={26} />My Wishlist
                 </Link>
                 <Link
                     href="#"
                     className="py-3 px-5 flex items-center gap-4  hover:bg-primary hover:text-secondary transition duration-200"
                 >
-                    <CiLogout />Logout
+                    <CiLogout size={26} />Logout
                 </Link>
             </nav>
         </div>
