@@ -17,7 +17,7 @@ type tParams = Promise<{ productId: string[] }>
 const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
   try {
-    const response = await fetch(`https://mnrn-shop-backend.onrender.com/api/v1/products/${productId}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
     if(!response.ok){
       throw new Error(`Failed to fetch product: ${response.statusText}`);
     }
@@ -42,13 +42,13 @@ const page = async ({ params }: { params: tParams }) => {
         />
 
         <div className='flex lg:flex-row gap-6 flex-col my-6'>
-          <div className='flex items-center justify-center 2xl:w-2/5 lg:w-1/2 w-full bg-secondary dark:bg-neutral-900'>
+          <div className='flex items-center justify-center 2xl:w-2/5 lg:w-1/2 w-full bg-secondary border-[6px] border-primary/5 dark:bg-neutral-900'>
             <Image
               src={product.image}
               alt={`Product ${product._id} image`}
               width={400}
               height={400}
-              className='w-full max-w-[400px] aspect-square'
+              className='w-full  object-cover'
             />
           </div>
           <div className='flex flex-col justify-center gap-4 2xl:w-3/5 lg:w-1/2 w-full '>

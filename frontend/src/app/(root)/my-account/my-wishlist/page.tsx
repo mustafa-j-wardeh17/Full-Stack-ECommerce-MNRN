@@ -15,7 +15,7 @@ interface ResultInterface {
 
 const page = async () => {
     try {
-        const response = await fetch('https://mnrn-shop-backend.onrender.com/api/v1/products?homepage=true')
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?homepage=true`)
         
         if (!response.ok) {
             throw new Error(`Failed to fetch products: ${response.statusText}`);

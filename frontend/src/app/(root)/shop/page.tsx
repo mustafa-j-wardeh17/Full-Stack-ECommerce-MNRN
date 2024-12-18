@@ -45,7 +45,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
     if (skip) queryParams.append('skip', skip.toString());
     if (sort) queryParams.append('sort', sort);
     try {
-        const response = await fetch(`http://localhost:3100/api/v1/products?${queryParams.toString()}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?${queryParams.toString()}`, {
             cache: 'no-store', // Avoid caching for fresh data
         });
 
