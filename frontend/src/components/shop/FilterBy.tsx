@@ -63,7 +63,7 @@ export function FilterBy() {
 
             {/* Filter Content */}
             <div
-                className={`${isFilterOpen ? 'block w-[300px] absolute z-10' : 'hidden'} lg:block p-4 rounded-md shadow-md lg:shadow-none`}
+                className={`${isFilterOpen ? 'block w-[300px] absolute z-20 bg-primary-foreground ' : 'hidden'} lg:block p-4 rounded-md shadow-md lg:shadow-none`}
             >
                 {/* Category */}
                 <div className="flex flex-col gap-3 mb-4">

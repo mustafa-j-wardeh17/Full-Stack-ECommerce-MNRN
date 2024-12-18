@@ -7,50 +7,59 @@ const Pagination = ({ searchParams, totalPages }: { searchParams: { [key: string
     const page = parseInt(searchParams.page as string) || 1
     const router = useRouter()
     const pathname = usePathname()
+
     const handlePagination = (type: "next" | "previous") => {
-        const urlParam = new URLSearchParams(window.location.search)
-        let currentPage = page
-        console.log(totalPages)
+        const urlParam = new URLSearchParams(window.location.search);
+        let currentPage = page;
+
         if (type === 'next' && currentPage < totalPages) {
-            currentPage = page + 1
-            urlParam.set('page', String(currentPage))
-            router.push(`${pathname}?${urlParam}`)
+            currentPage = page + 1;
+            urlParam.set('page', String(currentPage));
         } else if (type === 'previous' && page > 1) {
-            currentPage = page - 1
-            urlParam.set('page', String(currentPage))
-            router.push(`${pathname}?${urlParam}`)
+            currentPage = page - 1;
+            urlParam.set('page', String(currentPage));
         }
 
+        // If the page is 1, remove the 'page' parameter from the URL
+        if (currentPage === 1) {
+            urlParam.delete('page');
+        }
 
-    }
+        router.push(`${pathname}?${urlParam.toString()}`);
+    };
 
     return (
-        <div className='w-full flex items-center justify-center my-[20px]'>
-
-            {/* Previous Page Button */}
+        <div className="flex justify-center items-center space-x-4 my-8">
             <button
                 onClick={() => handlePagination('previous')}
-                className={`bg-[#111010] relative text-white p-[0.35em] pr-[1.2em] rounded-[0.9em] font-semibold sm:text-[17px] text-[14px] border-none leading-[0.05em]  flex items-center overflow-hidden h-[2.8em] pl-[3.3em]  mr-[1em] ${page === 1 ? 'opacity-50 cursor-not-allowed hidden' : 'cssbuttons_io_button cursor-pointer'}`}
+                className={`flex items-center md:w-[120px] w-[100px] justify-center py-2 text-sm font-medium rounded-md border transition duration-200 
+                 ${page === 1
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-primary bg-white dark:bg-gray-800 dark:text-white dark:border-primary hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                 disabled={page === 1}
             >
-                <div className='icon bg-[#dc1818] mr-[1em] absolute flex items-center justify-center h-[2.2em] w-[2.2em] rounded-[0.7em] shadow-pagination left-[0.3em] transition-all duration-300'>
-                    <FaArrowLeft />
-                </div>
-                Previous Page
+                <FaArrowLeft className="mr-2" />
+                Previous
             </button>
+
+            {/* Page Number Display */}
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Page {page} of {totalPages}
+            </span>
 
             {/* Next Page Button */}
             <button
                 onClick={() => handlePagination('next')}
-                className={`bg-[#111010] relative text-white p-[0.35em] pl-[1.2em] rounded-[0.9em] font-semibold sm:text-[17px] text-[14px] border-none leading-[0.05em] flex items-center overflow-hidden h-[2.8em] pr-[3.3em]  ${page === totalPages ? 'opacity-50 cursor-not-allowed hidden' : 'cssbuttons_io_button cursor-pointer'}`}
+                className={`flex items-center md:w-[120px] w-[100px] justify-center py-2 text-sm font-medium rounded-md border transition duration-200 
+        ${page === totalPages
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-primary bg-white dark:bg-gray-800 dark:text-white dark:border-primary hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                 disabled={page === totalPages}
-
             >
-                Next Page
-                <div className='icon bg-[#dc1818] ml-[1em] absolute flex items-center justify-center h-[2.2em] w-[2.2em] rounded-[0.7em] shadow-pagination right-[0.3em] transition-all duration-300'>
-                    <FaArrowRight />
-                </div>
+                Next
+                <FaArrowRight className="ml-2" />
             </button>
+
         </div>
     )
 }

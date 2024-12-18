@@ -1,3 +1,4 @@
+import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/productCard';
 import { FilterBy } from '@/components/shop/FilterBy';
 import { SortBy } from '@/components/shop/SortBy';
@@ -9,12 +10,16 @@ import { CiGrid41 } from "react-icons/ci";
 interface ProductsInterface {
     result: {
         products: Product[];
+        metadata: {
+            pages: number,
+            total: number
+        }
     };
 }
 type tSearchParams = Promise<{ [key: string]: string | undefined }>;
 
 const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
-    const resolvedSearchParams = await searchParams;  
+    const resolvedSearchParams = await searchParams;
 
     const category = (Object.values(categoryType).includes(resolvedSearchParams.category as categoryType)
         ? resolvedSearchParams.category
@@ -28,11 +33,14 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
         ? resolvedSearchParams.baseType
         : '') as baseType | '';
 
+    const skip = ((Number(resolvedSearchParams.page) - 1) * 12) || 0;
+
     const queryParams = new URLSearchParams();
 
     if (category) queryParams.append('category', category);
     if (platform) queryParams.append('platformType', platform);
     if (base) queryParams.append('baseType', base);
+    if (skip) queryParams.append('skip', skip.toString());
     try {
         const response = await fetch(`http://localhost:3100/api/v1/products?${queryParams.toString()}`, {
             cache: 'no-store', // Avoid caching for fresh data
@@ -54,7 +62,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                     </div>
 
                     {/* Product List */}
-                    <div className="lg:w-4/5 w-full flex flex-col gap-6">
+                    <div className={`${result.result.metadata.total !== 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full flex-col gap-6`}>
                         {/* Sorting and Product Count */}
                         <div className="flex flex-row justify-between md:text-[14px] text-[12px]">
                             <div className="flex items-center gap-3">
@@ -70,8 +78,25 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                                 <ProductCard key={product._id} product={product} />
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        <div className='w-full justify-center'>
+                            <Pagination
+                                searchParams={resolvedSearchParams}
+                                totalPages={result.result.metadata.pages}
+                            />
+                        </div>
                     </div>
+                    {/* No Products Found */}
+                    <div className={`${result.result.metadata.total === 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full items-center justify-center p-4  rounded-lg`}>
+                        <div className="text-center text-xl font-semibold space-y-4">
+                            <h1 className='sm:text-2xl text-xl'>No products available at the moment.</h1>
+                            <p className="text-sm text-primary/50">Please check back later or try refining your search or filter.</p>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
         );
     } catch (error) {
