@@ -5,27 +5,29 @@ import Link from 'next/link'
 import { BsBoxSeam } from 'react-icons/bs'
 import { CiLogout, CiHeart } from 'react-icons/ci'
 import { IoPersonOutline } from 'react-icons/io5'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useUserContext } from '@/context'
 import toast from 'react-hot-toast'
 
 const MyAccountNavigation = () => {
     const pathName = usePathname()
     const { setUser, setUserType, user } = useUserContext()
-
+    const router = useRouter()
     const handleLogout = async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/logout`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             })
             if (!response.ok) {
                 const result = await response.json();
                 throw new Error(result.message || 'Failed to log out');
             }
             toast.success('Logout Successfully')
+            router.push('/sign-in')
         } catch (error) {
             console.error('Logout error:', error);
         } finally {

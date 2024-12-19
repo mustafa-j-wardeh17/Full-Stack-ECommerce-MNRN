@@ -25,12 +25,8 @@ export class UsersController {
   ) {
     const loginRes = await this.usersService.login(loginUser.email, loginUser.password)
     if (loginRes.success) {
-      // response.cookie('_digi_auth_token', loginRes.result?.token, {
-      //   maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
-      // });
-      response.cookie('_digi_auth_token', loginRes.result?.token, {
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-      });
+
+      response.cookie('_digi_auth_token', loginRes.result?.token, { httpOnly: true, secure: true, sameSite: 'none' })
     }
     delete loginRes.result?.token;
     return loginRes
@@ -63,7 +59,7 @@ export class UsersController {
     )
   }
 
-  @Get('/forgot-password')
+  @Post('/forgot-password')
   async forgotPassword(@Body() forgotPassword: { email: string }) {
     return await this.usersService.forgotPassword(forgotPassword.email)
   }

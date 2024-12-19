@@ -232,10 +232,7 @@ export class UsersService {
       return {
         success: true,
         message: 'Password sent to your email successfully',
-        result: {
-          email: user.email,
-          password: tempPassword // delete just for test
-        }
+        result: null
       }
     } catch (error) {
       throw error

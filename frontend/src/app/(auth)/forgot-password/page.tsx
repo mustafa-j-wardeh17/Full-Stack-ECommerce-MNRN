@@ -1,6 +1,37 @@
+'use client'
 import Image from "next/image";
+import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
+    const [email, setEmail] = useState('')
+
+    const handleForgetPassword = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to reset password');
+            }
+
+            console.log('Successful password reset:', result.result);
+            toast.success('Successful password reset check email');
+
+        } catch (error: any) {
+            console.error('Error during password reset:', error.message);
+            toast.error('An error occurred. Please try again.');
+        }
+    };
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <div className="flex flex-col md:flex-row justify-end w-full   overflow-hidden  relative h-full">
@@ -10,7 +41,10 @@ const ForgotPassword = () => {
                     <p className="text-primary/70 text-center mb-8 text-lg max-w-[550px]">
                         Enter your email address and we&apos;ll send you instructions to reset your password.
                     </p>
-                    <form className="space-y-5 w-full max-w-[400px]">
+                    <form
+                        onSubmit={(e) => handleForgetPassword(e)}
+                        className="space-y-5 w-full max-w-[400px]"
+                    >
                         {/* Email Input */}
                         <div>
                             <label
@@ -20,10 +54,12 @@ const ForgotPassword = () => {
                                 Email
                             </label>
                             <input
+                                value={email}
                                 type="email"
                                 id="email"
                                 placeholder="Enter your email"
-                                className="w-full mt-2 p-3 text-center tracking-widest uppercase border border-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition"
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full mt-2 p-3 text-center tracking-widest  border border-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition"
                             />
                         </div>
                         {/* Submit Button */}

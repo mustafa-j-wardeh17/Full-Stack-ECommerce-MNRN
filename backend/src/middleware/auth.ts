@@ -6,29 +6,33 @@ import { decodeAuthToken } from "src/utility/token-generator";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-    constructor(
-        @Inject(UserRepository) private readonly userDB: UserRepository
-    ) { }
+  constructor(
+    @Inject(UserRepository) private readonly userDB: UserRepository
+  ) { }
 
-    async use(req: Request | any, res: Response, next: NextFunction) {
-        try {
-            const token = req.cookies._digi_auth_token;
-            console.log('token is ===>', token)
-            if (!token) {
-                throw new UnauthorizedException('missing auth token');
-            }
-            const decodetData: any = decodeAuthToken(token)
+  async use(req: Request | any, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies._digi_auth_token;
+      console.log('Token in middleware:', token); // Add a log to check the token value
 
-            const user = await this.userDB.findById(decodetData?.id)
+      if (!token) {
+        throw new UnauthorizedException('Missing auth token');
+      }
 
-            if (!user) {
-                throw new UnauthorizedException('Unauthorized')
-            }
-            user.password = undefined;
-            req.user = user;
-            next()
-        } catch (error: any) {
-            throw new UnauthorizedException(error.message)
-        }
+      const decodedData: any = decodeAuthToken(token);
+
+      const user = await this.userDB.findById(decodedData?.id);
+
+      if (!user) {
+        throw new UnauthorizedException('Unauthorized');
+      }
+
+      user.password = undefined;
+      req.user = user;
+      next();
+    } catch (error: any) {
+      console.error('Error in middleware:', error.message);
+      throw new UnauthorizedException(error.message);
     }
+  }
 }

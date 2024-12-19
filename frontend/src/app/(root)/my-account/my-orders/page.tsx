@@ -14,9 +14,12 @@ const page = async () => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include'
+      credentials: 'include', // Include credentials (cookies)
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -24,11 +27,13 @@ const page = async () => {
     }
 
     const result: orderInterface = await response.json();
-    console.log('orders=======>', result.result.orders)
+    console.log(result)
+    //console.log('orders=======>', result.result.orders)
 
     return (
       <div className='flex w-full flex-col gap-4'>
-        {
+        123456
+        {/* {
           [1, 2, 3, 4, 5].map((_, idx: number) => (
             <div
               key={idx}
@@ -39,7 +44,7 @@ const page = async () => {
               <div className={`${idx + 1 === [1, 2, 3, 4, 5].length ? 'flex' : 'hidden'} w-full h-[1.5px] bg-primary/10`} />
             </div>
           ))
-        }
+        } */}
       </div>
     )
   } catch (error) {
