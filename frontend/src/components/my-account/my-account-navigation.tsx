@@ -6,9 +6,33 @@ import { BsBoxSeam } from 'react-icons/bs'
 import { CiLogout, CiHeart } from 'react-icons/ci'
 import { IoPersonOutline } from 'react-icons/io5'
 import { usePathname } from 'next/navigation'
+import { useUserContext } from '@/context'
 
 const MyAccountNavigation = () => {
     const pathName = usePathname()
+    const { setUser, setUserType, user } = useUserContext()
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/logout`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.message || 'Failed to log out');
+            }
+            console.log('Logout successful');
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            // Reset user and userType regardless of the API response
+            setUser(null);
+            setUserType('guest');
+        }
+    }
     return (
         <div className="w-full border-r space-y-12">
             <div className='flex px-4 items-center gap-4'>
@@ -17,7 +41,7 @@ const MyAccountNavigation = () => {
                 </Avatar>
                 <div className='flex flex-col h-auto justify-center'>
                     <p className='text-sm'>Hello</p>
-                    <h1 className='font-bold'>User Name</h1>
+                    <h1 className='font-bold'>{user?.name}</h1>
                 </div>
             </div>
             <nav className="flex flex-col gap-4">
@@ -39,12 +63,12 @@ const MyAccountNavigation = () => {
                 >
                     <CiHeart size={26} />My Wishlist
                 </Link>
-                <Link
-                    href="#"
+                <button
+                    onClick={handleLogout}
                     className="py-3 px-5 flex items-center gap-4  hover:bg-primary hover:text-secondary transition duration-200"
                 >
                     <CiLogout size={26} />Logout
-                </Link>
+                </button>
             </nav>
         </div>
     )

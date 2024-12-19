@@ -51,3 +51,44 @@ export type Product = {
     highlights?: string[];
     stripeProductId: string;
 };
+
+
+
+export interface Order {
+    _id: string;
+    orderId: string;
+    userId: string;
+    customerAddress: {
+        city: string;
+        country: string;
+        line1: string;
+        line2: string | null;
+        postal_code: string | null;
+        state: string | null;
+    };
+    customerPhoneNumber: string;
+    orderedItems: {
+        lifetime: string;
+        price: string;
+        productId: string;
+        productImage: string;
+        productName: string;
+        skuCode: string;
+        quantity: string;
+        licenses: string[];
+    }[];
+    paymentInfo: {
+        paymentMethod: string;
+        paymentIntentId: string;
+        paymentDate: string;
+        paymentAmount: number;
+        paymentStatus: string;
+    };
+    orderStatus: string;
+    isOrderDelivered: boolean;
+    checkoutSessionId: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+

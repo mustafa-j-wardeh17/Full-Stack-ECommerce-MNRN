@@ -4,6 +4,19 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { useUserContext } from '@/context';
+
+interface loginInterface {
+    result?: {
+        user: {
+            name: string,
+            email: string,
+            type: string,
+            id: string
+        }
+    },
+    message?: string
+}
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,6 +25,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const router = useRouter();
+    const { setUserType, setUser } = useUserContext()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,15 +40,14 @@ const Login = () => {
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json();
+            const result: loginInterface = await response.json();
 
             if (response.ok) {
                 toast.success('Login successful! Redirecting...');
-                // Save token or user data to localStorage/sessionStorage if needed
-                localStorage.setItem('userToken', data.token); // Example: storing token
-                setTimeout(() => router.push('/dashboard'), 2000); // Redirect to dashboard or homepage
+                setUser(result.result?.user || null)
+                router.push('/')
             } else {
-                setError(data.message || 'Login failed. Please check your credentials.');
+                setError(result.message || 'Login failed. Please check your credentials.');
             }
         } catch (err: unknown) {
             setError('An error occurred. Please try again later.');

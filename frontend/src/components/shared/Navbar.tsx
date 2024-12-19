@@ -1,22 +1,21 @@
 'use client';
 
-import React, { useContext } from 'react';
-import { Context } from '../../context';
+import {  useState } from 'react';
 import { HeartIcon, Search, ShoppingBag, Menu, X } from 'lucide-react';
 import { BsPersonCircle } from 'react-icons/bs';
 import { usePathname, useRouter } from 'next/navigation';
 import { ModeToggle } from '../theme-toggle';
 import Link from 'next/link';
+import { useUserContext } from '@/context';
 
 const Navbar = () => {
-    const [showMenu, setShowMenu] = React.useState(false);
-    const [showSearch, setShowSearch] = React.useState(false);
-    const [searchText, setSearchText] = React.useState('');
+    const [showMenu, setShowMenu] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
+    const [searchText, setSearchText] = useState('');
 
-    const {
-        state: { user },
-    } = useContext(Context);
+    const { user, userType } = useUserContext()
 
+    console.log('user ====>', user, '\n userType====>', userType)
     const router = useRouter();
     const pathname = usePathname();
 
@@ -88,7 +87,7 @@ const Navbar = () => {
                             size={20}
                             className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
                             onClick={() =>
-                                user && user.email ? router.push('/my-account/personal-information') : router.push('/my-account/personal-information')
+                                user ? router.push('/my-account/personal-information') : router.push('/sign-in')
                             }
                         />
                     </Link>
@@ -145,7 +144,7 @@ const Navbar = () => {
                             size={24}
                             className="text-primary/70 cursor-pointer hover:text-primary transition"
                             onClick={() => {
-                                router.push('/sign-in');
+                                user ? router.push('/my-account/personal-information') : router.push('/sign-in')
                                 setShowMenu(false);
                             }}
                         />

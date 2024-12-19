@@ -1,100 +1,59 @@
 'use client';
-import { useReducer, createContext, useEffect } from 'react';
 
-// Define types
+import { createContext, ReactNode, useState, useEffect, useContext } from 'react';
+
 interface User {
-    email: string;
     name: string;
+    email: string;
+    type: string;
+    id: string;
 }
 
-interface CartItem {
-    skuId: string;
-    quantity: number;
-}
+type UserType = "admin" | "customer" | "guest";
 
-interface State {
+interface UserContextType {
     user: User | null;
+    setUser: (user: User | null) => void;
+    userType: UserType;
+    setUserType: (type: UserType) => void;
 }
 
-interface Action {
-    type: 'LOGIN' | 'LOGOUT' | 'UPDATE_USER';
-    payload?: User;
-}
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
-interface CartAction {
-    type: 'ADD_TO_CART' | 'REMOVE_FROM_CART' | 'UPDATE_CART' | 'GET_CART_ITEMS' | 'CLEAR_CART';
-    payload?: CartItem;
-}
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [userType, setUserType] = useState<UserType>("guest");
 
-interface ContextType {
-    state: State;
-    dispatch: React.Dispatch<Action>;
-    cartItems: CartItem[];
-    cartDispatch: React.Dispatch<CartAction>;
-}
-
-// Initial state
-const initialState: State = {
-    user: null,
-};
-
-// Create context
-const Context = createContext<ContextType>({
-    state: initialState,
-    dispatch: () => null,
-    cartItems: [],
-    cartDispatch: () => null,
-});
-
-// Reducers
-const rootReducer = (state: State, action: Action): State => {
-    switch (action.type) {
-        case 'LOGIN':
-            return { ...state, user: action.payload || null };
-        case 'LOGOUT':
-            return { ...state, user: null };
-        case 'UPDATE_USER':
-            return { ...state, user: action.payload || null };
-        default:
-            return state;
-    }
-};
-
-const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
-    switch (action.type) {
-        case 'ADD_TO_CART':
-            return [...state, action.payload!];
-        case 'REMOVE_FROM_CART':
-            return state.filter((item) => item.skuId !== action.payload?.skuId);
-        case 'UPDATE_CART':
-            return state.map((item) => (item.skuId === action.payload?.skuId ? action.payload! : item));
-        case 'CLEAR_CART':
-            return [];
-        default:
-            return state;
-    }
-};
-
-// Provider component
-const Provider = ({ children }: { children: React.ReactNode }) => {
-    const [state, dispatch] = useReducer(rootReducer, initialState);
-    const [cartItems, cartDispatch] = useReducer(cartReducer, []);
-
+    // Load user data from local storage on initial render
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('_digi_user') || 'null');
-        if (user) {
-            dispatch({ type: 'LOGIN', payload: user });
+        const storedUser = localStorage.getItem('_digi_user');
+        if (storedUser) {
+            const parsedUser: User = JSON.parse(storedUser);
+            setUser(parsedUser);
+            setUserType(parsedUser.type as UserType);
         }
-
-        const savedCartItems = JSON.parse(localStorage.getItem('_digi_cart') || '[]');
-        cartDispatch({ type: 'GET_CART_ITEMS', payload: savedCartItems });
     }, []);
 
+    // Save user data to local storage whenever it changes
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem('_digi_user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('_digi_user');
+        }
+    }, [user]);
+
     return (
-        <Context.Provider value={{ state, dispatch, cartItems, cartDispatch }}>
+        <UserContext.Provider value={{ user, setUser, userType, setUserType }}>
             {children}
-        </Context.Provider>
+        </UserContext.Provider>
     );
 };
 
-export { Context, Provider };
+export const useUserContext = () => {
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error("useUserContext must be used within a UserProvider");
+    }
+    return context;
+};
