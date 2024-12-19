@@ -11,7 +11,7 @@ interface loginInterface {
         user: {
             name: string,
             email: string,
-            type: string,
+            type: 'admin' | 'customer',
             id: string
         }
     },
@@ -45,6 +45,7 @@ const Login = () => {
             if (response.ok) {
                 toast.success('Login successful! Redirecting...');
                 setUser(result.result?.user || null)
+                setUserType(result.result?.user.type || 'guest')
                 router.push('/')
             } else {
                 setError(result.message || 'Login failed. Please check your credentials.');

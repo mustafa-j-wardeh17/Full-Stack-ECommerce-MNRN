@@ -1,6 +1,6 @@
 'use client';
 
-import {  useState } from 'react';
+import { useState } from 'react';
 import { HeartIcon, Search, ShoppingBag, Menu, X } from 'lucide-react';
 import { BsPersonCircle } from 'react-icons/bs';
 import { usePathname, useRouter } from 'next/navigation';
@@ -86,9 +86,13 @@ const Navbar = () => {
                         <BsPersonCircle
                             size={20}
                             className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            onClick={() =>
-                                user ? router.push('/my-account/personal-information') : router.push('/sign-in')
-                            }
+                            onClick={() => {
+                                if (user) {
+                                    router.push('/my-account/personal-information');
+                                } else {
+                                    router.push('/sign-in');
+                                }
+                            }}
                         />
                     </Link>
 
@@ -142,10 +146,13 @@ const Navbar = () => {
                         <ShoppingBag className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
                         <BsPersonCircle
                             size={24}
-                            className="text-primary/70 cursor-pointer hover:text-primary transition"
+                            className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
                             onClick={() => {
-                                user ? router.push('/my-account/personal-information') : router.push('/sign-in')
-                                setShowMenu(false);
+                                if (user) {
+                                    router.push('/my-account/personal-information');
+                                } else {
+                                    router.push('/sign-in');
+                                }
                             }}
                         />
                     </div>
