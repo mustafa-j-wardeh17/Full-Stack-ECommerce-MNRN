@@ -15,6 +15,7 @@ const page = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders`, {
       credentials: 'include'
     })
+    
     const result: orderInterface = await response.json()
     if (!response.ok) {
       throw new Error(result.message)
