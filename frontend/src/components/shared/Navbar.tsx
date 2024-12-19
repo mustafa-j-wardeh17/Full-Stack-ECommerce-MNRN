@@ -13,9 +13,8 @@ const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [searchText, setSearchText] = useState('');
 
-    const { user, userType } = useUserContext()
+    const { user } = useUserContext()
 
-    console.log('user ====>', user, '\n userType====>', userType)
     const router = useRouter();
     const pathname = usePathname();
 
