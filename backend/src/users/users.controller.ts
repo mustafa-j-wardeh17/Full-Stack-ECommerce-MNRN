@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
 import { userTypes } from 'src/shared/schema/users';
 import { decodeAuthToken } from 'src/utility/token-generator';
-import Mail from 'nodemailer/lib/mailer';
+
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -25,9 +25,13 @@ export class UsersController {
   ) {
     const loginRes = await this.usersService.login(loginUser.email, loginUser.password)
     if (loginRes.success) {
-      response.cookie('_digi_auth_token', loginRes.result?.token), { httpOnly: true }
+      // response.cookie('_digi_auth_token', loginRes.result?.token, {
+      //   maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+      // });
+      response.cookie('_digi_auth_token', loginRes.result?.token, {
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+      });
     }
-
     delete loginRes.result?.token;
     return loginRes
   }

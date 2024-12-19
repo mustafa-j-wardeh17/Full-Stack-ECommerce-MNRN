@@ -13,6 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
     async use(req: Request | any, res: Response, next: NextFunction) {
         try {
             const token = req.cookies._digi_auth_token;
+            console.log('token is ===>', token)
             if (!token) {
                 throw new UnauthorizedException('missing auth token');
             }

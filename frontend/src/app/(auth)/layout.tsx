@@ -1,16 +1,7 @@
-'use client';
 
 import { ModeToggle } from "@/components/theme-toggle";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    useEffect(() => {
-        const user = localStorage.getItem('_digi_user');
-        if (user) {
-            redirect('/');
-        }
-    }, []);
+
 
     return (
         <div className='flex flex-col relative min-h-screen w-full overflow-hidden'>

@@ -15,12 +15,12 @@ export class AppController {
     return 'hi';
   }
 
-  @Get('/csrf-token')
-  getCsrfToken(@Req() req: Request): any {
-    return {
-      result: {
-        csrfToken: req.csrfToken()
-      }
-    }
-  }
+  // @Get('/csrf-token')
+  // getCsrfToken(@Req() req: Request): any {
+  //   return {
+  //     result: {
+  //       csrfToken: req.csrfToken()
+  //     }
+  //   }
+  // }
 }

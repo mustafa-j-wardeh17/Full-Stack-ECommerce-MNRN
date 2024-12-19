@@ -34,7 +34,7 @@ const Login = () => {
         setSuccess('');
 
         try {
-            const response = await fetch('https://mnrn-shop-backend.onrender.com/api/v1/users/login', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),

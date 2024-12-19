@@ -7,6 +7,7 @@ import { CiLogout, CiHeart } from 'react-icons/ci'
 import { IoPersonOutline } from 'react-icons/io5'
 import { usePathname } from 'next/navigation'
 import { useUserContext } from '@/context'
+import toast from 'react-hot-toast'
 
 const MyAccountNavigation = () => {
     const pathName = usePathname()
@@ -24,7 +25,7 @@ const MyAccountNavigation = () => {
                 const result = await response.json();
                 throw new Error(result.message || 'Failed to log out');
             }
-            console.log('Logout successful');
+            toast.success('Logout Successfully')
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
