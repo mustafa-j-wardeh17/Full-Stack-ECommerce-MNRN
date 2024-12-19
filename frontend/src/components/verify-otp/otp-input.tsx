@@ -1,12 +1,15 @@
-'use client'
 import React, { useState } from 'react';
 
-const OTPInput = () => {
-    const [otp, setOtp] = useState(Array(6).fill(""));
+interface OTPInputProps {
+    setOtp: React.Dispatch<React.SetStateAction<number | undefined>>;
+}
+
+const OTPInput = ({ setOtp }: OTPInputProps) => {
+    const [otp, setOtpState] = useState(Array(6).fill(""));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { value } = e.target;
-        const digits = value.replace(/[^0-9]/g, ""); 
+        const digits = value.replace(/[^0-9]/g, ""); // Allow only digits
         const newOtp = [...otp];
 
         if (digits.length > 0) {
@@ -19,7 +22,8 @@ const OTPInput = () => {
             }
         }
 
-        setOtp(newOtp);
+        setOtpState(newOtp);
+        setOtp(parseInt(newOtp.join(''), 10)); // Set the OTP value to the parent component
 
         if (index < otp.length - 1 && digits.length > 0) {
             const nextInput = document.getElementById(`otp-${index + 1}`);
@@ -38,7 +42,7 @@ const OTPInput = () => {
         } else if (e.key === "Backspace" && otp[index] !== "") {
             const newOtp = [...otp];
             newOtp[index] = "";
-            setOtp(newOtp);
+            setOtpState(newOtp);
         }
     };
 

@@ -12,8 +12,8 @@ const SignUp = () => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [userType, setUserType] = useState<'customer' | 'admin'>('customer'); 
-    const [secretToken, setSecretToken] = useState(''); 
+    const [userType, setUserType] = useState<'customer' | 'admin'>('customer');
+    const [secretToken, setSecretToken] = useState('');
 
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,10 +46,10 @@ const SignUp = () => {
             // Handle success or error response
             if (response.ok) {
                 toast.success(result.message);
+                router.push(`/verify-otp/${result.result.email}`)
             } else {
                 throw new Error(result.message || "Something went wrong!");
             }
-            router.push(`/verify-otp/${result.result.email}`)
 
         } catch (error: any) {
             toast.error("Error: " + error.message);
@@ -57,8 +57,8 @@ const SignUp = () => {
     };
 
     return (
-        <div className="flex items-center justify-center w-full min-h-screen">
-            <div className="flex flex-col md:flex-row justify-end w-full overflow-hidden relative h-full">
+        <div className="flex items-center justify-center w-full h-screen">
+            <div className="flex flex-col md:flex-row justify-end w-full   overflow-hidden  relative h-full">
                 {/* Left Section: Sign-Up Form */}
                 <div className="h-full w-full 2xl:w-[40%] md:w-1/2 bg-primary-foreground flex flex-col items-center justify-center px-6 py-8">
                     <h2 className="md:text-4xl text-3xl text-primary font-bold md:mb-4 mb-6">PS_Store</h2>
@@ -158,7 +158,7 @@ const SignUp = () => {
                 </div>
 
                 {/* Right Section: Illustration */}
-                <div className="h-full md:w-1/2 2xl:w-[60%] w-full hidden md:flex bg-primary-foreground absolute left-0 overflow-hidden items-center justify-center">
+                <div className="h-full md:w-1/2 2xl:w-[60%]  w-full hidden md:flex bg-primary-foreground absolute left-0  overflow-hidden items-center justify-center">
                     <Image
                         src="/sign-up.png"
                         alt="sign-up"
