@@ -12,8 +12,7 @@ export class AuthMiddleware implements NestMiddleware {
 
   async use(req: Request | any, res: Response, next: NextFunction) {
     try {
-      const token = req.cookies._digi_auth_token;
-      console.log('Token in middleware:', token); // Add a log to check the token value
+      const token = req.cookies._digi_auth_token || req.headers.authorization?.split(' ')[1];
 
       if (!token) {
         throw new UnauthorizedException('Missing auth token');

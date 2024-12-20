@@ -1,5 +1,6 @@
 import OrderItem from '@/components/my-account/my-order/OrderItem'
 import { Order } from '@/util/types'
+import { cookies } from 'next/headers'
 import React from 'react'
 
 interface orderInterface {
@@ -12,23 +13,25 @@ interface orderInterface {
 const page = async () => {
 
   try {
+    const cookieStore = cookies()
+    const _digi_auth_token = (await cookieStore).get('_digi_auth_token')
+    console.log('_digi_auth_token', _digi_auth_token)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders`, {
       method: 'GET',
-      credentials: 'include', // Include credentials (cookies)
       headers: {
-        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${_digi_auth_token?.value}`, // Add the token here
+        'Content-Type': 'application/json'
       },
+      credentials: 'include', // Ensure cookies are sent if required
     });
 
+    const result: any = await response.json();
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to fetch orders');
+      throw new Error(result.message || 'Failed to fetch orders');
     }
 
-    const result: orderInterface = await response.json();
-    console.log(result)
-    //console.log('orders=======>', result.result.orders)
+    console.log('orders=======>', result.result.orders)
 
     return (
       <div className='flex w-full flex-col gap-4'>
