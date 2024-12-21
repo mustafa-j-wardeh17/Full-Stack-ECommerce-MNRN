@@ -15,8 +15,6 @@ export class UsersService {
     @Inject(MailerService) private readonly mailer: MailerService
   ) { }
 
-
-
   async create(createUserDto: CreateUserDto) {
     try {
       // generate the hash password

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
 import { userTypes } from 'src/shared/schema/users';
 import { decodeAuthToken } from 'src/utility/token-generator';
@@ -15,6 +15,20 @@ export class UsersController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Get('/verify-token')
+  async verifyToken(@Req() req: Request) {
+
+    const token = req.cookies._digi_auth_token || req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      throw new UnauthorizedException()
+    }
+    const user = decodeAuthToken(token)
+    return {
+      success: true,
+      result: user
+    }
   }
 
   @Post('/login')
@@ -44,6 +58,7 @@ export class UsersController {
   async sendOtpEmail(@Param('email') email: string) {
     return await this.usersService.sendOtpEmail(email)
   }
+
 
 
   @Put('/logout')
