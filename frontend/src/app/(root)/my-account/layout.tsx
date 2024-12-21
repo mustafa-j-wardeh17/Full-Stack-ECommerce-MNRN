@@ -11,7 +11,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
                     <MyAccountNavigation />
                 </div>
 
-                <div className="2xl:w-4/5 lg:w-3/4 w-full p-6">
+                <div className="2xl:w-4/5 lg:w-3/4 w-full lg:px-6 px-0 py-6">
                     {children}
                 </div>
             </div>

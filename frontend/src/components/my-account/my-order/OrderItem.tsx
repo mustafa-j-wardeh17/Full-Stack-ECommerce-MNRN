@@ -1,53 +1,85 @@
-import Image from 'next/image'
-import React from 'react'
+import { Order } from '@/util/types';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
-const OrderItem = ({ idx }: { idx: number }) => {
+const OrderItem = ({ order }: { order: Order }) => {
     return (
-        <div className='flex flex-col gap-6 w-full'>
-            <div className='flex w-full items-center justify-between'>
-                <div className='flex flex-row items-center'>
-                    <Image
-                        src={'/hero.png'}
-                        alt='order'
-                        width={80}
-                        height={80}
-                        className='sm:block hidden'
-                    />
-                    <div className='flex flex-col'>
-                        <h1 className='font-bold sm:text-[18px] text-md'>Order Name</h1>
-                        <h1 className=' sm:text-sm text-xs'>SKU: <span>135746</span></h1>
-                        <h1 className=' sm:text-sm text-xs'>Qyt: <span>5</span></h1>
+        <div className="flex flex-col gap-8 w-full">
+            {order.orderedItems.map((item) => {
+                // Calculate total price for the specific item
+                const itemTotalPrice = ((+item.price / 100) * +item.quantity).toFixed(2);
+
+                return (
+                    <div
+                        key={item.productId}
+                        className="flex flex-col gap-6 w-full p-4 border border-gray-200 rounded-lg shadow-sm"
+                    >
+                        {/* Order Details */}
+                        <div className="flex flex-wrap lg:flex-nowrap gap-6 w-full">
+                            <div className="flex items-center gap-6 w-full 2xl:w-2/3 lg:w-3/5">
+                                <Image
+                                    src={item.productImage}
+                                    alt={item.productName || "Product"}
+                                    width={80}
+                                    height={80}
+                                    className="rounded-lg object-cover shadow-sm"
+                                />
+                                <div className="flex flex-col gap-1">
+                                    <h2 className="font-bold sm:text-lg text-md">{item.productName}</h2>
+                                    <p className="sm:text-sm text-xs text-gray-600">SKU: {item.skuCode}</p>
+                                    <p className="sm:text-sm text-xs text-gray-600">
+                                        Quantity: {item.quantity}
+                                    </p>
+                                    <p className="sm:text-sm text-xs text-gray-600">
+                                        Price per item: ${(+item.price / 100).toFixed(2)}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-end lg:items-start justify-between gap-2 w-full 2xl:w-1/3 lg:w-2/5">
+                                <h2 className="font-bold text-xl text-primary">
+                                    Total: ${itemTotalPrice}
+                                </h2>
+                                <div className="flex flex-row sm:w-[280px] w-full items-center sm:items-start gap-4">
+                                    <button
+                                        className="sm:w-[130px] w-full text-center px-4 py-2 text-sm font-medium border rounded-md text-primary hover:bg-primary-foreground hover:text-primary/70 transition duration-200"
+                                    >
+                                        View Order
+                                    </button>
+                                    {order.orderStatus === "completed" && (
+                                        <Link
+                                            href={`/shop/${item.productId}`}
+                                            className="sm:w-[130px] w-full text-center px-4 py-2 text-sm font-medium text-secondary bg-primary rounded-md hover:bg-primary/70 transition duration-200"
+                                        >
+                                            Write A Review
+                                        </Link>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Status Section */}
+                        <div className="flex items-center gap-4">
+                            <span
+                                className={`px-3 py-1 text-sm font-semibold rounded-md ${
+                                    order.orderStatus === "completed"
+                                        ? "bg-green-100 text-green-600"
+                                        : "bg-yellow-100 text-yellow-600"
+                                }`}
+                            >
+                                {order.orderStatus === "completed" ? "Delivered" : "In Process"}
+                            </span>
+                            <p className="sm:text-sm text-xs text-gray-600">
+                                {order.orderStatus === "completed"
+                                    ? "Your product has been delivered."
+                                    : "Your product is being processed."}
+                            </p>
+                        </div>
                     </div>
-                </div>
-
-                <h2 className='font-bold sm:text-md text-sm'>$80.00</h2>
-
-                <div className='flex flex-col md:w-[200px] sm:w-[160px] w-[120px] sm:gap-4 gap-2'>
-                    <button
-                        className='sm:py-2 sm:px-4 py-[6px] px-2 border rounded-md text-primary sm:text-[14px] text-[12px] hover:bg-primary-foreground duration-200'
-                    >
-                        View Order
-                    </button>
-                    <button
-                        className={`${idx % 2 === 0 ? 'flex' : 'hidden'} text-center items-center justify-center sm:py-2 sm:px-4 py-[6px] px-2 border rounded-md text-secondary sm:text-[14px] text-[12px] bg-primary hover:bg-primary/70 duration-200`}
-                    >
-                        Write A Review
-                    </button>
-                    <button
-                        className={`${idx % 2 === 0 ? 'hidden' : 'flex'} text-center items-center justify-center sm:py-2 sm:px-4 py-[6px] px-2 border rounded-md text-secondary sm:text-[14px] text-[12px] bg-red-500 hover:bg-red-700 duration-200`}
-                    >
-                        Cancel Order
-                    </button>
-                </div>
-            </div>
-            <div className='flex items-center gap-2'>
-                <div className='sm:py-[6px] py-[4px] px-2 rounded-md bg-green-100 text-green-500'>
-                    <p className='sm:text-xs text-[11px] font-bold'>Delivered</p>
-                </div>
-                <p className='sm:text-sm text-xs'>Your product has been inprocess</p>
-            </div>
+                );
+            })}
         </div>
-    )
-}
+    );
+};
 
-export default OrderItem
+export default OrderItem;

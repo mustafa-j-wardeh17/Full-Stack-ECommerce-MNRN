@@ -26,7 +26,7 @@ export class UsersController {
     const loginRes = await this.usersService.login(loginUser.email, loginUser.password)
     if (loginRes.success) {
 
-      response.cookie('_digi_auth_token', loginRes.result?.token, { httpOnly: true, secure: true, sameSite: 'none' })
+      response.cookie('_digi_auth_token', loginRes.result?.token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 3 * 24 * 60 * 60 * 1000 })
     }
     delete loginRes.result?.token;
     return loginRes

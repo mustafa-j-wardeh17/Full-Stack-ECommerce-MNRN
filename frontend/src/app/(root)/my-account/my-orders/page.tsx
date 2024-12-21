@@ -15,7 +15,6 @@ const page = async () => {
   try {
     const cookieStore = cookies()
     const _digi_auth_token = (await cookieStore).get('_digi_auth_token')
-    console.log('_digi_auth_token', _digi_auth_token)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders`, {
       method: 'GET',
       headers: {
@@ -25,29 +24,29 @@ const page = async () => {
       credentials: 'include', // Ensure cookies are sent if required
     });
 
-    const result: any = await response.json();
+    const result: orderInterface = await response.json();
 
     if (!response.ok) {
       throw new Error(result.message || 'Failed to fetch orders');
     }
 
-    console.log('orders=======>', result.result.orders)
 
     return (
       <div className='flex w-full flex-col gap-4'>
-        123456
-        {/* {
-          [1, 2, 3, 4, 5].map((_, idx: number) => (
+        {
+          result.result.orders.map((order: Order, idx: number) => (
             <div
-              key={idx}
+              key={order._id}
               className='flex flex-col w-full gap-4'
             >
               <div className={`${idx === 0 && 'hidden'} w-full h-[1.5px] bg-primary/10`} />
-              <OrderItem idx={idx} />
+              <OrderItem
+                order={order}
+              />
               <div className={`${idx + 1 === [1, 2, 3, 4, 5].length ? 'flex' : 'hidden'} w-full h-[1.5px] bg-primary/10`} />
             </div>
           ))
-        } */}
+        }
       </div>
     )
   } catch (error) {
