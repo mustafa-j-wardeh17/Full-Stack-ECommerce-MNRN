@@ -90,12 +90,12 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                     {/* Product List */}
                     <div className={`${result.result.metadata.total !== 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full flex-col gap-6`}>
                         {/* Sorting and Product Count */}
-                        <div className="flex flex-row justify-between md:text-[14px] text-[12px]">
-                            <div className="flex items-center gap-3">
+                        <div className="flex sm:flex-row flex-col gap-4 justify-between md:text-[14px] text-[12px]">
+                            <div className="flex  items-center gap-3">
                                 <CiGrid41 size={20} />
                                 <p>Showing 1-{Math.min(result.result.products.length, 16)} of {result.result.products.length} items</p>
                             </div>
-                            <div className='flex items-center gap-3'>
+                            <div className='flex sm:justify-start justify-between items-center gap-3'>
                                 <Link
                                     className='text-primary flex items-center gap-1 border border-primary rounded-md p-2 hover:bg-primary hover:text-secondary transition'
                                     href={`/shop/product-crud/create-product`}

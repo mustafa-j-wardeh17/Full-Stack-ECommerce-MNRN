@@ -1,4 +1,4 @@
-export type HttpResponse = {
+export interface HttpResponse {
     message: string;
     path: string;
     result: any;
@@ -6,6 +6,14 @@ export type HttpResponse = {
     success: boolean;
     timeStamp: string;
 }
+export interface ProductResponse extends HttpResponse {
+    result: {
+        relatedProducts: Product[];
+        product: Product;
+    };
+}
+
+
 
 enum CategoryType {
     OperatingSystem = 'Operating System',

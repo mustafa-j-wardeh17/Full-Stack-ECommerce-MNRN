@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -8,7 +9,7 @@ const Page = () => {
     const productId = useParams().productId || '';
     const [productImage, setProductImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
-
+    const router = useRouter();
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -49,6 +50,7 @@ const Page = () => {
 
             if (response.ok) {
                 toast.success('Image uploaded successfully!');
+                router.push(`/shop/${productId}`);
             } else {
                 const errorData = await response.json();
                 console.log('Error uploading image:', errorData);
