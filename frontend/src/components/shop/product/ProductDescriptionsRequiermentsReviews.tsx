@@ -1,10 +1,6 @@
 'use client';
-import { useUserContext } from '@/context';
 import { Feedbacker } from '@/util/types';
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { MdOutlineDelete } from 'react-icons/md';
 import Reviews from './Reviews';
 
 const ProductDescriptionsRequiermentsReviews = ({ description, requirement, productId, productReviews }: { description: string, requirement?: Record<string, any>[], productId: string, productReviews: Feedbacker[] }) => {
