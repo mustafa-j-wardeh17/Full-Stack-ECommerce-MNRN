@@ -1,6 +1,7 @@
 'use client';
 
 import { Product } from '@/util/types';
+import { DeleteIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -35,11 +36,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
         baseType: product?.baseType || BaseType.Computer, // Default base type
         productUrl: product?.productUrl || '',
         downloadUrl: product?.downloadUrl || '',
-        requirementSpecification: product?.requirementSpecification
-            ? product.requirementSpecification.flatMap((req) =>
-                Object.entries(req).map(([key, value]) => ({ key, value }))
-            )
-            : [{ key: '', value: '' }],
+        requirementSpecification: product?.requirementSpecification || [],
         highlights: product?.highlights || [''],
     });
 
@@ -50,12 +47,14 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleRequirementChange = (index: number, field: string, value: string) => {
+    const handleRequirementChange = (index: number, key: string, value: string) => {
         const updatedSpecifications = [...form.requirementSpecification];
-        updatedSpecifications[index] = { ...updatedSpecifications[index], [field]: value };
+        updatedSpecifications[index] = {
+            ...updatedSpecifications[index],
+            [key]: value,
+        };
         setForm((prev) => ({ ...prev, requirementSpecification: updatedSpecifications }));
     };
-
     const handleHighlightChange = (index: number, value: string) => {
         const updatedHighlights = [...form.highlights];
         updatedHighlights[index] = value;
@@ -133,7 +132,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
     };
 
     return (
-        <div className="w-full bg-primary-foreground p-6 rounded-lg shadow-lg">
+        <div className="w-full overflow-hidden bg-primary-foreground p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-primary mb-6">Create Product</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Product Details */}
@@ -287,38 +286,105 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                 <div>
                     <label className="block text-sm font-medium text-primary/80">Requirement Specification</label>
                     {form.requirementSpecification.map((req, index) => (
-                        <div key={index} className="flex space-x-2 mt-2">
-                            <input
-                                type="text"
-                                placeholder="Key"
-                                value={req.key}
-                                onChange={(e) => handleRequirementChange(index, 'key', e.target.value)}
-                                className="flex-1 p-2 border rounded-md"
-                            />
-                            <input
-                                type="text"
-                                placeholder="Value"
-                                value={req.value}
-                                onChange={(e) => handleRequirementChange(index, 'value', e.target.value)}
-                                className="flex-1 p-2 border rounded-md"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeRequirement(index)}
-                                className="text-red-500"
-                            >
-                                Remove
-                            </button>
+                        <div key={index} className="space-y-2 mt-4 border p-4 rounded-md">
+                            {Object.entries(req).map(([key, value], keyIndex) => (
+                                <div key={keyIndex} className="flex space-x-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Key"
+                                        value={key}
+                                        onChange={(e) => {
+                                            const newKey = e.target.value;
+                                            const updatedSpecifications = [...form.requirementSpecification];
+                                            const currentSpec = updatedSpecifications[index];
+                                            delete currentSpec[key]; // Remove the old key
+                                            updatedSpecifications[index] = {
+                                                ...currentSpec,
+                                                [newKey]: value,
+                                            };
+                                            setForm((prev) => ({
+                                                ...prev,
+                                                requirementSpecification: updatedSpecifications,
+                                            }));
+                                        }}
+                                        className="sm:flex-1 w-1/2 p-2 border rounded-md"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Value"
+                                        value={value}
+                                        onChange={(e) =>
+                                            handleRequirementChange(index, key, e.target.value)
+                                        }
+                                        className="sm:flex-1 w-1/2 p-2 border rounded-md"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const updatedSpecifications = [...form.requirementSpecification];
+                                            const currentSpec = updatedSpecifications[index];
+                                            delete currentSpec[key]; // Remove the key
+                                            updatedSpecifications[index] = { ...currentSpec };
+                                            setForm((prev) => ({
+                                                ...prev,
+                                                requirementSpecification: updatedSpecifications,
+                                            }));
+                                        }}
+                                        className="text-red-500"
+                                    >
+                                        <DeleteIcon />
+                                    </button>
+                                </div>
+                            ))}
+                            <div className='flex flex-wrap gap-2'>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const updatedSpecifications = [...form.requirementSpecification];
+                                        updatedSpecifications[index] = {
+                                            ...updatedSpecifications[index],
+                                            '': '', // Add a new empty key-value pair
+                                        };
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            requirementSpecification: updatedSpecifications,
+                                        }));
+                                    }}
+                                    className="mt-2 text-primary underline"
+                                >
+                                    Add Key
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const updatedSpecifications = [...form.requirementSpecification];
+                                        updatedSpecifications.splice(index, 1);
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            requirementSpecification: updatedSpecifications,
+                                        }));
+                                    }}
+                                    className="mt-2 text-red-500 underline"
+                                >
+                                    Remove Specification
+                                </button>
+                            </div>
                         </div>
                     ))}
                     <button
                         type="button"
-                        onClick={addRequirement}
-                        className="mt-2 text-primary underline"
+                        onClick={() => {
+                            setForm((prev) => ({
+                                ...prev,
+                                requirementSpecification: [...prev.requirementSpecification, {}], // Add a new empty object
+                            }));
+                        }}
+                        className="mt-4 text-primary underline"
                     >
-                        Add Requirement
+                        Add Specification
                     </button>
                 </div>
+
 
                 {/* Highlights */}
                 <div>
