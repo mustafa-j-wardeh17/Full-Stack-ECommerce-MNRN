@@ -52,7 +52,17 @@ const ProductCard = ({ product, type = 'default' }: { product: Product, type?: '
                         {product.description.length > 24 ? (product.description.slice(0, 24) + '...') : product.description}
                     </p>
                     <p className="text-md font-semibold text-primary mt-2">
-                        ${22.00}
+                        {product.skuDetails && product.skuDetails.length > 0
+                            ? product.skuDetails
+                                .reduce(
+                                    ([low, high], current) => [
+                                        current.price < low ? current.price : low,
+                                        current.price > high ? current.price : high,
+                                    ],
+                                    [Infinity, -Infinity]
+                                )
+                                .join(" - ")+' $'
+                            : "No prices available"}
                     </p>
                 </div>
 

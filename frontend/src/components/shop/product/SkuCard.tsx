@@ -40,7 +40,7 @@ const SkuCards = ({ skus }: SkuCardsProps) => {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3100/api/v1/orders/checkout", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders/checkout`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const SkuCards = ({ skus }: SkuCardsProps) => {
                 ))}
             </div>
 
-            <div className="flex mt-6 items-center justify-between gap-6">
+            <div className="flex mt-6 items-center justify-between sm:gap-6 gap-2">
                 {/* Quantity Controls */}
                 <div className="border border-gray-300 rounded-lg p-3 flex gap-3 items-center">
                     <button

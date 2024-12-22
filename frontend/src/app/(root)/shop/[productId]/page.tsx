@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
-import { Product } from '@/util/types';
+import {Product } from '@/util/types';
 import SkuCards from '@/components/shop/product/SkuCard';
 
 interface ResultInterface {
@@ -13,7 +13,7 @@ interface ResultInterface {
     relatedProducts: Product[]
   }
 }
-type tParams = Promise<{ productId: string[] }>
+type tParams = Promise<{ productId: string }>
 const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
   try {
@@ -79,11 +79,17 @@ const page = async ({ params }: { params: tParams }) => {
             </ul>
 
             <SkuCards skus={product.skuDetails || null} />
-            
+
           </div>
         </div>
 
-        <ProductDescriptionsRequiermentsReviews description={product.description} requirement={product.requirementSpecification || []} />
+        <ProductDescriptionsRequiermentsReviews
+          productId={productId}
+          description={product.description}
+          requirement={product.requirementSpecification || []}
+          productReviews={
+            product.feedbackDetails || []}
+        />
 
         <RelatedProducts relatedProducts={relatedProducts} />
       </div>

@@ -25,7 +25,10 @@ enum BaseType {
     Mobile = 'Mobile',
 }
 
+
+
 export type Feedbacker = {
+    _id: string;
     customerId: string;
     customerName: string;
     rating: number;
