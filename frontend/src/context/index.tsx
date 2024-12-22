@@ -2,11 +2,11 @@
 
 import { createContext, ReactNode, useState, useEffect, useContext } from 'react';
 
-interface User {
-    name: string;
-    email: string;
-    type: string;
-    id: string;
+export interface User {
+    name?: string;
+    email?: string;
+    type?: string;
+    id?: string;
 }
 
 type UserType = "admin" | "customer" | "guest";

@@ -1,26 +1,89 @@
 'use client';
+import { useUserContext } from '@/context';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const PersonalInformation = () => {
-    const [form, setForm] = useState({
-        username: '',
+    const { user, setUser } = useUserContext();
+    const [form, setForm] = useState<{ username: string, oldPassword: string, newPassword: string }>({
+        username: user?.name || '',
         oldPassword: '',
         newPassword: '',
     });
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Submit logic here
-        console.log('Updated Info:', form);
+        setLoading(true);
+
+        // Prepare the data for PATCH request
+        const requestBody: Record<string, string> = {};
+
+        if (form.username) requestBody.name = form.username;
+        if (form.oldPassword && form.newPassword) {
+            requestBody.oldPassword = form.oldPassword;
+            requestBody.newPassword = form.newPassword;
+        }
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/update-name-password/${user?.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                toast.success('Information updated successfully!');
+                if (form.username) {
+                    setUser({
+                        ...user,
+                        name: form.username || user?.name,  // If form.username is undefined, fallback to user?.name
+                    });
+                }
+            } else {
+                const errorData = await response.json();
+                toast.error(`Failed to update information: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            toast.error('An error occurred while updating your information. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
+    const handleForgotPassword = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: user?.email,
+                }),
+            });
+
+            if (response.ok) {
+                toast.success('Password reset email sent successfully!');
+            } else {
+                const errorData = await response.json();
+                toast.error(`Failed to send password reset email: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error sending password reset email:', error);
+            toast.error('An error occurred while sending password reset email. Please try again.');
+        }
+    }
     return (
-        <div className="w-full  bg-primary-foreground p-6 rounded-lg shadow-lg">
+        <div className="w-full bg-primary-foreground p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-primary mb-6">Update Personal Information</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Username */}
@@ -36,7 +99,6 @@ const PersonalInformation = () => {
                         onChange={handleInputChange}
                         className="mt-2 block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                         placeholder="Enter your username"
-                        required
                     />
                 </div>
 
@@ -53,7 +115,6 @@ const PersonalInformation = () => {
                         onChange={handleInputChange}
                         className="mt-2 block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                         placeholder="Enter your old password"
-                        required
                     />
                 </div>
 
@@ -70,18 +131,14 @@ const PersonalInformation = () => {
                         onChange={handleInputChange}
                         className="mt-2 block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                         placeholder="Enter your new password"
-                        required
                     />
                 </div>
 
                 {/* Forgot Password */}
                 <div className="text-sm text-right">
-                    <a
-                        href="/forgot-password"
-                        className="text-primary hover:underline"
-                    >
+                    <button onClick={handleForgotPassword} className="text-primary hover:underline">
                         Forgot Password?
-                    </a>
+                    </button>
                 </div>
 
                 {/* Submit Button */}
@@ -89,8 +146,9 @@ const PersonalInformation = () => {
                     <button
                         type="submit"
                         className="w-full bg-primary text-secondary hover:bg-primary/80 font-semibold py-3 rounded-lg shadow-md hover:bg-primary-dark focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+                        disabled={loading}
                     >
-                        Update Information
+                        {loading ? 'Updating...' : 'Update Information'}
                     </button>
                 </div>
             </form>
