@@ -15,7 +15,6 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             credentials: 'include',
         })
         const data = await response.json();
-        console.log('data==>', data)
 
         if (!response.ok) {
             redirect('/shop')

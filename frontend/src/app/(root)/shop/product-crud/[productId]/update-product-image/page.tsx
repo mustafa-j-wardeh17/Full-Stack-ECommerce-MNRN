@@ -4,19 +4,18 @@ import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-
-const page = () => {
-    const productId = useParams().productId;
+const Page = () => {
+    const productId = useParams().productId || '';
     const [productImage, setProductImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            const maxSize = 3 * 1024 * 1024; // 3MB
+            const maxSize = 4 * 1024 * 1024; // 4MB
 
             if (file.size > maxSize) {
-                toast.error('File size exceeds 3MB.');
+                toast.error('File size exceeds 4MB.');
                 return;
             }
 
@@ -42,7 +41,7 @@ const page = () => {
         formData.append('productImage', productImage);
 
         try {
-            const response = await fetch(`http://localhost:3100/api/v1/products/${productId}/image`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/image`, {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',
@@ -98,4 +97,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

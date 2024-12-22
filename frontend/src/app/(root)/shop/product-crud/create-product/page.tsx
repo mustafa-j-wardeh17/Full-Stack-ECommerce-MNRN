@@ -85,7 +85,7 @@ const CreateProduct = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3100/api/v1/products', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
