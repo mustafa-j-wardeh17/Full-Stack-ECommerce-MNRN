@@ -12,10 +12,10 @@ const Page = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            const maxSize = 4 * 1024 * 1024; // 4MB
+            const maxSize = 3 * 1024 * 1024; // 3MB
 
             if (file.size > maxSize) {
-                toast.error('File size exceeds 4MB.');
+                toast.error('File size exceeds 3MB.');
                 return;
             }
 
