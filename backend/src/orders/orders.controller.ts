@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Query, Req, Headers, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, Req, Headers } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { checkoutDtoArr } from './dto/checkout.dto';
 
