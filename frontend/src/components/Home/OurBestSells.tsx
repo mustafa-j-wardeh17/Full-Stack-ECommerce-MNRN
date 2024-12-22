@@ -1,11 +1,8 @@
-'use client';
 import React from 'react';
-import Image from 'next/image';
-import { FaStar, FaEye } from 'react-icons/fa'; // Star and Eye icons from react-icons
 import { Product } from '@/util/types';
 import ProductCard from '../productCard';
 
-const BestSells = ({ bestSells, type = 'default' }: { bestSells: Product[], type?: 'default' | 'latest' }) => {
+const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Product[], type?: 'default' | 'latest', isAdmin: boolean }) => {
 
 
     return (
@@ -20,6 +17,7 @@ const BestSells = ({ bestSells, type = 'default' }: { bestSells: Product[], type
                     <ProductCard
                         key={product._id}
                         product={product}
+                        isAdmin={isAdmin}
                     />
                 ))}
             </div>
