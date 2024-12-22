@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query, Req, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
-import { userTypes } from 'src/shared/schema/users';
+import { Users, userTypes } from 'src/shared/schema/users';
 import { decodeAuthToken } from 'src/utility/token-generator';
+import { RolesGuard } from 'src/middleware/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +29,17 @@ export class UsersController {
     return {
       success: true,
       result: user
+    }
+  }
+  @Get('/is-admin')
+  async verifyAdmin(@Req() req: { user: Users }) {
+    const user = req.user;
+    if (!user) {
+      throw new UnauthorizedException()
+    }
+    return {
+      success: true,
+      result: user.type === userTypes.ADMIN ? 'admin' : 'customer'
     }
   }
 
@@ -92,6 +104,8 @@ export class UsersController {
     console.log('id===>', id)
     return this.usersService.updatePasswordOrName(id, updateUserDto);
   }
+
+
 
   @Roles(userTypes.ADMIN)
   @Get()

@@ -29,6 +29,13 @@ export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: '/users', method: RequestMethod.GET });
+      .forRoutes(
+        {
+          path: '/users', method: RequestMethod.GET
+        },
+        {
+          path: '/users/is-admin', method: RequestMethod.GET
+        },
+      );
   }
 }
