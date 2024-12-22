@@ -8,7 +8,7 @@ const OrderItem = ({ order }: { order: Order }) => {
         <div className="flex flex-col gap-8 w-full">
             {order.orderedItems.map((item) => {
                 // Calculate total price for the specific item
-                const itemTotalPrice = ((+item.price / 100) * +item.quantity).toFixed(2);
+                const itemTotalPrice = ((+item.price ) * +item.quantity).toFixed(2);
 
                 return (
                     <div
@@ -32,7 +32,7 @@ const OrderItem = ({ order }: { order: Order }) => {
                                         Quantity: {item.quantity}
                                     </p>
                                     <p className="sm:text-sm text-xs text-gray-600">
-                                        Price per item: ${(+item.price / 100).toFixed(2)}
+                                        Price per item: ${(+item.price).toFixed(2)}
                                     </p>
                                 </div>
                             </div>

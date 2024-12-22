@@ -1,3 +1,12 @@
+export type HttpResponse = {
+    message: string;
+    path: string;
+    result: any;
+    statusCode: number;
+    success: boolean;
+    timeStamp: string;
+}
+
 enum CategoryType {
     OperatingSystem = 'Operating System',
     ApplicationSoftware = 'Application Software',
@@ -24,6 +33,7 @@ export type Feedbacker = {
 };
 
 export type SkuDetail = {
+    _id: string;
     skuName: string;
     price: number;
     validity: number; // in days

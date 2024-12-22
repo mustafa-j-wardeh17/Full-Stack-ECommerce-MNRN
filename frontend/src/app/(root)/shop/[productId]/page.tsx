@@ -2,10 +2,10 @@ import { BreadcrumbWithCustomSeparator } from '@/components/breadcrumb'
 import { FaStar } from "react-icons/fa";
 import Image from 'next/image'
 import React from 'react'
-import { FiMinus, FiPlus } from "react-icons/fi";
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
 import { Product } from '@/util/types';
+import SkuCards from '@/components/shop/product/SkuCard';
 
 interface ResultInterface {
   result: {
@@ -18,13 +18,12 @@ const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
-    if(!response.ok){
+    if (!response.ok) {
       throw new Error(`Failed to fetch product: ${response.statusText}`);
     }
     const result: ResultInterface = await response.json()
     const product = result.result.product
     const relatedProducts = result.result.relatedProducts
-
 
     return (
       <div className='2xl:px-10 my-8'>
@@ -67,7 +66,6 @@ const page = async ({ params }: { params: tParams }) => {
                 5.0 (126 Reviews)
               </span>
             </div>
-            <p>00</p>
             <ul className='list-disc pl-8 gap-2'>
               {
                 product.highlights && product.highlights.map((item: string) => (
@@ -79,24 +77,9 @@ const page = async ({ params }: { params: tParams }) => {
                 ))
               }
             </ul>
-            <div className='flex mt-4 items-center justify-between'>
-              <div className='border border-primary/60 rounded-lg p-2  flex gap-3 items-center'>
-                <button
-                >
-                  <FiMinus />
-                </button>
-                <p>1</p>
-                <button>
-                  <FiPlus />
-                </button>
-              </div>
 
-              <button
-                className='min-w-[200px] bg-primary text-secondary py-2 rounded-lg hover:bg-primary/80 flex items-center justify-center'
-              >
-                Add To Cart
-              </button>
-            </div>
+            <SkuCards skus={product.skuDetails || null} />
+            
           </div>
         </div>
 
