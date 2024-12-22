@@ -4,8 +4,11 @@ import { FilterBy } from '@/components/shop/FilterBy';
 import { SortBy } from '@/components/shop/SortBy';
 import { baseType, categoryType, platformType } from '@/util/constant';
 import { Product } from '@/util/types';
+import { cookies } from 'next/headers';
+import Link from 'next/link';
 import React from 'react';
 import { CiGrid41 } from "react-icons/ci";
+import { IoMdAdd } from "react-icons/io";
 
 interface ProductsInterface {
     result: {
@@ -19,6 +22,26 @@ interface ProductsInterface {
 type tSearchParams = Promise<{ [key: string]: string | undefined }>;
 
 const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
+    const cookieStore = cookies();
+    const _digi_auth_token = (await cookieStore).get('_digi_auth_token');
+    let isAdmin = false;
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/is-admin`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${_digi_auth_token?.value}`, // Add the token here
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+        if (response.ok) {
+            isAdmin = true;
+        } else {
+            isAdmin = false;
+        }
+    } catch (error) {
+        isAdmin = false;
+    }
     const resolvedSearchParams = await searchParams;
 
     const category = (Object.values(categoryType).includes(resolvedSearchParams.category as categoryType)
@@ -72,13 +95,25 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                                 <CiGrid41 size={20} />
                                 <p>Showing 1-{Math.min(result.result.products.length, 16)} of {result.result.products.length} items</p>
                             </div>
-                            <SortBy />
+                            <div className='flex items-center gap-3'>
+                                <Link
+                                    className='text-primary flex items-center gap-1 border border-primary rounded-md p-2 hover:bg-primary hover:text-secondary transition'
+                                    href={`/shop/product-crud/create-product`}
+                                >
+                                    Create Product <IoMdAdd />
+                                </Link>
+                                <SortBy />
+                            </div>
                         </div>
 
                         {/* Product Grid */}
                         <div className="grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
                             {result.result.products.map((product: Product) => (
-                                <ProductCard key={product._id} product={product} />
+                                <ProductCard
+                                    key={product._id}
+                                    product={product}
+                                    isAdmin={isAdmin}
+                                />
                             ))}
                         </div>
 

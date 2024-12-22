@@ -34,7 +34,6 @@ export default async function Home() {
     } else {
       isAdmin = false;
     }
-    console.log('isAdmin:', isAdmin);
   } catch (error) {
     isAdmin = false;
   }

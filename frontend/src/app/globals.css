@@ -70,3 +70,17 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+select {
+  position: relative;
+}
+
+select::after {
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #333;  /* Adjust the color as per your theme */
+}

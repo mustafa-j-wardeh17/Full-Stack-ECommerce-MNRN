@@ -2,6 +2,16 @@
 
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { IoIosArrowDown } from 'react-icons/io';
 
 // Enums for dropdowns
 enum CategoryType {
@@ -91,7 +101,7 @@ const CreateProduct = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(form),
-                credentials:'include'
+                credentials: 'include'
             });
 
             if (response.ok) {
@@ -124,7 +134,7 @@ const CreateProduct = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Product Details */}
                 <div>
-                    <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="productName" className="block text-sm font-medium text-primary/80">
                         Product Name
                     </label>
                     <input
@@ -139,7 +149,7 @@ const CreateProduct = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="description" className="block text-sm font-medium text-primary/80">
                         Description
                     </label>
                     <textarea
@@ -154,71 +164,93 @@ const CreateProduct = () => {
                 </div>
 
                 {/* Category */}
-                <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                <div className="relative">
+                    <label htmlFor="category" className="block text-sm font-medium text-primary/80">
                         Category
                     </label>
-                    <select
-                        name="category"
-                        id="category"
-                        value={form.category}
-                        onChange={handleInputChange}
-                        className="mt-2 block w-full p-3 border rounded-md"
-                        required
-                    >
-                        {Object.values(CategoryType).map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
+                    <div className='relative mt-2 block w-full rounded-md'>
+                        <select
+                            name="category"
+                            id="category"
+                            value={form.category}
+                            onChange={handleInputChange}
+                            className="mt-2 block w-full relative p-3 border rounded-md appearance-none"
+                            required
+                        >
+
+                            {Object.values(CategoryType).map((category) => (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
+                        {/* Custom Arrow Icon */}
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <IoIosArrowDown size={20} />
+                        </div>
+                    </div>
+
+
                 </div>
 
                 {/* Platform Type */}
                 <div>
-                    <label htmlFor="platformType" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="platformType" className="block text-sm font-medium text-primary/80">
                         Platform Type
                     </label>
-                    <select
-                        name="platformType"
-                        id="platformType"
-                        value={form.platformType}
-                        onChange={handleInputChange}
-                        className="mt-2 block w-full p-3 border rounded-md"
-                        required
-                    >
-                        {Object.values(PlatformType).map((platform) => (
-                            <option key={platform} value={platform}>
-                                {platform}
-                            </option>
-                        ))}
-                    </select>
+
+                    <div className='relative mt-2 block w-full rounded-md'>
+                        <select
+                            name="platformType"
+                            id="platformType"
+                            value={form.platformType}
+                            onChange={handleInputChange}
+                            className="mt-2 block w-full relative p-3 border rounded-md appearance-none"
+                            required
+                        >
+                            {Object.values(PlatformType).map((platform) => (
+                                <option key={platform} value={platform}>
+                                    {platform}
+                                </option>
+                            ))}
+                        </select>
+                        {/* Custom Arrow Icon */}
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <IoIosArrowDown size={20} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Base Type */}
                 <div>
-                    <label htmlFor="baseType" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="baseType" className="block text-sm font-medium text-primary/80">
                         Base Type
                     </label>
-                    <select
-                        name="baseType"
-                        id="baseType"
-                        value={form.baseType}
-                        onChange={handleInputChange}
-                        className="mt-2 block w-full p-3 border rounded-md"
-                        required
-                    >
-                        {Object.values(BaseType).map((base) => (
-                            <option key={base} value={base}>
-                                {base}
-                            </option>
-                        ))}
-                    </select>
+                    <div className='relative mt-2 block w-full rounded-md'>
+                        <select
+                            name="baseType"
+                            id="baseType"
+                            value={form.baseType}
+                            onChange={handleInputChange}
+                            className="mt-2 block w-full p-3 border rounded-md appearance-none"
+                            required
+                        >
+                            {Object.values(BaseType).map((base) => (
+                                <option key={base} value={base}>
+                                    {base}
+                                </option>
+                            ))}
+                        </select>
+                        {/* Custom Arrow Icon */}
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <IoIosArrowDown size={20} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Other fields */}
                 <div>
-                    <label htmlFor="productUrl" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="productUrl" className="block text-sm font-medium text-primary/80">
                         Product URL
                     </label>
                     <input
@@ -233,7 +265,7 @@ const CreateProduct = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="downloadUrl" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="downloadUrl" className="block text-sm font-medium text-primary/80">
                         Download URL
                     </label>
                     <input
@@ -249,7 +281,7 @@ const CreateProduct = () => {
 
                 {/* Dynamic Requirement Specification */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Requirement Specification</label>
+                    <label className="block text-sm font-medium text-primary/80">Requirement Specification</label>
                     {form.requirementSpecification.map((req, index) => (
                         <div key={index} className="flex space-x-2 mt-2">
                             <input
@@ -286,7 +318,7 @@ const CreateProduct = () => {
 
                 {/* Highlights */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Highlights</label>
+                    <label className="block text-sm font-medium text-primary/80">Highlights</label>
                     {form.highlights.map((highlight, index) => (
                         <div key={index} className="flex space-x-2 mt-2">
                             <input
@@ -323,8 +355,8 @@ const CreateProduct = () => {
                         {loading ? 'Creating...' : 'Create Product'}
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 };
 
