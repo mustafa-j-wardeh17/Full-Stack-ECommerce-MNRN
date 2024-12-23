@@ -1,3 +1,4 @@
+import CreateUpdateProductSkuLicenseForm from '@/components/shop/createUpdateProductSkuLicence'
 import { GetProductSkuLicensesResponse, License } from '@/util/types'
 import { cookies } from 'next/headers'
 import React from 'react'
@@ -39,17 +40,12 @@ const page = async ({ params }: { params: paramsProp }) => {
     }
     return (
         <div className='my-[30px]'>
-            <div className="p-6 bg-white dark:bg-neutral-800 rounded-lg shadow-md">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                    License for SKU
-                </h1>
-                <div>
-                    <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        License Key
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-400">{license?.licenseKey}</p>
-                </div>
-            </div>
+            <CreateUpdateProductSkuLicenseForm
+                productId={productId}
+                skuId={skuId}
+                licenseId={licenseId}
+                license={license?.licenseKey}
+            />
         </div>
     )
 }

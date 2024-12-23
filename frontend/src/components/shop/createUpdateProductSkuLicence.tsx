@@ -7,14 +7,16 @@ interface CreateUpdateProductSkuFormProps {
     productId: string;
     skuId: string;
     licenseId?: string; // Optional for update operations
+    license?: string; // Optional for update operations
 }
 
 const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProps> = ({
     productId,
     skuId,
     licenseId,
+    license,
 }) => {
-    const [licenseKey, setLicenseKey] = useState('');
+    const [licenseKey, setLicenseKey] = useState(license || '');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -63,7 +65,7 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* License Key Input */}
                 <div>
-                    <label htmlFor="licenseKey" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="licenseKey" className="block text-sm font-medium text-primary/80">
                         License Key
                     </label>
                     <input
