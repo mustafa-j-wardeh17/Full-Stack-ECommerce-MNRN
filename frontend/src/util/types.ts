@@ -19,6 +19,11 @@ export interface ProductsResponse extends HttpResponse {
         products: Product[];
     };
 }
+export interface GetProductSkuLicensesResponse extends HttpResponse {
+    result: {
+        licenses: License[];
+    };
+}
 
 
 
@@ -42,6 +47,14 @@ enum BaseType {
 
 
 
+export type License = {
+    _id: string;
+    isSold: boolean;
+    licenseKey: string;
+    orderId: string;
+    product: string;
+    productSku: string
+}
 export type Feedbacker = {
     _id: string;
     customerId: string;
