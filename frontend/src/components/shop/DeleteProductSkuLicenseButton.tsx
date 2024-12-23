@@ -1,7 +1,6 @@
 'use client'
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -49,7 +48,7 @@ const DeleteProductSkuLicenseButton = ({ licenseId }: { licenseId: string }) => 
                 <AlertDialogTrigger
                     className=" text-red-600 rounded-full shadow-md hover:underline flex items-center justify-center"
                 >
-                    Dlete
+                    Delete
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

@@ -59,10 +59,10 @@ const page = async ({ params }: { params: paramsProp }) => {
                     <tbody>
                         {licenses.length > 0 && licenses.map((license) => (
                             <tr key={license._id}>
-                                <td className="p-2 border-b border-gray-300 dark:border-gray-600">
+                                <td className="p-2 border-b sm:text-sm text-xs border-gray-300 dark:border-gray-600">
                                     {license.licenseKey}
                                 </td>
-                                <td className="p-2 flex gap-3 border-b border-gray-300 dark:border-gray-600">
+                                <td className="p-2 flex gap-3 sm:text-sm text-xs border-b border-gray-300 dark:border-gray-600">
                                     <Link
                                         href={`/shop/product-crud/${productId}/sku/${skuId}/licenses/${license._id}/update-license`}
                                         className="text-blue-600 hover:underline"
@@ -79,8 +79,8 @@ const page = async ({ params }: { params: paramsProp }) => {
 
                 <div className="mt-4">
                     <Link
-                        href={`/shop/product-crud/${productId}/sku/${skuId}/licenses/create`}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                        href={`/shop/product-crud/${productId}/sku/${skuId}/create-product-sku-license`}
+                        className="bg-blue-600 sm:text-ms text-sm text-white sm:px-4 px-3 sm:py-2 py-1 rounded-lg hover:bg-blue-700"
                     >
                         Create License
                     </Link>
