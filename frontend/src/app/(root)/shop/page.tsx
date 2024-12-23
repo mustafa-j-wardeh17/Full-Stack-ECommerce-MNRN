@@ -58,6 +58,8 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
 
     const skip = ((Number(resolvedSearchParams.page) - 1) * 12) || 0;
 
+    const search = resolvedSearchParams.search || '';
+
     const sort = resolvedSearchParams.sort || '';
 
     const queryParams = new URLSearchParams();
@@ -67,6 +69,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
     if (base) queryParams.append('baseType', base);
     if (skip) queryParams.append('skip', skip.toString());
     if (sort) queryParams.append('sort', sort);
+    if (search) queryParams.append('search', search);
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?${queryParams.toString()}`, {
             cache: 'no-store', // Avoid caching for fresh data

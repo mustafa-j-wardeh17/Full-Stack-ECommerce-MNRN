@@ -1,6 +1,6 @@
 
 
-import CreateUpdateProduct from '@/components/shop/updateProductForm';
+import CreateUpdateProduct from '@/components/shop/updateCreateProductForm';
 import React from 'react';
 
 
@@ -8,7 +8,7 @@ import React from 'react';
 const CreateProduct = () => {
 
     return (
-        <div>
+        <div className='my-[30px]'>
             <CreateUpdateProduct />
         </div>
     )

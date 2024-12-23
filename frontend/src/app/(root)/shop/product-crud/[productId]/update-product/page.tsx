@@ -1,4 +1,4 @@
-import CreateUpdateProduct from '@/components/shop/updateProductForm'
+import CreateUpdateProduct from '@/components/shop/updateCreateProductForm'
 import { Product, ProductResponse } from '@/util/types'
 import React from 'react'
 
@@ -17,7 +17,7 @@ const page = async ({ params }: { params: tParams }) => {
 
   }
   return (
-    <div>
+    <div className='my-[30px]'>
       <CreateUpdateProduct
         type='update'
         product={product}

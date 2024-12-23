@@ -65,7 +65,7 @@ const Page = () => {
     };
 
     return (
-        <div className="w-full bg-primary-foreground p-6 rounded-lg shadow-lg">
+        <div className="w-full my-[30px] bg-primary-foreground p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-primary mb-6">Upload Product Image</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* File Input */}
