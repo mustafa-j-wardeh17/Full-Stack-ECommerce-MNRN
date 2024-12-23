@@ -13,6 +13,13 @@ export interface ProductResponse extends HttpResponse {
     };
 }
 
+export interface ProductsResponse extends HttpResponse {
+    result: {
+        metadata: Record<string, any>;
+        products: Product[];
+    };
+}
+
 
 
 enum CategoryType {

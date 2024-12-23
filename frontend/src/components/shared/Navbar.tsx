@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { HeartIcon, Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { HeartIcon, Search, ShoppingBag, Menu } from 'lucide-react';
 import { BsPersonCircle } from 'react-icons/bs';
 import { usePathname, useRouter } from 'next/navigation';
 import { ModeToggle } from '../theme-toggle';
 import Link from 'next/link';
 import { useUserContext } from '@/context';
+import SearchProducts from './SearchProducts';
 
 const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -19,8 +20,9 @@ const Navbar = () => {
     const pathname = usePathname();
 
     const handleSearch = () => {
-        router.push(`/products?search=${searchText}`);
+        router.push(`/shop?search=${searchText}`);
         setShowSearch(false);
+        setSearchText('');
     };
 
     const navLinks = [
@@ -108,83 +110,18 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Navigation Menu */}
-            {showMenu && (
-                <div className="absolute top-0 left-0 w-full h-screen bg-primary-foreground z-50 flex flex-col items-center gap-6 pt-16">
-                    <X
-                        size={24}
-                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary transition"
-                        onClick={() => setShowMenu(false)}
-                    />
-                    <div className="flex flex-col w-full items-center px-4 gap-6">
-                        <Link href="/" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
-                            Home
-                        </Link>
-                        <Link href="/shop" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
-                            Shop
-                        </Link>
-                        <Link href="/about" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
-                            About Us
-                        </Link>
-                        <Link href="/contact" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
-                            Contact Us
-                        </Link>
-                    </div>
-
-                    {/* Icons for Mobile Navigation */}
-                    <div className="flex items-center gap-6 mt-6">
-                        <Search
-                            className="text-primary/70 cursor-pointer hover:text-primary transition"
-                            size={24}
-                            onClick={() => {
-                                setShowSearch(true);
-                                setShowMenu(false);
-                            }}
-                        />
-                        <HeartIcon className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
-                        <ShoppingBag className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
-                        <BsPersonCircle
-                            size={24}
-                            className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            onClick={() => {
-                                if (user) {
-                                    router.push('/my-account/personal-information');
-                                } else {
-                                    router.push('/sign-in');
-                                }
-                            }}
-                        />
-                    </div>
-                </div>
-            )}
-
-            {/* Full-Screen Search Modal */}
-            {showSearch && (
-                <div className="fixed inset-0 z-50 bg-primary-foreground/80 flex flex-col py-[40px] items-center ">
-                    <X
-                        size={24}
-                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary transition"
-                        onClick={() => setShowSearch(false)}
-                    />
-                    <div className="w-full max-w-md px-4">
-                        <div className="flex  w-full border rounded-lg overflow-hidden">
-                            <input
-                                type="text"
-                                placeholder="Search for products..."
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
-                                className="flex-1 px-4 py-3 outline-none text-lg"
-                            />
-                            <button
-                                className="bg-primary text-white px-4 py-3 hover:bg-green-600 transition"
-                                onClick={handleSearch}
-                            >
-                                Search
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <SearchProducts
+                router={router}
+                showMenu={showMenu}
+                setShowMenu={setShowMenu}
+                showSearch={showSearch}
+                setShowSearch={setShowSearch}
+                user={user}
+                isIconActive={isIconActive}
+                handleSearch={handleSearch}
+                searchText={searchText}
+                setSearchText={setSearchText}
+            />
         </>
     );
 };
