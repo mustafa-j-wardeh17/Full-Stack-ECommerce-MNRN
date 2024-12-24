@@ -39,7 +39,7 @@ const page = async ({ params }: { params: paramsProp }) => {
 
 
         return (
-            <div className="p-6 bg-white dark:bg-neutral-800 rounded-lg shadow-md">
+            <div className="p-6 bg-white my-[30px] dark:bg-neutral-800 rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                     Licenses for SKU
                 </h1>
