@@ -1,22 +1,50 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete, Patch } from '@nestjs/common';
 import { CartService } from './cart.service';
+import { Cart } from 'src/shared/schema/cart';
 
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
+  // Add a new cart item
   @Post()
-  async addToCart(@Body() body: { product: string; sku: string; user: string }) {
-    return this.cartService.addToCart(body.product, body.sku, body.user);
+  async addCartItem(@Body() cartData: Partial<Cart>): Promise<Cart> {
+    return this.cartService.addCartItem(cartData);
   }
 
-  @Get(':user')
-  async getCartByUser(@Param('user') user: string) {
-    return this.cartService.getCartByUser(user);
+  // Get all cart items for a user
+  @Get('user/:userId')
+  async getCartItemsByUser(@Param('userId') userId: string): Promise<Cart[]> {
+    return this.cartService.getCartItemsByUser(userId);
   }
 
-  @Delete(':id')
-  async removeFromCart(@Param('id') id: string) {
-    return this.cartService.removeFromCart(id);
+  // Update a cart item
+  @Patch(':cartId')
+  async updateCartItem(
+    @Param('cartId') cartId: string,
+    @Body() updateData: Partial<Cart>,
+  ): Promise<Cart | null> {
+    return this.cartService.updateCartItem(cartId, updateData);
+  }
+
+  // Remove a cart item by ID
+  @Delete(':cartId')
+  async removeCartItem(@Param('cartId') cartId: string): Promise<Cart | null> {
+    return this.cartService.removeCartItem(cartId);
+  }
+
+  // Clear all cart items for a user
+  @Delete('user/:userId')
+  async clearCartByUser(@Param('userId') userId: string): Promise<{ deletedCount: number }> {
+    return this.cartService.clearCartByUser(userId);
+  }
+
+  // Increment the quantity of a cart item
+  @Patch('increment/:cartId')
+  async incrementCartItemQuantity(
+    @Param('cartId') cartId: string,
+    @Body('incrementBy') incrementBy: number,
+  ): Promise<Cart | null> {
+    return this.cartService.incrementCartItemQuantity(cartId, incrementBy);
   }
 }

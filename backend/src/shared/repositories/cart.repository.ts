@@ -17,18 +17,35 @@ export class CartRepository {
 
   // Function to find cart items by user
   async findCartByUser(userId: string): Promise<Cart[]> {
-    return this.cartModel.find({ user: userId }).populate('product').exec();
+    return this.cartModel.find({ userId }).exec();
   }
 
   // Function to remove a cart item by ID
-  async removeCartItem(cartId: string): Promise<Cart> {
+  async removeCartItem(cartId: string): Promise<Cart | null> {
     return this.cartModel.findByIdAndDelete(cartId).exec();
   }
 
   // Function to update a cart item by ID
-  async updateCartItem(cartId: string, updateData: Partial<Cart>): Promise<Cart> {
+  async updateCartItem(cartId: string, updateData: Partial<Cart>): Promise<Cart | null> {
     return this.cartModel
       .findByIdAndUpdate(cartId, updateData, { new: true })
       .exec();
+  }
+
+  // NEW: Function to clear all cart items for a specific user
+  async clearCartByUser(userId: string): Promise<{ deletedCount: number }> {
+    return this.cartModel.deleteMany({ userId }).exec();
+  }
+
+  // NEW: Function to increment the quantity of a cart item
+  async incrementCartItemQuantity(cartId: string, incrementBy: number): Promise<Cart | null> {
+    return this.cartModel
+      .findByIdAndUpdate(cartId, { $inc: { quantity: incrementBy } }, { new: true })
+      .exec();
+  }
+
+  // Function to find a cart item by user and SKU
+  async findCartItemByUserAndSku(userId: string, skuId: string): Promise<Cart | null> {
+    return this.cartModel.findOne({ userId, skuId }).exec();
   }
 }
