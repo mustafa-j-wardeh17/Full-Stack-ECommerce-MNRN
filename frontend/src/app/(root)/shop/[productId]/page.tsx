@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
-import {Product } from '@/util/types';
+import { Product } from '@/util/types';
 import SkuCards from '@/components/shop/product/SkuCard';
 
 interface ResultInterface {
@@ -78,7 +78,11 @@ const page = async ({ params }: { params: tParams }) => {
               }
             </ul>
 
-            <SkuCards skus={product.skuDetails || null} />
+            <SkuCards
+              productName={product.productName}
+              productImage={product.image}
+              skus={product.skuDetails || null}
+            />
 
           </div>
         </div>

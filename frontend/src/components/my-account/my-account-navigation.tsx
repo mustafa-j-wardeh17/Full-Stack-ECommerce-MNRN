@@ -8,6 +8,7 @@ import { IoPersonOutline } from 'react-icons/io5'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUserContext } from '@/context'
 import toast from 'react-hot-toast'
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const MyAccountNavigation = () => {
     const pathName = usePathname()
@@ -53,6 +54,12 @@ const MyAccountNavigation = () => {
                     className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('personal-information') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <IoPersonOutline size={26} /> Personal Information
+                </Link>
+                <Link
+                    href="/my-account/my-cart"
+                    className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-cart') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                >
+                    <MdOutlineShoppingCart size={22} />My Cart
                 </Link>
                 <Link
                     href="/my-account/my-orders"

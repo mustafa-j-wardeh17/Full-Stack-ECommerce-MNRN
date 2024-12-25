@@ -25,6 +25,21 @@ export interface GetProductSkuLicensesResponse extends HttpResponse {
     };
 }
 
+export interface GetCartItemsResponse extends HttpResponse {
+    result:{
+        cart:Cart[]
+    }    
+}
+export interface PostCartItemResponse extends HttpResponse {
+    result:Cart
+  
+}
+
+export interface UpdateCartItemResponse extends HttpResponse {
+    result:Cart
+      
+}
+
 
 
 enum CategoryType {
@@ -47,6 +62,17 @@ enum BaseType {
 
 
 
+export type Cart = {
+    _id: string;
+    userId: string;
+    productName: string;
+    skuPrice:number;
+    skuKey: string;
+    skuId: string;
+    skuPriceId: string;
+    quantity: number;
+    productImage: string
+}
 export type License = {
     _id: string;
     isSold: boolean;

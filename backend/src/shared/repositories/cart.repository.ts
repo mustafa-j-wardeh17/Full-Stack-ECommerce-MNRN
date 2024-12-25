@@ -17,7 +17,7 @@ export class CartRepository {
 
   // Function to find cart items by user
   async findCartByUser(userId: string): Promise<Cart[]> {
-    return this.cartModel.find({ userId }).exec();
+    return await this.cartModel.find({ userId });
   }
 
   // Function to remove a cart item by ID
