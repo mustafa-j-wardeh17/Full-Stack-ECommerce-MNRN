@@ -6,13 +6,13 @@ import React from 'react';
 const OrderItem = ({ order }: { order: Order }) => {
     return (
         <div className="flex flex-col gap-8 w-full">
-            {order.orderedItems.map((item) => {
+            {order.orderedItems.map((item,idx) => {
                 // Calculate total price for the specific item
                 const itemTotalPrice = ((+item.price ) * +item.quantity).toFixed(2);
 
                 return (
                     <div
-                        key={item.productId}
+                        key={idx}
                         className="flex flex-col gap-6 w-full p-4 border border-gray-200 rounded-lg shadow-sm"
                     >
                         {/* Order Details */}

@@ -36,7 +36,7 @@ const page = async () => {
         {
           result.result.orders.map((order: Order, idx: number) => (
             <div
-              key={order._id}
+              key={idx}
               className='flex flex-col w-full gap-4'
             >
               <div className={`${idx === 0 && 'hidden'} w-full h-[1.5px] bg-primary/10`} />

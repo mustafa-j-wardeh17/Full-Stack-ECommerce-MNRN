@@ -37,6 +37,7 @@ const SuccessPage = () => {
         // After 3 seconds, redirect to /my-account/my-cart
         const timer = setTimeout(() => {
             deleteItemsFromCart()
+            localStorage.removeItem('orders')
         }, 2000);
 
         // Clean up the timer when the component unmounts

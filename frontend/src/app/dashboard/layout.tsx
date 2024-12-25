@@ -1,3 +1,5 @@
+import DashboardNav from '@/components/Dashboard/dashboardNav'
+import Sidebar from '@/components/Dashboard/sidebar'
 import { HttpResponse } from '@/util/types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -21,7 +23,15 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             throw new Error('Unauthorized')
         }
         return (
-            <div>1234</div>
+            <div className="flex w-full bg-[#F8F9FA] min-h-screen overflow-hidden">
+                <div className="h-full">
+                    <Sidebar />
+                </div>
+                <div className="flex flex-col w-full">
+                    <DashboardNav />
+                    {children}
+                </div>
+            </div>
         )
     } catch (error) {
         redirect('/')

@@ -17,7 +17,7 @@ const page = async ({ params }: { params: tParams }) => {
 
   }
   return (
-    <div className='my-[30px]'>
+    <div className='my-[30px] md:p-10 p-5'>
       <CreateUpdateProduct
         type='update'
         product={product}

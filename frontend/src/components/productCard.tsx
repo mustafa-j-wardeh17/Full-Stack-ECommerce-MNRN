@@ -41,13 +41,13 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                                         <>
                                             <DeleteProductButton productId={product._id} />
                                             <Link
-                                                href={`/shop/product-crud/${product._id}/update-product`}
+                                                href={`/dashboard/${product._id}/update-product`}
                                                 className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center"
                                             >
                                                 <FaEdit className="text-blue-500" size={18} />
                                             </Link>
                                             <Link
-                                                href={`/shop/product-crud/${product._id}/update-product-image`}
+                                                href={`/dashboard/${product._id}/update-product-image`}
                                                 className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center"
                                             >
                                                 <CiImageOn className="text-green-500" size={18} />

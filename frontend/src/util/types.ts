@@ -15,7 +15,11 @@ export interface ProductResponse extends HttpResponse {
 
 export interface ProductsResponse extends HttpResponse {
     result: {
-        metadata: Record<string, any>;
+        metadata: {
+            limit: number,
+            total: number,
+            pages: number,
+        };
         products: Product[];
     };
 }
@@ -26,20 +30,20 @@ export interface GetProductSkuLicensesResponse extends HttpResponse {
 }
 
 export interface GetCartItemsResponse extends HttpResponse {
-    result:{
-        cart:Cart[]
-    }    
+    result: {
+        cart: Cart[]
+    }
 }
 export interface PostCartItemResponse extends HttpResponse {
-    result:Cart
-  
+    result: Cart
+
 }
 
 export interface UpdateCartItemResponse extends HttpResponse {
-    result:Cart 
+    result: Cart
 }
 export interface CheckoutSelectedCartItemResponse extends HttpResponse {
-    result:string
+    result: string
 }
 
 
@@ -68,7 +72,7 @@ export type Cart = {
     _id: string;
     userId: string;
     productName: string;
-    skuPrice:number;
+    skuPrice: number;
     skuKey: string;
     skuId: string;
     skuPriceId: string;
