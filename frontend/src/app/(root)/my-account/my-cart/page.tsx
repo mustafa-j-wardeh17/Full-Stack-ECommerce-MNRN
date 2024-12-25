@@ -109,51 +109,54 @@ const CartPage = () => {
     };
 
     // Handle checkout for selected items
-// Handle checkout for selected items
-const handleCheckout = async () => {
-    if (selectedItems.size === 0) {
-        toast.error('Please select at least one item to checkout.');
-        return;
-    }
-
-    // Extract the necessary details (skuPriceId, quantity, skuId) from selected items
-    const checkoutItems = cartItems
-        .filter(item => selectedItems.has(item._id)) // Filter items that are selected
-        .map(item => ({
-            skuPriceId: item.skuPriceId, // Assuming this field exists in the cart item
-            quantity: item.quantity,
-            skuId: item.skuId,
-        }));
-
-    // Prepare the body for the checkout request
-    const requestBody = {
-        checkoutDetails: checkoutItems,
-    };
-
-    try {
-        const response = await fetch('http://localhost:3100/api/v1/orders/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-            credentials: 'include', // Assuming the user is logged in and you need cookies or session
-        });
-
-        if (response.ok) {
-            const data:CheckoutSelectedCartItemResponse = await response.json();
-            // Optionally, redirect the user to a confirmation page or order summary
-            router.push(data.result); // Example redirect, change as needed
-        } else {
-            const errorData = await response.json();
-            toast.error(`Checkout failed: ${errorData.message || 'Unknown error'}`);
-            console.error('Checkout error:', errorData);
+    // Handle checkout for selected items
+    const handleCheckout = async () => {
+        if (selectedItems.size === 0) {
+            toast.error('Please select at least one item to checkout.');
+            return;
         }
-    } catch (error) {
-        toast.error('An error occurred during checkout.');
-        console.error('Error during checkout:', error);
-    }
-};
+
+        // Extract the necessary details (skuPriceId, quantity, skuId) from selected items
+        const checkoutItems = cartItems
+            .filter(item => selectedItems.has(item._id)) // Filter items that are selected
+            .map(item => ({
+                skuPriceId: item.skuPriceId, // Assuming this field exists in the cart item
+                quantity: item.quantity,
+                skuId: item.skuId,
+            }));
+
+        // Prepare the body for the checkout request
+        const requestBody = {
+            checkoutDetails: checkoutItems,
+        };
+
+        console.log('selected items ===>', Array.from(selectedItems))
+
+        try {
+            const response = await fetch('http://localhost:3100/api/v1/orders/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+                credentials: 'include', // Assuming the user is logged in and you need cookies or session
+            });
+
+            if (response.ok) {
+                const data: CheckoutSelectedCartItemResponse = await response.json();
+                // Optionally, redirect the user to a confirmation page or order summary
+                localStorage.setItem('orders', JSON.stringify({ cart: Array.from(selectedItems) }));
+                router.push(data.result); // Example redirect, change as needed
+            } else {
+                const errorData = await response.json();
+                toast.error(`Checkout failed: ${errorData.message || 'Unknown error'}`);
+                console.error('Checkout error:', errorData);
+            }
+        } catch (error) {
+            toast.error('An error occurred during checkout.');
+            console.error('Error during checkout:', error);
+        }
+    };
 
 
     // Clear the cart

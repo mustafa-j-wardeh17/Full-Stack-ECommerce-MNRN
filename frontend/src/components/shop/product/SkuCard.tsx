@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 interface SkuCardsProps {
     skus: SkuDetail[] | null;
     productName: string;
-    productImage: String;
+    productImage: string;
 }
 
 const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {

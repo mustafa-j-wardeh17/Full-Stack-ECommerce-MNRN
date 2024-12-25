@@ -186,12 +186,12 @@ export class OrdersService {
             isOrderDelivered: true,
             ...orderData,
           });
-          const user = await this.userDB.findById(orderData.userId)
+          const user = await this.userDB.findById(orderData.userId)         
           this.sendOrderEmail(
             orderData.customerEmail,
             user.name,
             orderData.orderId,
-            `${config.get('frontendbase')}my-account/my-cart`,
+            `${config.get('frontendbase')}my-account/my-orders/success`,
           );
         }
         return {
