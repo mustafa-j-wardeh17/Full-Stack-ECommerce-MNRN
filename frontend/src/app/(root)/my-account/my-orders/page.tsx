@@ -25,7 +25,7 @@ const page = async () => {
     });
 
     const result: orderInterface = await response.json();
-
+    console.log('Orders ====>', result)
     if (!response.ok) {
       throw new Error(result.message || 'Failed to fetch orders');
     }

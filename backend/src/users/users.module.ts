@@ -32,10 +32,7 @@ export class UsersModule implements NestModule {
       .forRoutes(
         {
           path: '/users', method: RequestMethod.GET
-        },
-        {
-          path: '/users/is-admin', method: RequestMethod.GET
-        },
+        }
       );
   }
 }

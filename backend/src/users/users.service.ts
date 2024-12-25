@@ -102,7 +102,7 @@ export class UsersService {
         throw new Error('Invalid email or password')
       }
 
-      const token = await generateAuthToken(userExists._id as string)
+      const token = await generateAuthToken(userExists._id as string, userExists.email, userExists.type)
       return {
         success: true,
         message: 'Login successfull',

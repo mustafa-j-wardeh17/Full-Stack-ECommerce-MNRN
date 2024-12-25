@@ -1,4 +1,5 @@
 import MyAccountNavigation from '@/components/my-account/my-account-navigation'
+import { HttpResponse } from '@/util/types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -22,6 +23,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         if (!response.ok) {
             redirect('/sign-in')
         }
+
         return (
             <div className="w-full mx-auto space-y-12 py-10  rounded-lg">
                 <h1 className='text-4xl'>My Profile</h1>

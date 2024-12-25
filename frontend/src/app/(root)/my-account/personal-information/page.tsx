@@ -69,6 +69,7 @@ const PersonalInformation = () => {
                 body: JSON.stringify({
                     email: user?.email,
                 }),
+                credentials: 'include',
             });
 
             if (response.ok) {
@@ -134,12 +135,7 @@ const PersonalInformation = () => {
                     />
                 </div>
 
-                {/* Forgot Password */}
-                <div className="text-sm text-right">
-                    <button onClick={handleForgotPassword} className="text-primary hover:underline">
-                        Forgot Password?
-                    </button>
-                </div>
+
 
                 {/* Submit Button */}
                 <div>
@@ -152,6 +148,12 @@ const PersonalInformation = () => {
                     </button>
                 </div>
             </form>
+            {/* Forgot Password */}
+            <div className="text-sm text-right">
+                <button onClick={handleForgotPassword} className="text-primary hover:underline">
+                    Forgot Password?
+                </button>
+            </div>
         </div>
     );
 };

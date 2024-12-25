@@ -26,20 +26,28 @@ export class UsersController {
       throw new UnauthorizedException()
     }
     const user = decodeAuthToken(token)
+    console.log('verify user ===>')
+
     return {
       success: true,
       result: user
     }
   }
+
   @Get('/is-admin')
-  async verifyAdmin(@Req() req: { user: Users }) {
-    const user = req.user;
-    if (!user) {
+  async verifyAdmin(@Req() req: Request) {
+    const token = req.cookies._digi_auth_token || req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      throw new UnauthorizedException()
+    }
+    const user: any = decodeAuthToken(token)
+    console.log('is admin user ===>')
+    if (user.type !== userTypes.ADMIN) {
       throw new UnauthorizedException()
     }
     return {
       success: true,
-      result: user.type === userTypes.ADMIN ? 'admin' : 'customer'
+      result: user.type === userTypes.ADMIN
     }
   }
 
@@ -98,10 +106,10 @@ export class UsersController {
       throw new UnauthorizedException()
     }
     const user: any = await decodeAuthToken(token)
-    if (user.id !== id) {
+    console.log('id===>', user._id, id)
+    if (user._id !== id) {
       throw new UnauthorizedException()
     }
-    console.log('id===>', id)
     return this.usersService.updatePasswordOrName(id, updateUserDto);
   }
 

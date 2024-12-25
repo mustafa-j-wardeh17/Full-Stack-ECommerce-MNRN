@@ -13,6 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: Request | any, res: Response, next: NextFunction) {
     try {
       const token = req.cookies._digi_auth_token || req.headers.authorization?.split(' ')[1];
+      console.log(`\n\ntoken from ${req.path}===>`, token,'\n\n')
 
       if (!token) {
         throw new UnauthorizedException('Missing auth token');
@@ -22,6 +23,7 @@ export class AuthMiddleware implements NestMiddleware {
 
       const user = await this.userDB.findById(decodedData?.id);
 
+      console.log(`\n\n user from ${req.path}===>`, user,'\n\n')
       if (!user) {
         throw new UnauthorizedException('Unauthorized');
       }
@@ -30,7 +32,7 @@ export class AuthMiddleware implements NestMiddleware {
       req.user = user;
       next();
     } catch (error: any) {
-      console.error('Error in middleware:', error.message);
+      console.error(`Error from ${req.path} in middleware:`, error.message);
       throw new UnauthorizedException(error.message);
     }
   }
