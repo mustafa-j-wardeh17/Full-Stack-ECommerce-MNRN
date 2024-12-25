@@ -191,7 +191,7 @@ export class OrdersService {
             orderData.customerEmail,
             user.name,
             orderData.orderId,
-            `${config.get('frontendbase')}orders/success/${order._id}`,
+            `${config.get('frontendbase')}my-account/my-cart`,
           );
         }
         return {

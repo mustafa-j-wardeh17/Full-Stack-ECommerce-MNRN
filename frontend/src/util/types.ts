@@ -36,8 +36,10 @@ export interface PostCartItemResponse extends HttpResponse {
 }
 
 export interface UpdateCartItemResponse extends HttpResponse {
-    result:Cart
-      
+    result:Cart 
+}
+export interface CheckoutSelectedCartItemResponse extends HttpResponse {
+    result:string
 }
 
 
