@@ -43,7 +43,7 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
 
             if (response.ok) {
                 toast.success(`License ${isUpdate ? 'updated' : 'created'} successfully!`);
-                router.push(`/shop/product-crud/${productId}/sku/${skuId}/licenses`);
+                router.push(`/dashboard/products/${productId}/skus/${skuId}/licenses`);
             } else {
                 const errorData = await response.json();
                 console.error(`Error ${isUpdate ? 'updating' : 'creating'} license:`, errorData);
@@ -58,7 +58,7 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
     };
 
     return (
-        <div className="w-full bg-primary-foreground p-6 rounded-lg shadow-lg">
+        <div className="w-full dark:bg-black bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-primary mb-6">
                 {isUpdate ? 'Update License' : 'Create License'}
             </h2>

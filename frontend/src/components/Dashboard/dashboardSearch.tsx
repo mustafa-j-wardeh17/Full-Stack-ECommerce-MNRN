@@ -29,7 +29,7 @@ const DashboardSearch = () => {
     }, [query, router, searchParams])
 
     return (
-        <div className="flex items-center min-h-[54px] bg-white shadow md:w-[380px] sm:w-3/5 w-full overflow-hidden rounded-2xl  px-4 py-1">
+        <div className="flex items-center min-h-[54px] dark:bg-black bg-white shadow md:w-[380px] sm:w-3/5 w-full overflow-hidden rounded-2xl  px-4 py-1">
             <Search />
             <Input
                 type="text"

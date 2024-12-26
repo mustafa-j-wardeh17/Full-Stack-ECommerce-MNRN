@@ -18,7 +18,6 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             credentials: 'include',
         })
         const data: HttpResponse = await response.json();
-        console.log('Data is admin ===>:', data);
         if (data.message === 'Unauthorized') {
             throw new Error('Unauthorized')
         }

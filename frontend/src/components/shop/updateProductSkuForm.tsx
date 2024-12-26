@@ -1,6 +1,7 @@
 'use client';
 
 import { SkuDetail } from '@/util/types';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -13,6 +14,10 @@ const UpdateProductSkuForm = ({
     skuId: string;
     skuData: SkuDetail | undefined,
 }) => {
+
+    const router = useRouter()
+    const params = useParams()
+
     const [formData, setFormData] = useState({
         skuName: skuData?.skuName || '',
         price: skuData?.price || 0,
@@ -56,6 +61,7 @@ const UpdateProductSkuForm = ({
 
             if (response.ok) {
                 toast.success('SKU updated successfully!');
+                router.push(`/dashboard/products/${params.productId}/skus`)
             } else {
                 const errorData = await response.json();
                 console.error('Error updating SKU:', errorData);
@@ -70,7 +76,7 @@ const UpdateProductSkuForm = ({
     };
 
     return (
-        <div className="w-full bg-primary-foreground p-6 rounded-lg shadow-lg">
+        <div className="w-full dark:bg-black bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-primary mb-6">Update Product SKU</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* SKU Name */}

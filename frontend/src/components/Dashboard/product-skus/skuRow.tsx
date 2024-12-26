@@ -1,10 +1,10 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/table'
 import React from 'react'
-//import ActionProducts from './actionProducts'
 import { SkuDetail } from '@/util/types'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import ActionSKUs from './actionSku'
 
 
 
@@ -34,7 +34,7 @@ const SkuRow = ({ sku }: { sku: SkuDetail }) => {
                 </Link>
             </TableCell>
             <TableCell>
-                {/* <ActionProducts id={String(sku._id)} /> */}
+                <ActionSKUs id={String(sku._id)} />
             </TableCell>
         </TableRow>
     )

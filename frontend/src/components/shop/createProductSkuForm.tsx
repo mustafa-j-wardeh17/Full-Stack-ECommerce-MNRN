@@ -58,8 +58,7 @@ const ProductSkuForm = ({ productId }: { productId: string }) => {
   };
 
   return (
-    <div className="w-full overflow-hidden bg-primary-foreground p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6">Add Product SKUs</h2>
+    <div className="w-full overflow-hidden dark:bg-black bg-white p-6 rounded-lg shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         {skuDetails.map((sku, index) => (
           <div key={index} className="space-y-4 border-b pb-4 mb-4">
@@ -137,7 +136,7 @@ const ProductSkuForm = ({ productId }: { productId: string }) => {
         <button
           type="button"
           onClick={addSku}
-          className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition"
+          className="w-full dark:bg-blue-700 bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-900 transition"
         >
           Add Another SKU
         </button>

@@ -1,3 +1,4 @@
+import PageWrapper from '@/components/Dashboard/pageWrapper'
 import UpdateProductSkuForm from '@/components/shop/updateProductSkuForm'
 import { ProductResponse } from '@/util/types'
 import React from 'react'
@@ -24,13 +25,14 @@ const page = async ({ params }: { params: paramsProp }) => {
     }
 
     return (
-        <div className='my-[30px]'>
+
+        <PageWrapper title='Update Product Sku'>
             <UpdateProductSkuForm
                 skuData={skuData}
                 productId={productId}
                 skuId={skuId}
             />
-        </div>
+        </PageWrapper>
     )
 }
 

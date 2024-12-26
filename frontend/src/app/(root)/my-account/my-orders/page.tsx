@@ -11,10 +11,10 @@ interface orderInterface {
 }
 
 const page = async () => {
-
+  const cookieStore = cookies()
+  const _digi_auth_token = (await cookieStore).get('_digi_auth_token')
   try {
-    const cookieStore = cookies()
-    const _digi_auth_token = (await cookieStore).get('_digi_auth_token')
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders`, {
       method: 'GET',
       headers: {
