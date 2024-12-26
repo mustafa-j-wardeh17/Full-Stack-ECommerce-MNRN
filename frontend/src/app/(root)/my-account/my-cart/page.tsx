@@ -188,9 +188,9 @@ const CartPage = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6 text-primary">Your Cart</h1>
+            <h1 className="text-3xl font-bold mb-6 text-primary">My Cart</h1>
             {cartItems.length === 0 ? (
-                <p className="text-secondary">Your cart is empty.</p>
+                <p className="text-primary/60">My cart is empty.</p>
             ) : (
                 <div className="space-y-6">
                     {cartItems.map((item) => (

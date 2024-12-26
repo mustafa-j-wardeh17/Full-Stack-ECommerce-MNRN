@@ -10,6 +10,7 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { MdOutlineLogout, MdOutlinePublish } from "react-icons/md";
 import { FiUserPlus } from "react-icons/fi";
 import { usePathname } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 const Sidebar = () => {
     const pathname = usePathname();
@@ -51,9 +52,9 @@ const Sidebar = () => {
     return (
         <div
             dir="ltr"
-            className={`md:w-[350px] w-[80px] bg-[#F8F9FA] min-h-screen relative ${!menu ? 'md:ml-[-350px] ml-[-80px]' : 'ml-0'}`}
+            className={`md:w-[350px] w-[68px] bg-[#F8F9FA] min-h-screen relative ${!menu ? 'md:ml-[-350px] ml-[-80px]' : 'ml-0'}`}
         >
-            <div className={`fixed top-0 shadow h-screen md:w-[350px] w-[80px] md:px-8 px-2 py-8 bg-[#F8F9FA] flex flex-col gap-6 ${!menu ? 'translate transform duration-800 ease-in-out md:ml-[-350px] ml-[-80px]' : 'translate transform duration-200 ml-0'}`}>
+            <div className={`fixed z-50 top-0 shadow h-screen md:w-[350px] w-[80px] md:px-8 px-2 py-8 bg-[#F8F9FA] flex flex-col gap-6 ${!menu ? 'translate transform duration-800 ease-in-out md:ml-[-350px] ml-[-80px]' : 'translate transform duration-200 ml-0'}`}>
                 <div className='flex flex-col gap-4'>
                     <div className='flex w-full relative justify-end'>
                         <button
@@ -64,8 +65,10 @@ const Sidebar = () => {
                     </div>
                     <div className='flex items-center gap-3 justify-evenly w-full text-dark'>
                         <div className='relative w-[60px] overflow-hidden h-[60px] rounded-full bg-black border-2 border-black'>
-                            {/* <Image src={'/adam.png'} alt='admin name' fill className='object-cover' /> */}
-                            
+                            <Avatar>
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
                         </div>
                         <h1 className='uppercase text-dark md:flex hidden text-[20px] font-bold'>Hi Admin</h1>
                     </div>

@@ -27,6 +27,7 @@ const Navbar = () => {
 
     const navLinks = [
         { label: 'Home', href: '/' },
+        { label: 'Dashboard', href: '/dashboard', type: 'admin' },
         { label: 'Shop', href: '/shop' },
         { label: 'About Us', href: '/about-us' },
         { label: 'Contact Us', href: '/contact' },
@@ -55,7 +56,7 @@ const Navbar = () => {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`text-primary/85 hover:text-primary transition ${isActive(link.href) ? 'font-bold border-b-2 border-primary' : ''}`}
+                            className={` ${((link.label === 'Dashboard' && user?.type === 'admin') || link.label !== 'Dashboard') ? 'flex' : 'hidden'}  text-primary/85 hover:text-primary transition ${isActive(link.href) ? 'font-bold border-b-2 border-primary' : ''}`}
                         >
                             {link.label}
                         </Link>

@@ -149,7 +149,7 @@ const PersonalInformation = () => {
                 </div>
             </form>
             {/* Forgot Password */}
-            <div className="text-sm text-right">
+            <div className="text-sm mt-4 text-right">
                 <button onClick={handleForgotPassword} className="text-primary hover:underline">
                     Forgot Password?
                 </button>
