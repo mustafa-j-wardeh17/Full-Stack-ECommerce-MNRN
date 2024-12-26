@@ -2,6 +2,7 @@ import DashboardCategoryFilter from '@/components/Dashboard/dashboardCategoryFil
 import DashboardCard from '@/components/Dashboard/dashboardProductCard'
 import DashboardSearch from '@/components/Dashboard/dashboardSearch'
 import PageTitle from '@/components/Dashboard/pageTitle'
+import PageWrapper from '@/components/Dashboard/pageWrapper'
 import ProductsTable from '@/components/Dashboard/productsTable'
 import Pagination from '@/components/Pagination'
 import { baseType, categoryType, platformType } from '@/util/constant'
@@ -53,10 +54,8 @@ const Dashboard = async ({ searchParams }: { searchParams: tSearchParams }) => {
     products = data.result.products
 
     return (
-
-      <div className='relative flex w-full text-dark flex-col gap-8' >
-        <PageTitle title='Products' />
-        <div className='md:p-10 p-5 bg-primary-foreground flex flex-col gap-8'>
+      <PageWrapper title='Products'>
+        <>
           <div className='flex gap-4 items-center justify-between sm:flex-row flex-col'>
             <DashboardSearch />
             <div className='flex sm:justify-end w-full justify-between gap-3 items-center'>
@@ -79,7 +78,7 @@ const Dashboard = async ({ searchParams }: { searchParams: tSearchParams }) => {
             </div>
           </div>
           <ProductsTable
-            items={products}
+            products={products}
             page={(Number(resolvedSearchParams.page) || 1)}
             totalItems={products.length}
           />
@@ -89,8 +88,9 @@ const Dashboard = async ({ searchParams }: { searchParams: tSearchParams }) => {
               searchParams={resolvedSearchParams}
             />
           </div>
-        </div>
-      </div>
+        </>
+      </PageWrapper>
+
 
     )
   } catch (error) {

@@ -132,8 +132,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
     };
 
     return (
-        <div className="w-full overflow-hidden bg-primary-foreground p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-primary mb-6">Create Product</h2>
+        <div className="w-full overflow-hidden bg-primary-foreground">
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Product Details */}
                 <div>

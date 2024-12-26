@@ -1,3 +1,4 @@
+import PageWrapper from '@/components/Dashboard/pageWrapper'
 import CreateUpdateProduct from '@/components/shop/updateCreateProductForm'
 import { Product, ProductResponse } from '@/util/types'
 import React from 'react'
@@ -17,12 +18,12 @@ const page = async ({ params }: { params: tParams }) => {
 
   }
   return (
-    <div className='my-[30px] md:p-10 p-5'>
+    <PageWrapper title='Update Product'>
       <CreateUpdateProduct
         type='update'
         product={product}
       />
-    </div>
+    </PageWrapper>
   )
 }
 

@@ -1,5 +1,6 @@
 
 
+import PageWrapper from '@/components/Dashboard/pageWrapper';
 import CreateUpdateProduct from '@/components/shop/updateCreateProductForm';
 import React from 'react';
 
@@ -8,9 +9,9 @@ import React from 'react';
 const CreateProduct = () => {
 
     return (
-        <div className='my-[30px] sm:p-10 p-5'>
+        <PageWrapper title='Create Product'>
             <CreateUpdateProduct />
-        </div>
+        </PageWrapper>
     )
 }
 export default CreateProduct;

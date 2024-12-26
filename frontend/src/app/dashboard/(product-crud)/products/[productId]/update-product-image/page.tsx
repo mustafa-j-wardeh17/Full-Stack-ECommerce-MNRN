@@ -1,15 +1,19 @@
 'use client';
 
+import PageWrapper from '@/components/Dashboard/pageWrapper';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const Page = () => {
     const productId = useParams().productId || '';
     const [productImage, setProductImage] = useState<File | null>(null);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -26,6 +30,7 @@ const Page = () => {
             }
 
             setProductImage(file);
+            setPreviewImage(URL.createObjectURL(file));
         }
     };
 
@@ -65,37 +70,52 @@ const Page = () => {
     };
 
     return (
-        <div className="w-full my-[30px] bg-primary-foreground rounded-lg shadow-lg md:p-10 p-5">
-            <h2 className="text-2xl font-bold text-primary mb-6">Upload Product Image</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {/* File Input */}
-                <div>
-                    <label htmlFor="productImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Product Image
-                    </label>
-                    <input
-                        type="file"
-                        name="productImage"
-                        id="productImage"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="mt-2 block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                        required
-                    />
-                </div>
+        <PageWrapper title='Update Product Image'>
+            <div className="w-full bg-primary-foreground rounded-lg shadow-lg md:p-10 p-5">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* File Input with Preview */}
+                    <div>
+                        <label htmlFor="productImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Product Image
+                        </label>
+                        <div className="mt-2 flex justify-center items-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md relative">
+                            {previewImage ? (
+                                <img
+                                    src={previewImage}
+                                    alt="Preview"
+                                    className="object-cover w-full h-full rounded-md"
+                                />
+                            ) : (
+                                <div className="flex flex-col items-center justify-center text-gray-400">
+                                    <FaCloudUploadAlt size={50} />
+                                    <p className="text-sm">Click to upload or drag and drop</p>
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                name="productImage"
+                                id="productImage"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                required
+                            />
+                        </div>
+                    </div>
 
-                {/* Submit Button */}
-                <div>
-                    <button
-                        type="submit"
-                        className="w-full bg-primary text-secondary hover:bg-primary/80 font-semibold py-3 rounded-lg shadow-md focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
-                        disabled={loading}
-                    >
-                        {loading ? 'Uploading...' : 'Upload Image'}
-                    </button>
-                </div>
-            </form>
-        </div>
+                    {/* Submit Button */}
+                    <div>
+                        <button
+                            type="submit"
+                            className="w-full bg-primary text-secondary hover:bg-primary/80 font-semibold py-3 rounded-lg shadow-md focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+                            disabled={loading}
+                        >
+                            {loading ? 'Uploading...' : 'Upload Image'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </PageWrapper>
     );
 };
 

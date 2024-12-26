@@ -23,7 +23,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             throw new Error('Unauthorized')
         }
         return (
-            <div className="flex w-full bg-[#F8F9FA] min-h-screen overflow-hidden">
+            <div className="flex w-full bg-primary-foreground min-h-screen overflow-hidden">
                 <div className="h-full">
                     <Sidebar />
                 </div>

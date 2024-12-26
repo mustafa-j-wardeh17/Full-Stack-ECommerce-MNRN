@@ -1,15 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { TableCell, TableRow } from '@/components/ui/table'
 import Image from 'next/image'
 import React from 'react'
 import ActionProducts from './actionProducts'
 import { Product } from '@/util/types'
+import Link from 'next/link'
 
 
 
 
-const ProductRow = ({ product }: { product: Product }) => {
+const ProductRow = ({ product }: { product: Product  }) => {
     // const formattedDate = new Date(product.createdAt).toLocaleDateString(locale);
 
     return (
@@ -35,7 +34,12 @@ const ProductRow = ({ product }: { product: Product }) => {
 
             </TableCell>
             <TableCell >
-                {product.avgRating || 0}
+                <Link
+                    className='text-primary underline'
+                    href={`/dashboard/products/${product._id}/skus`}
+                >
+                    Skus
+                </Link>
             </TableCell>
             <TableCell>
                 <ActionProducts id={String(product._id)} />

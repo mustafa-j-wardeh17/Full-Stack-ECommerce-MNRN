@@ -1,15 +1,16 @@
 import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import ProductRow from './productRow'
-import { Product } from '@/util/types'
+import { Product, SkuDetail } from '@/util/types'
+import SkuRow from './product-skus/skuRow'
 
-const ProductsTable = ({ items, totalItems, page }: { page: number, items: Product[], totalItems: number }) => {
+const ProductsTable = ({ products, skus, totalItems, page, type = 'products' }: { page?: number, products?: Product[], skus?: SkuDetail[], totalItems: number, type?: 'skus' | 'products' }) => {
 
     return (
-        <div className=' bg-white w-full md:p-8 p-0 rounded-2xl shadow-md flex flex-col gap-8'>
+        <div className=' bg-white dark:bg-black w-full md:p-8 p-0 rounded-2xl shadow-md flex flex-col gap-8'>
             <div className='flex md:p-0 p-4 flex-col gap-3'>
-                <h1 className='text-3xl font-bold text-black'>Products</h1>
-                <p className='text-black/70'>Manage your products and view their sales performance</p>
+                <h1 className='text-3xl font-bold text-primary'>{type=='products'?'Products':'SKUs'}</h1>
+                <p className='text-primary/70'>{type==='products'?'Manage your products':'Manage your product SKUs'}</p>
             </div>
             <>
                 {
@@ -19,21 +20,35 @@ const ProductsTable = ({ items, totalItems, page }: { page: number, items: Produ
                                 <Table className='w-full '>
                                     <TableHeader>
                                         <TableRow className='text-dark'>
-                                            <TableHead className="hidden w-[100px] sm:table-cell">
-                                                <span className="sr-only">Image</span>
-                                            </TableHead>
+                                            {
+                                                type === 'products' && (
+                                                    <TableHead className="hidden w-[100px] sm:table-cell">
+                                                        <span className="sr-only">Image</span>
+                                                    </TableHead>
+                                                )
+                                            }
+
                                             <TableHead className='table-cell'>
-                                                <p className='flex'>Name</p>
+                                                <p className='flex'>{type === 'products' ? 'Name' : 'SKU-Name'}</p>
                                             </TableHead>
                                             <TableHead className="hidden md:table-cell ">
-                                                <p className='flex'>Category</p>
+                                                <p className='flex'>{type === 'products' ? 'Category' : 'SKU-Price'}</p>
                                             </TableHead>
                                             <TableHead className="hidden md:table-cell ">
-                                                <p className='flex'>Platform</p>
+                                                <p className='flex'>{type === 'products' ? 'Platform' : 'SKU-Validity'}</p>
                                             </TableHead>
-                                            <TableHead >
-                                                <p className='flex'>Rating</p>
-                                            </TableHead>
+                                            {
+                                                type === 'products' ? (
+                                                    <TableHead >
+                                                        <p className='flex'>Skus</p>
+                                                    </TableHead>
+                                                )
+                                                    : (
+                                                        <TableHead >
+                                                            <p className='flex'>Licenses</p>
+                                                        </TableHead>
+                                                    )
+                                            }
                                             <TableHead >
                                                 <p className='flex'>Actions</p>
                                             </TableHead>
@@ -42,21 +57,37 @@ const ProductsTable = ({ items, totalItems, page }: { page: number, items: Produ
 
                                     <TableBody>
                                         {
-                                            items?.map((item) => (
-                                                <ProductRow
-                                                    key={item._id}
-                                                    product={item}
-                                                />
-                                            ))
+                                            type === 'products'
+                                                ?
+                                                products?.map((item) => (
+                                                    <ProductRow
+                                                        key={item._id}
+                                                        product={item}
+                                                    />
+                                                ))
+
+                                                :
+                                                skus?.map((item) => (
+                                                    <SkuRow
+                                                        key={item._id}
+                                                        sku={item}
+                                                    />
+                                                ))
+
                                         }
                                     </TableBody>
 
                                 </Table>
-                                <div className="text-xs md:p-0 p-8 text-dark text-muted-foreground">
-                                    Showing <strong>{((page - 1) * 12) + totalItems === 0 ? 0 : 1}-{Math.min(page * 12, totalItems)}
-                                    </strong> of <strong>{totalItems}</strong>{" "}
-                                    items
-                                </div>
+                                {
+                                    (type === 'products' && page) && (
+                                        <div className="text-xs md:p-0 p-8 text-dark text-muted-foreground">
+                                            Showing <strong>{((page - 1) * 12) + totalItems === 0 ? 0 : 1}-{Math.min(page * 12, totalItems)}
+                                            </strong> of <strong>{totalItems}</strong>{" "}
+                                            items
+                                        </div>
+                                    )
+                                }
+
                             </>
                         )
                         : (

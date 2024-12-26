@@ -52,14 +52,14 @@ const Sidebar = () => {
     return (
         <div
             dir="ltr"
-            className={`md:w-[350px] w-[68px] bg-[#F8F9FA] min-h-screen relative ${!menu ? 'md:ml-[-350px] ml-[-80px]' : 'ml-0'}`}
+            className={`md:w-[350px] w-[68px] bg-secondary min-h-screen relative ${!menu ? 'md:ml-[-350px] ml-[-80px]' : 'ml-0'}`}
         >
-            <div className={`fixed z-50 top-0 shadow h-screen md:w-[350px] w-[80px] md:px-8 px-2 py-8 bg-[#F8F9FA] flex flex-col gap-6 ${!menu ? 'translate transform duration-800 ease-in-out md:ml-[-350px] ml-[-80px]' : 'translate transform duration-200 ml-0'}`}>
+            <div className={`fixed z-50 top-0 shadow h-screen md:w-[350px] w-[80px] md:px-8 px-2 py-8 bg-secondary flex flex-col gap-6 ${!menu ? 'translate transform duration-800 ease-in-out md:ml-[-350px] ml-[-80px]' : 'translate transform duration-200 ml-0'}`}>
                 <div className='flex flex-col gap-4'>
                     <div className='flex w-full relative justify-end'>
                         <button
                             onClick={() => setMenu(false)}
-                            className={`${menu ? 'flex' : 'hidden'} absolute border rounded-md -top-6 hover:bg-neutral-200 -right-[6px] md:-right-5`}>
+                            className={`${menu ? 'flex' : 'hidden'} absolute border rounded-md -top-6 hover:bg-primary/20 -right-[6px] md:-right-5`}>
                             <IoCloseSharp size={24} className='text-dark' />
                         </button>
                     </div>
@@ -70,9 +70,9 @@ const Sidebar = () => {
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                         </div>
-                        <h1 className='uppercase text-dark md:flex hidden text-[20px] font-bold'>Hi Admin</h1>
+                        <h1 className='uppercase text-primary md:flex hidden text-[20px] font-bold'>Hi Admin</h1>
                     </div>
-                    <Separator className='bg-[#e6e8e9]' />
+                    <Separator className='bg-primary/30' />
                 </div>
 
                 <div className='flex relative h-full flex-col items-center gap-4 text-dark'>
@@ -80,15 +80,15 @@ const Sidebar = () => {
                         <Link
                             key={i}
                             href={item.link}
-                            className={`${isActiveLink(item.link) ? 'bg-white shadow-md text-dark' : 'bg-transparent text-gray-600'} cursor-pointer sm:w-full flex flex-row md:justify-normal justify-center items-center gap-2 sm:p-4 p-2 rounded-md transform duration-0 hover:bg-white hover:shadow-md`}
+                            className={`${isActiveLink(item.link) ? 'bg-primary-foreground shadow-md text-dark' : 'bg-transparent text-gray-600'} cursor-pointer sm:w-full flex flex-row md:justify-normal justify-center items-center gap-2 sm:p-4 p-2 rounded-md transform duration-0 hover:bg-primary/10 hover:shadow-md`}
                         >
-                            <p className={`duration-0 p-2 font-bold text-[20px] rounded-lg shadow ${isActiveLink(item.link) ? 'bg-amber-400 text-white' : 'bg-white'}`}>
+                            <p className={`duration-0 p-2 font-bold text-[20px] rounded-lg shadow ${isActiveLink(item.link) ? 'bg-amber-400 text-primary' : 'bg-white'}`}>
                                 {item.icon}
                             </p>
-                            <h1 className='text-md md:flex hidden'>{item.title}</h1>
+                            <h1 className='text-md text-primary md:flex hidden'>{item.title}</h1>
                         </Link>
                     ))}
-                    <button onClick={() => { setLoading(true); setLoading(false); }} className='absolute bottom-0 text-dark shadow-md transform transition-all delay-0 duration-0 hover:bg-red-500 hover:text-white text-center cursor-pointer w-full flex flex-row justify-center items-center gap-2 bg-white p-4 rounded-md'>
+                    <button onClick={() => { setLoading(true); setLoading(false); }} className='absolute bottom-0 text-primary shadow-md transform transition-all delay-0 duration-0 hover:bg-red-500 hover:text-white text-center cursor-pointer w-full flex flex-row justify-center items-center gap-2 bg-primary-foreground  p-4 rounded-md'>
                         {!loading ? (
                             <>
                                 <MdOutlineLogout className='duration-0' />

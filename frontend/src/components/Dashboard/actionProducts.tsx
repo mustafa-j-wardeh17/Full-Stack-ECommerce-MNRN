@@ -44,6 +44,11 @@ const ActionProducts = ({ id }: { id: string }) => {
                         Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
+                        onClick={() => router.push(`/dashboard/products/${id}/update-product-image`)}
+                    >
+                        Edit Product Image 
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
                         onClick={handleShowDialog}
                     >
                         Delete
