@@ -26,7 +26,7 @@ const DeleteSKU = ({ id, isDeleteDialogVisible, handleCloseDialog }:
 
             console.log('Delete product sku', data)
             if (!response.ok) {
-                throw new Error(`Failed to delete sku: ${response.statusText}`);
+                throw new Error(`Failed to delete sku: ${data.message}`);
             }
 
             toast.success('Product SKU deleted successfully');

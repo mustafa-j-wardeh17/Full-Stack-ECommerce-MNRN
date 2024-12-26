@@ -46,7 +46,7 @@ const DeleteProductSkuLicenseButton = ({ licenseId }: { licenseId: string }) => 
 
             <AlertDialog>
                 <AlertDialogTrigger
-                    className=" text-red-600 rounded-full shadow-md hover:underline flex items-center justify-center"
+                    className=" text-red-600  rounded-full  hover:underline flex items-center justify-center"
                 >
                     Delete
                 </AlertDialogTrigger>

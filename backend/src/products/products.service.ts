@@ -396,6 +396,33 @@ export class ProductsService {
       throw error;
     }
   }
+  async deleteProductSku(
+    productId: string,
+    skuId: string,
+  ) {
+    try {
+      const product = await this.productDb.findById(productId);
+      if (!product) {
+        throw new Error('Product does not exist');
+      }
+
+      const sku = product.skuDetails.find((sku) => sku._id == skuId);
+      if (!sku) {
+        throw new Error('Sku does not exist');
+      }
+
+
+      const result = await this.productDb.deleteSku(productId, skuId)
+
+      return {
+        message: 'Product sku updated successfully',
+        success: true,
+        result,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async addProductSkuLicense(
     productId: string,

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { GetProductSkuLicensesResponse, License } from '@/util/types';
 import DeleteProductSkuLicenseButton from '@/components/shop/DeleteProductSkuLicenseButton';
 import PageWrapper from '@/components/Dashboard/pageWrapper';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 
 
@@ -47,36 +48,38 @@ const page = async ({ params }: { params: paramsProp }) => {
                     </h1>
 
 
-                    <table className="w-full border border-gray-300 dark:border-gray-600">
-                        <thead>
-                            <tr>
-                                <th className="p-2 text-left border-b border-gray-300 dark:border-gray-600">
+                    <Table className='w-full '>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="table-cell">
                                     License Key
-                                </th>
-                                <th className="p-2 text-left border-b border-gray-300 dark:border-gray-600">
+                                </TableHead>
+                                <TableHead className="table-cell">
                                     Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
                             {licenses.length > 0 && licenses.map((license) => (
-                                <tr key={license._id}>
-                                    <td className="p-2 border-b sm:text-sm text-xs border-gray-300 dark:border-gray-600">
+                                <TableRow key={license._id}>
+                                    <TableCell className="table-cell">
                                         {license.licenseKey}
-                                    </td>
-                                    <td className="p-2 flex gap-3 sm:text-sm text-xs border-b border-gray-300 dark:border-gray-600">
-                                        <Link
-                                            href={`/dashboard/products/${productId}/skus/${skuId}/licenses/${license._id}/update-license`}
-                                            className="text-blue-600 hover:underline"
-                                        >
-                                            Update
-                                        </Link>
-                                        <DeleteProductSkuLicenseButton licenseId={license._id} />
-                                    </td>
-                                </tr>
+                                    </TableCell>
+                                    <TableCell className="table-cell">
+                                        <div className='flex gap-3 items-center'>
+                                            <Link
+                                                href={`/dashboard/products/${productId}/skus/${skuId}/licenses/${license._id}/update-license`}
+                                                className="text-blue-600 hover:underline"
+                                            >
+                                                Update
+                                            </Link>
+                                            <DeleteProductSkuLicenseButton licenseId={license._id} />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
                             ))}
-                        </tbody>
-                    </table>
+                        </TableBody>
+                    </Table>
 
 
                     <div className="mt-4">
