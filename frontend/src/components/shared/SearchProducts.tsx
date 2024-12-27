@@ -59,7 +59,7 @@ const SearchProducts = ({
                 <div className="absolute top-0 left-0 w-full h-screen bg-primary-foreground z-50 flex flex-col items-center gap-6 pt-16">
                     <X
                         size={24}
-                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary transition"
+                        className="absolute z-10 top-4 right-4 cursor-pointer text-white transition"
                         onClick={() => setShowMenu(false)}
                     />
                     <div className="flex flex-col w-full items-center px-4 gap-6">
@@ -78,7 +78,7 @@ const SearchProducts = ({
                     </div>
 
                     {/* Icons for Mobile Navigation */}
-                    <div className="flex items-center gap-6 mt-6">
+                    <div className="sm:hidden flex items-center gap-6 mt-6">
                         <Search
                             className="text-primary/70 cursor-pointer hover:text-primary transition"
                             size={24}
@@ -87,19 +87,39 @@ const SearchProducts = ({
                                 setShowMenu(false);
                             }}
                         />
-                        <HeartIcon className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
-                        <ShoppingBag className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
-                        <BsPersonCircle
-                            size={24}
-                            className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            onClick={() => {
-                                if (user) {
-                                    router.push('/my-account/personal-information');
-                                } else {
-                                    router.push('/sign-in');
-                                }
-                            }}
-                        />
+                        {
+                            !user && (
+                                <Link
+                                    className='sm:hidden flex bg-primary text-secondary px-3 py-[6px] rounded-md shadow-md hover:bg-primary/80 duration-100'
+                                    href={'/sign-in'}
+                                >
+                                    Login
+                                </Link>
+                            )
+                        }
+                        {
+                            (user && user.type) && (
+                                <>
+                                    <Link onClick={() => setShowMenu(false)} href={'/my-account/my-wishlist'}>
+                                        <HeartIcon className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
+                                    </Link>
+                                    <Link onClick={() => setShowMenu(false)} href={'/my-account/my-cart'}>
+                                        <ShoppingBag className="text-primary/70 cursor-pointer hover:text-primary transition" size={24} />
+                                    </Link>
+                                    <BsPersonCircle
+                                        size={24}
+                                        className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                                        onClick={() => {
+                                            if (user) {
+                                                router.push('/my-account/personal-information');
+                                            } else {
+                                                router.push('/sign-in');
+                                            }
+                                        }}
+                                    />
+                                </>
+                            )
+                        }
                     </div>
                 </div>
             )}
@@ -109,7 +129,7 @@ const SearchProducts = ({
                 <div className="fixed inset-0 z-50 bg-black/80 flex flex-col py-[60px] items-center ">
                     <X
                         size={28}
-                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary transition"
+                        className="absolute top-4 right-4 text-white cursor-pointer hover:text-white/80 transition"
                         onClick={() => setShowSearch(false)}
                     />
                     <div className="w-full max-w-md px-4">

@@ -255,12 +255,12 @@ export class ProductsService {
         folder: config.get('cloudinary.folder_path'),
         public_id: `${config.get('cloudinary.folder_path')}${Date.now()}`,
         transformation: [
-          {
-            width: config.get('cloudinary.bigSize').toString().split('X')[0],
-            height: config.get('cloudinary.bigSize').toString().split('X')[1],
-            crop: 'fill'
-          },
-          { quality: 'auto' }
+          // {
+          //   width: config.get('cloudinary.bigSize').toString().split('X')[0],
+          //   height: config.get('cloudinary.bigSize').toString().split('X')[1],
+          //   crop: "fill" // fill with width and heignt "scale" for image sizes give me scale image
+          // },
+          { quality: 'auto', effect: "upscale" }
         ],
       })
 
@@ -597,27 +597,20 @@ export class ProductsService {
         userId: user._id.toString(),
         'orderedItems.productId': productId,
       });
-      if (!order) {
-        throw new BadRequestException('You have not purchased this product');
-      }
 
       // To avoid reviewing for unpushased cusomer
       if (!order) {
-        throw new BadRequestException('You have not purchased this product');
+        throw new Error('You have not purchased this product');
       }
 
       // Iterate through each element in `product.feedbackDetails` and extract the rating
-      const ratings: any[] = [];
-      product.feedbackDetails.forEach((comment: { rating: any }) =>
-        ratings.push(comment.rating),
-      );
+      const ratings: number[] = [...product.feedbackDetails.map((comment: { rating: number }) => Number(comment.rating)), rating]
+
 
       // If there are any ratings in the `ratings` array, calculate the average
-      let avgRating = String(rating);
+      let avgRating = 0;
       if (ratings.length > 0) {
-        avgRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(
-          2,
-        );
+        avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
       }
 
       const reviewDetails = {
@@ -646,6 +639,7 @@ export class ProductsService {
       throw error;
     }
   }
+
 
   async removeProductReview(productId: string,
     reviewId: string): Promise<{

@@ -1,6 +1,7 @@
 'use client';
 
 import PageWrapper from '@/components/Dashboard/pageWrapper';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -78,12 +79,13 @@ const Page = () => {
                         <label htmlFor="productImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Product Image
                         </label>
-                        <div className="mt-2 flex justify-center items-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md relative">
+                        <div className="mt-2 flex justify-center items-center w-full lg:h-[500px] h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md relative">
                             {previewImage ? (
-                                <img
+                                <Image
                                     src={previewImage}
                                     alt="Preview"
-                                    className="object-cover w-full h-full rounded-md"
+                                    fill
+                                    className=" w-full h-full rounded-md"
                                 />
                             ) : (
                                 <div className="flex flex-col items-center justify-center text-gray-400">

@@ -17,7 +17,7 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                     src={product.image}
                     alt={product.productName}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-center object-fill aspect-square transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Action Icons */}
                 <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

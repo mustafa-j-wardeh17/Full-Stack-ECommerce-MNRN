@@ -1,5 +1,6 @@
 import { useUserContext } from '@/context';
 import { Feedbacker } from '@/util/types';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
@@ -15,7 +16,7 @@ type ReviewsProps = {
 const Reviews = ({ productReviews, productId }: { productReviews: Feedbacker[], productId: string }) => {
     const [reviews, setReviews] = useState<ReviewsProps[]>(productReviews ? productReviews : []);
     const { user, userType } = useUserContext()
-
+    const router = useRouter()
     const [reviewForm, setReviewForm] = useState<ReviewsProps>({ customerId: user?.id || '', customerName: user?.name || '', rating: 0, feedbackMsg: '' });
     const [loading, setLoading] = useState(false);
 
@@ -26,7 +27,7 @@ const Reviews = ({ productReviews, productId }: { productReviews: Feedbacker[], 
     const handleReviewSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (reviewForm.customerName && reviewForm.rating > 0 && reviewForm.feedbackMsg) {
+        if (reviewForm.rating > 0 && reviewForm.feedbackMsg) {
             setLoading(true);
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/reviews`, {
@@ -46,19 +47,19 @@ const Reviews = ({ productReviews, productId }: { productReviews: Feedbacker[], 
                     setReviews([...reviews, newReview]);
                     setReviewForm({ customerId: user?.id || '', customerName: '', rating: 0, feedbackMsg: '' });
                     toast.success('Review submitted successfully!');
+                    router.refresh()
                 } else {
                     const errorData = await response.json();
-                    console.log('Error submitting review:', errorData);
-                    toast.error(errorData.errorResponse.message);
+                    toast.error(errorData.message);
                 }
             } catch (error) {
-                console.error('Error submitting review:', error);
                 alert('An error occurred while submitting your review. Please try again.');
             } finally {
                 setLoading(false);
             }
         } else {
-            alert('Please complete all fields before submitting your review.');
+            toast.error('Please complete all fields before submitting your review.');
+
         }
     };
 
@@ -77,6 +78,7 @@ const Reviews = ({ productReviews, productId }: { productReviews: Feedbacker[], 
                 const newReviews = reviews.filter((review) => review.customerId !== user?.id);
                 setReviews(newReviews);
                 toast.success('Review deleted successfully!');
+                router.refresh()
             } else {
                 const errorData = await response.json();
                 toast.error(errorData.message);
@@ -109,7 +111,7 @@ const Reviews = ({ productReviews, productId }: { productReviews: Feedbacker[], 
             </div>
 
             {/* Review Form */}
-            <div className={`mt-6 ${(userType === 'guest' || reviews.find(review => review.customerId === user?.id)?.customerId === user?.id) ? 'hidden' : 'block'}`}>
+            <div className={`mt-6 ${(userType !== 'customer' || reviews.find(review => review.customerId === user?.id)?.customerId === user?.id) ? 'hidden' : 'block'}`}>
                 <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Write a Review</h4>
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
                     <input

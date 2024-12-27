@@ -47,7 +47,7 @@ const page = async ({ params }: { params: tParams }) => {
               alt={`Product ${product._id} image`}
               width={400}
               height={400}
-              className='w-full  object-cover'
+              className='w-full  object-fill aspect-square'
             />
           </div>
           <div className='flex flex-col justify-center gap-4 2xl:w-3/5 lg:w-1/2 w-full '>
@@ -58,12 +58,15 @@ const page = async ({ params }: { params: tParams }) => {
             <p>{product.description}</p>
             <div className='flex items-center gap-2'>
               <span className='flex'>
-                {[1, 2, 3, 4, 5].map((_, idx: number) => (
-                  <FaStar key={idx} className='text-amber-500' />
+                {[...Array(5)].map((_, idx) => (
+                  <FaStar
+                    key={idx}
+                    className={idx < Math.floor(product.avgRating || 0) ? 'text-amber-500' : 'text-gray-300'}
+                  />
                 ))}
               </span>
               <span className='text-primary/20 text-xs'>
-                5.0 (126 Reviews)
+                {product.avgRating?.toFixed(2) || '0.0'} ({product.feedbackDetails.length || 0} Reviews)
               </span>
             </div>
             <ul className='list-disc pl-8 gap-2'>

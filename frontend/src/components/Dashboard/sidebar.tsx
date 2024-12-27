@@ -9,15 +9,17 @@ import { HiOutlineMenu } from "react-icons/hi";
 import { IoCloseSharp } from 'react-icons/io5';
 import { MdOutlineLogout, MdOutlinePublish } from "react-icons/md";
 import { FiUserPlus } from "react-icons/fi";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
+import toast from 'react-hot-toast';
+import { useUserContext } from '@/context';
 
 const Sidebar = () => {
     const pathname = usePathname();
     const [loading, setLoading] = useState<boolean>(false);
     const dashboardLinks = [
         {
-            link: '/dashboard',
+            link: '/dashboard/products',
             title: 'Products',
             icon: <CiShoppingCart />
         },
@@ -37,13 +39,38 @@ const Sidebar = () => {
             icon: <MdOutlinePublish />
         },
         {
-            link: '/settings',
+            link: '/dashboard/settings',
             title: 'User Management',
             icon: <FiUserPlus />
         },
     ];
 
     const [menu, setMenu] = useState<boolean>(true);
+    const router = useRouter()
+    const { setUser, setUserType } = useUserContext()
+    const handleLogout = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/logout`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.message || 'Failed to log out');
+            }
+            toast.success('Logout Successfully')
+            router.push('/sign-in')
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            // Reset user and userType regardless of the API response
+            setUser(null);
+            setUserType('guest');
+        }
+    }
 
     const isActiveLink = (link: string) => {
         return pathname === link;
@@ -88,7 +115,7 @@ const Sidebar = () => {
                             <h1 className='text-md text-primary md:flex hidden'>{item.title}</h1>
                         </Link>
                     ))}
-                    <button onClick={() => { setLoading(true); setLoading(false); }} className='absolute bottom-0 text-primary shadow-md transform transition-all delay-0 duration-0 hover:bg-red-500 hover:text-white text-center cursor-pointer w-full flex flex-row justify-center items-center gap-2 bg-primary-foreground  p-4 rounded-md'>
+                    <button onClick={() => { setLoading(true); handleLogout(); setLoading(false); }} className='absolute bottom-0 text-primary shadow-md transform transition-all delay-0 duration-0 hover:bg-red-500 hover:text-white text-center cursor-pointer w-full flex flex-row justify-center items-center gap-2 bg-primary-foreground  p-4 rounded-md'>
                         {!loading ? (
                             <>
                                 <MdOutlineLogout className='duration-0' />

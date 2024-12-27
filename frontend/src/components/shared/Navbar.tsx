@@ -70,34 +70,49 @@ const Navbar = () => {
                         size={20}
                         onClick={() => setShowSearch(true)}
                     />
-                    <Link href={'/my-account/my-wishlist'}>
-                        <HeartIcon
-                            className={`${isIconActive('/my-account/my-wishlist') ? 'text-primary font-bold ' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            size={20}
-                        />
-                    </Link>
+                    {
+                        !user && (
+                            <Link 
+                            className='sm:flex hidden bg-primary text-secondary px-3 py-[6px] rounded-md shadow-md hover:bg-primary/80 duration-100'
+                            href={'/sign-in'}
+                            >
+                                Login
+                            </Link>
+                        )
+                    }
+                    {
+                        (user && user.type) && (
+                            <>
+                                <Link href={'/my-account/my-wishlist'}>
+                                    <HeartIcon
+                                        className={`${isIconActive('/my-account/my-wishlist') ? 'text-primary font-bold ' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                                        size={20}
+                                    />
+                                </Link>
 
-                    <Link href={'/my-account/my-orders'}>
-                        <ShoppingBag
-                            className={`${isIconActive('/my-account/my-orders') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            size={20}
-                        />
-                    </Link>
+                                <Link href={'/my-account/my-cart'}>
+                                    <ShoppingBag
+                                        className={`${isIconActive('/my-account/my-cart') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                                        size={20}
+                                    />
+                                </Link>
 
-                    <Link href={'/my-account/personal-information'}>
-                        <BsPersonCircle
-                            size={20}
-                            className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
-                            onClick={() => {
-                                if (user) {
-                                    router.push('/my-account/personal-information');
-                                } else {
-                                    router.push('/sign-in');
-                                }
-                            }}
-                        />
-                    </Link>
-
+                                <Link href={'/my-account/personal-information'}>
+                                    <BsPersonCircle
+                                        size={20}
+                                        className={`${isIconActive('/my-account/personal-information') ? 'text-primary font-bold' : 'text-primary/60 '} sm:flex hidden  cursor-pointer hover:text-primary transition duration-100`}
+                                        onClick={() => {
+                                            if (user) {
+                                                router.push('/my-account/personal-information');
+                                            } else {
+                                                router.push('/sign-in');
+                                            }
+                                        }}
+                                    />
+                                </Link>
+                            </>
+                        )
+                    }
 
 
 
