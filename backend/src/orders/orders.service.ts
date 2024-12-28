@@ -180,30 +180,54 @@ export class OrdersService {
 
         // Extract SKU and Product IDs from metadata
         const metadata = session.metadata;
-        const skusAndProducts = Object.keys(metadata)
-        .reduce((acc, key) => {
-          const match = key.match(/(skuId|productId|quantity)_(\d+)/);
-          if (match) {
-            const [, field, index] = match;
-            acc[index] = acc[index] || {};
-            acc[index][field] = metadata[key];
-          }
-          return acc;
-        }, [])
-        .filter(item => item.skuId && item.productId && item.quantity); // Ensure only complete entries are included
-      
+        const skusAndProducts: {
+          skuId: string,
+          productId: string,
+          quantity: number,
+        }[] = Object.keys(metadata)
+          .reduce((acc, key) => {
+            const match = key.match(/(skuId|productId|quantity)_(\d+)/);
+            if (match) {
+              const [, field, index] = match;
+              acc[index] = acc[index] || {};
+              acc[index][field] = metadata[key];
+            }
+            return acc;
+          }, [])
+          .filter(item => item.skuId && item.productId && item.quantity); // Ensure only complete entries are included
 
-        console.log('SKUs and Products from Metadata:', skusAndProducts);
+
+        console.log('SKUs and Products and Quantity from Metadata:', skusAndProducts);
 
         const orderData = await this.createOrderObject(session);
         const order = await this.create(orderData);
 
         // Check if payment is successful
         if (session.payment_status === paymentStatus.paid) {
-          if (order.orderStatus !== orderStatus.completed) {
-            for (const item of order.orderedItems) {
-              const licenses = await this.getLicense(orderData.orderId, item);
-              item.licenses = licenses;
+          let licenses: { licenseKey: string; skuName: string; productName: string }[] = [];
+
+          for (const product of skusAndProducts) {
+            const findProduct = await this.productDB.findById(product.productId);
+
+            // Update remaining stock for the SKU
+            await this.productDB.decrementSkuRemainingStock(product.productId, product.skuId, product.quantity);
+
+            if (findProduct.hasLicenses) {
+              // Retrieve and mark licenses as sold
+              const retrievedLicenses = await this.getLicenseAndSetItSold(
+                order.orderId,
+                product.skuId,
+                product.productId,
+                product.quantity
+              );
+
+              licenses.push(
+                ...retrievedLicenses.map(license => ({
+                  licenseKey: license.licenseKey,
+                  skuName: license.productSku,
+                  productName: findProduct.productName,
+                }))
+              );
             }
           }
 
@@ -213,19 +237,29 @@ export class OrdersService {
             isOrderDelivered: true,
             ...orderData,
           });
-          const user = await this.userDB.findById(orderData.userId)
+
+          const user = await this.userDB.findById(orderData.userId);
+
+          // Send email with license details
+          if (licenses.length > 0) {
+            await this.sendLicenseEmail(user.email, user.name, licenses);
+          }
+
+          // Send order confirmation email
           this.sendOrderEmail(
             orderData.customerEmail,
             user.name,
             orderData.orderId,
-            `${config.get('frontendbase')}my-account/my-orders/success`,
+            `${config.get('frontendbase')}my-account/my-orders/success`
           );
         }
+
         return {
-          message: "Payment checkout session successfully created",
+          message: 'Payment checkout session successfully processed',
           success: true,
-          result: null
-        }
+          result: null,
+        };
+
       } else if (event.type === 'payment_intent.succeeded') {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
@@ -301,40 +335,20 @@ export class OrdersService {
   /**
    * Retrieves licenses for ordered items and marks them as sold.
    */
-  async getLicense(orderId: string, item: Record<string, any>) {
-    try {
-      const product = await this.productDB.findById(item.productId);
+  async getLicenseAndSetItSold(orderId: string, skuId: string, productId: string, quantity: number) {
+    const licenses = await this.productDB.findLicenses(
+      { productSku: skuId, isSold: false },
+      quantity
+    );
 
-      const skuDetails = product.skuDetails.find(
-        (sku) => sku.skuCode === item.skuCode,
-      );
+    const licenseIds = licenses.map(license => license._id);
 
-      const licenses = await this.productDB.findLicenses(
-        {
-          productSku: skuDetails._id,
-          isSold: false,
-        },
-        item.quantity,
-      );
+    await this.productDB.updateLicenseMany(
+      { _id: { $in: licenseIds } },
+      { isSold: true, orderId }
+    );
 
-      const licenseIds = licenses.map((license) => license._id);
-
-      await this.productDB.updateLicenseMany(
-        {
-          _id: {
-            $in: licenseIds,
-          },
-        },
-        {
-          isSold: true,
-          orderId,
-        },
-      );
-
-      return licenses.map((license) => license.licenseKey);
-    } catch (error) {
-      throw error;
-    }
+    return licenses;
   }
 
   async fullfillOrder(
@@ -369,4 +383,43 @@ export class OrdersService {
     });
   }
 
+  async sendLicenseEmail(
+    email: string,
+    customerName: string,
+    licenses: { productName: string; licenseKey: string, skuName: string }[],
+  ) {
+    const licenseRows = licenses
+      .map(
+        (license) => `
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">${license.productName}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">${license.skuName}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">${license.licenseKey}</td>
+          </tr>
+        `
+      )
+      .join('');
+
+    await this.mailer.sendMail({
+      to: [{ name: customerName, address: email }],
+      subject: 'Your Product Licenses - PS_Store',
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background-color: #f8f8f8; text-align: left;">
+              <th style="padding: 10px; border: 1px solid #ddd;">Product</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">SkuName</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">License Key</th>
+            </tr>
+            ${licenseRows}
+          </table>
+          <p>Dear ${customerName},</p>
+          <p>Thank you for your purchase! Below are your product license details:</p>
+          <p>If you have any issues or questions, feel free to reach out to our support team.</p>
+          <p>Best regards,</p>
+          <p>The PS_Store Team</p>
+        </div>
+      `,
+    });
+  }
 }

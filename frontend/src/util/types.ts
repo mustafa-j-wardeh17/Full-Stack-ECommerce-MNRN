@@ -72,6 +72,7 @@ export type Cart = {
     _id: string;
     userId: string;
     productName: string;
+    productId: string;
     skuPrice: number;
     skuKey: string;
     skuId: string;
@@ -103,7 +104,7 @@ export type SkuDetail = {
     lifetime: boolean;
     stripePriceId: string;
     skuCode?: string;
-    remains: number
+    remainingStock: number
 };
 
 

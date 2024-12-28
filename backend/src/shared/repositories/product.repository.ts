@@ -152,10 +152,10 @@ export class ProductRepository {
             { $inc: { 'skuDetails.$.remainingStock': 1 } },
         );
     }
-    async decrementSkuRemainingStock(productId: string, skuId: string): Promise<void> {
+    async decrementSkuRemainingStock(productId: string, skuId: string, quantity?: number): Promise<void> {
         await this.productModel.updateOne(
             { _id: productId, 'skuDetails._id': skuId },
-            { $inc: { 'skuDetails.$.remainingStock': -1 } },
+            { $inc: { 'skuDetails.$.remainingStock': quantity ? -quantity : -1 } },
         );
     }
 

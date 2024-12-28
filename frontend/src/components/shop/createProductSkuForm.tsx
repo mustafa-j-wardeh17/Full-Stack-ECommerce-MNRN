@@ -1,9 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const ProductSkuForm = ({ productId, hasLicenses }: { productId: string, hasLicenses: boolean }) => {
+  const router = useRouter()
   const [skuDetails, setSkuDetails] = useState([
     { skuName: '', price: 0, validity: 0, lifetime: false, remainingStock: 0 },
   ]);
@@ -62,6 +64,7 @@ const ProductSkuForm = ({ productId, hasLicenses }: { productId: string, hasLice
 
       if (response.ok) {
         toast.success('SKUs added successfully!');
+        router.push(`/dashboard/products/${productId}/skus`)
       } else {
         const errorData = await response.json();
         toast.error(`Failed to add SKUs: ${errorData.message || 'Unknown error'}`);

@@ -123,6 +123,7 @@ const CartPage = () => {
                 skuPriceId: item.skuPriceId, // Assuming this field exists in the cart item
                 quantity: item.quantity,
                 skuId: item.skuId,
+                productId:item.productId
             }));
 
         // Prepare the body for the checkout request

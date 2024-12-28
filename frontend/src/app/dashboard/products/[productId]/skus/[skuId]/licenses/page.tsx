@@ -55,6 +55,9 @@ const page = async ({ params }: { params: paramsProp }) => {
                                     License Key
                                 </TableHead>
                                 <TableHead className="table-cell">
+                                    Is Sold
+                                </TableHead>
+                                <TableHead className="table-cell">
                                     Actions
                                 </TableHead>
                             </TableRow>
@@ -64,6 +67,9 @@ const page = async ({ params }: { params: paramsProp }) => {
                                 <TableRow key={license._id}>
                                     <TableCell className="table-cell">
                                         {license.licenseKey}
+                                    </TableCell>
+                                    <TableCell className="table-cell">
+                                        {license.isSold ? 'true' : 'false'}
                                     </TableCell>
                                     <TableCell className="table-cell">
                                         <div className='flex gap-3 items-center'>
