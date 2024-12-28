@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '@/util/types';
+import { HttpResponse, Product } from '@/util/types';
 import { DeleteIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -38,6 +38,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
         downloadUrl: product?.downloadUrl || '',
         requirementSpecification: product?.requirementSpecification || [],
         highlights: product?.highlights || [''],
+        hasLicenses: product?.hasLicenses || false
     });
 
     const [loading, setLoading] = useState(false);
@@ -91,6 +92,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
         e.preventDefault();
         setLoading(true);
 
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products${type === 'update' ? `/${product?._id}` : ''}`, {
                 method: type === 'create' ? 'POST' : 'PATCH',
@@ -113,9 +115,10 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                     downloadUrl: '',
                     requirementSpecification: [{ key: '', value: '' }],
                     highlights: [''],
+                    hasLicenses: false
                 });
                 if (type === 'create') {
-                    const result = await response.json();
+                    const result: HttpResponse = await response.json();
                     router.push(`/shop/${result.result.product._id}`);
                 } else {
                     router.push(`/shop/${product?._id}`);
@@ -278,6 +281,24 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                         onChange={handleInputChange}
                         className="mt-2 block w-full p-3 border rounded-md"
                         required
+                    />
+                </div>
+                <div className='flex items-center gap-2'>
+                    <label htmlFor="hasLicenses" className="font-bold text-sm text-primary/80">
+                        Has Licenses
+                    </label>
+                    <input
+                        type="checkbox"
+                        name="hasLicenses"
+                        id="hasLicenses"
+                        checked={form.hasLicenses}
+                        onChange={(e) =>
+                            setForm((prev) => ({
+                                ...prev,
+                                hasLicenses: e.target.checked,
+                            }))
+                        }
+                        className="mt-2 w-6 h-6 border rounded-md"
                     />
                 </div>
 

@@ -109,13 +109,18 @@ export class ProductsController {
     )
   }
 
-  @Delete('licenses/:licenseKeyId')
+  @Delete(':productId/skus/:skuId/licenses/:licenseKeyId')
   @Roles(userTypes.ADMIN)
   async deleteProductLicense(
-    @Param('licenseKeyId') licenseId: string
+    @Param('licenseKeyId') licenseId: string,
+    @Param('productId') productId: string,
+    @Param('skuId') skuId: string
   ) {
+
     return await this.productsService.removeProductSkuLicense(
-      licenseId
+      licenseId,
+      productId,
+      skuId
     )
   }
 

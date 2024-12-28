@@ -44,20 +44,17 @@ export class SkuDetails extends mongoose.Document {
   @Prop({})
   price: number;
 
-  @Prop({})
-  validity: number; // in days
+  @Prop({ required: false })
+  validity?: number; // in days
 
-  @Prop({})
-  lifetime: boolean;
+  @Prop({ required: false })
+  lifetime?: boolean;
 
   @Prop({})
   stripePriceId: string;
 
   @Prop({})
   skuCode?: string;
-
-  @Prop({ default: false, required: true })
-  hasLicenses: boolean
 
   @Prop({ default: 0, required: true })
   remainingStock: number
@@ -121,6 +118,9 @@ export class Products {
 
   @Prop({})
   stripeProductId: string;
+
+  @Prop({ default: false, required: true })
+  hasLicenses: boolean
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Products);

@@ -146,6 +146,19 @@ export class ProductRepository {
         );
     }
 
+    async incrementSkuRemainingStock(productId: string, skuId: string): Promise<void> {
+        await this.productModel.updateOne(
+            { _id: productId, 'skuDetails._id': skuId },
+            { $inc: { 'skuDetails.$.remainingStock': 1 } },
+        );
+    }
+    async decrementSkuRemainingStock(productId: string, skuId: string): Promise<void> {
+        await this.productModel.updateOne(
+            { _id: productId, 'skuDetails._id': skuId },
+            { $inc: { 'skuDetails.$.remainingStock': -1 } },
+        );
+    }
+
     async deleteAllLicences(productId: string, skuId: string) {
         if (productId)
             return await this.licenseModel.deleteMany({ product: productId });

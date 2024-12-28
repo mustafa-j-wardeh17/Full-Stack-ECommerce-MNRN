@@ -303,22 +303,32 @@ export class ProductsService {
         throw new Error('Product does not exist');
       }
 
+      console.log(data)
+
       const skuCode = Math.random().toString(36).substring(2, 5) + Date.now();
+
       for (let i = 0; i < data.skuDetails.length; i++) {
         if (!data.skuDetails[i].stripePriceId) {
+          const skuMetadata: Record<string, any> = {
+            skuCode: skuCode,
+            productId: productId,
+            price: data.skuDetails[i].price,
+            productName: product.productName,
+            productImage: product.image,
+          };
+
+          // Add lifetime to metadata only if product.hasLicenses is true
+          if (product.hasLicenses) {
+            skuMetadata.lifetime = data.skuDetails[i].lifetime + '';
+          }
+
           const stripPriceDetails = await this.stripeClient.prices.create({
             unit_amount: data.skuDetails[i].price * 100,
             currency: 'usd',
             product: product.stripeProductId,
-            metadata: {
-              skuCode: skuCode,
-              lifetime: data.skuDetails[i].lifetime + '',
-              productId: productId,
-              price: data.skuDetails[i].price,
-              productName: product.productName,
-              productImage: product.image,
-            },
+            metadata: skuMetadata,
           });
+
           data.skuDetails[i].stripePriceId = stripPriceDetails.id;
         }
         data.skuDetails[i].skuCode = skuCode;
@@ -441,6 +451,10 @@ export class ProductsService {
         throw new Error('Product does not exist');
       }
 
+      if (!product.hasLicenses) {
+        throw new Error('Product should not have licenses');
+      }
+
       const sku = product.skuDetails.find((sku) => sku._id == skuId);
       if (!sku) {
         throw new Error('Sku does not exist');
@@ -451,6 +465,9 @@ export class ProductsService {
         skuId,
         licenseKey,
       );
+
+      // Increment the remainingStock for the SKU
+      await this.productDb.incrementSkuRemainingStock(productId, skuId);
 
       return {
         message: 'License key added successfully',
@@ -464,19 +481,20 @@ export class ProductsService {
     }
   }
 
-  async removeProductSkuLicense(id: string): Promise<{
+  async removeProductSkuLicense(licenseId: string, productId: string, skuId: string): Promise<{
     message: string,
     success: boolean,
     result: null
   }> {
     try {
 
-      const license = await this.productDb.findLicenseById(id);
+      const license = await this.productDb.findLicenseById(licenseId);
       if (!license) {
         throw new Error('License does not exist');
       }
-      const result = await this.productDb.removeLicense(id);
+      await this.productDb.removeLicense(licenseId);
 
+      await this.productDb.decrementSkuRemainingStock(productId, skuId)
       return {
         message: 'License key removed successfully',
         success: true,

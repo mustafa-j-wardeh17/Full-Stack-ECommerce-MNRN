@@ -32,7 +32,7 @@ const skus = async ({ params }: { params: tParams }) => {
                 <ProductsTable
                     skus={data.result.product.skuDetails}
                     totalItems={data.result.product.skuDetails.length}
-
+                    hasLicenses={data.result.product.hasLicenses}
                     type={'skus'}
                 />
             </PageWrapper>

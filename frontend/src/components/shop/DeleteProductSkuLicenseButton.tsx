@@ -14,13 +14,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation";
 
-const DeleteProductSkuLicenseButton = ({ licenseId }: { licenseId: string }) => {
+const DeleteProductSkuLicenseButton = ({ productId, skuId, licenseId }: { productId: string ,skuId: string ,licenseId: string }) => {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const router = useRouter()
     const handleDeleteProduct = async () => {
         setIsDeleting(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/licenses/${licenseId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}/licenses/${licenseId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

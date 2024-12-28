@@ -4,13 +4,13 @@ import ProductRow from './productRow'
 import { Product, SkuDetail } from '@/util/types'
 import SkuRow from './product-skus/skuRow'
 
-const ProductsTable = ({ products, skus, totalItems, page, type = 'products' }: { page?: number, products?: Product[], skus?: SkuDetail[], totalItems: number, type?: 'skus' | 'products' }) => {
+const ProductsTable = ({ products, hasLicenses, skus, totalItems, page, type = 'products' }: { page?: number, hasLicenses?: boolean, products?: Product[], skus?: SkuDetail[], totalItems: number, type?: 'skus' | 'products' }) => {
 
     return (
         <div className=' bg-white dark:bg-black w-full md:p-8 p-0 rounded-2xl shadow-md flex flex-col gap-8'>
             <div className='flex md:p-0 p-4 flex-col gap-3'>
-                <h1 className='text-3xl font-bold text-primary'>{type=='products'?'Products':'SKUs'}</h1>
-                <p className='text-primary/70'>{type==='products'?'Manage your products':'Manage your product SKUs'}</p>
+                <h1 className='text-3xl font-bold text-primary'>{type == 'products' ? 'Products' : 'SKUs'}</h1>
+                <p className='text-primary/70'>{type === 'products' ? 'Manage your products' : 'Manage your product SKUs'}</p>
             </div>
             <>
                 {
@@ -34,20 +34,20 @@ const ProductsTable = ({ products, skus, totalItems, page, type = 'products' }: 
                                             <TableHead className="hidden md:table-cell ">
                                                 <p className='flex'>{type === 'products' ? 'Category' : 'SKU-Price'}</p>
                                             </TableHead>
-                                            <TableHead className="hidden md:table-cell ">
-                                                <p className='flex'>{type === 'products' ? 'Platform' : 'SKU-Validity'}</p>
-                                            </TableHead>
                                             {
-                                                type === 'products' ? (
-                                                    <TableHead >
-                                                        <p className='flex'>Skus</p>
+                                                (hasLicenses === true) && (
+                                                    <TableHead className="hidden md:table-cell ">
+                                                        <p className='flex'>{type === 'products' ? 'Platform' : 'SKU-Lifetime'}</p>
                                                     </TableHead>
                                                 )
-                                                    : (
-                                                        <TableHead >
-                                                            <p className='flex'>Licenses</p>
-                                                        </TableHead>
-                                                    )
+                                            }
+
+                                            {
+                                                (hasLicenses === true) && (
+                                                    <TableHead >
+                                                        <p className='flex'>{type === 'products' ? 'Skus' : 'Licenses'}</p>
+                                                    </TableHead>
+                                                )
                                             }
                                             <TableHead >
                                                 <p className='flex'>Actions</p>
@@ -71,6 +71,7 @@ const ProductsTable = ({ products, skus, totalItems, page, type = 'products' }: 
                                                     <SkuRow
                                                         key={item._id}
                                                         sku={item}
+                                                        hasLicenses={hasLicenses || false}
                                                     />
                                                 ))
 

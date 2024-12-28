@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-const ProductSkuForm = ({ productId }: { productId: string }) => {
+const ProductSkuForm = ({ productId, hasLicenses }: { productId: string, hasLicenses: boolean }) => {
   const [skuDetails, setSkuDetails] = useState([
-    { skuName: '', price: 0, validity: 0, lifetime: false },
+    { skuName: '', price: 0, validity: 0, lifetime: false, remainingStock: 0 },
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ const ProductSkuForm = ({ productId }: { productId: string }) => {
 
 
   const addSku = () => {
-    setSkuDetails([...skuDetails, { skuName: '', price: 0, validity: 0, lifetime: false }]);
+    setSkuDetails([...skuDetails, { skuName: '', price: 0, validity: 0, lifetime: false, remainingStock: 0 }]);
   };
 
   const removeSku = (index: number) => {
@@ -33,13 +33,30 @@ const ProductSkuForm = ({ productId }: { productId: string }) => {
     e.preventDefault();
     setLoading(true);
 
+    const requestData = skuDetails.map((sku) => {
+      if (hasLicenses) {
+        return {
+          skuName: sku.skuName,
+          price: sku.price,
+          validity: sku.validity,
+          lifetime: sku.lifetime,
+          remainingStock: 0,
+        };
+      } else {
+        return {
+          skuName: sku.skuName,
+          price: sku.price,
+          remainingStock: sku.remainingStock,
+        };
+      }
+    });
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ skuDetails }),
+        body: JSON.stringify({ skuDetails: requestData }),
         credentials: 'include',
       });
 
@@ -102,33 +119,59 @@ const ProductSkuForm = ({ productId }: { productId: string }) => {
                 />
               </div>
 
-              <div>
-                <label htmlFor={`validity-${index}`} className="block text-sm font-medium text-gray-700">
-                  Validity (days)
-                </label>
-                <input
-                  type="number"
-                  id={`validity-${index}`}
-                  value={sku.validity}
-                  onChange={(e) => handleSkuChange(index, 'validity', parseInt(e.target.value, 10))}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  required
-                  disabled={sku.lifetime}
-                />
-              </div>
+              {
+                hasLicenses && (
+                  <div>
+                    <label htmlFor={`validity-${index}`} className="block text-sm font-medium text-gray-700">
+                      Validity (days)
+                    </label>
+                    <input
+                      type="number"
+                      id={`validity-${index}`}
+                      value={sku.validity}
+                      onChange={(e) => handleSkuChange(index, 'validity', parseInt(e.target.value, 10))}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                      required
+                      disabled={sku.lifetime}
+                    />
+                  </div>
+                )
+              }
 
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id={`lifetime-${index}`}
-                  checked={sku.lifetime}
-                  onChange={(e) => handleSkuChange(index, 'lifetime', e.target.checked)}
-                  className="h-4 w-4"
-                />
-                <label htmlFor={`lifetime-${index}`} className="text-sm font-medium text-gray-700">
-                  Lifetime
-                </label>
-              </div>
+              {
+                !hasLicenses && (
+                  <div>
+                    <label htmlFor={`remainingStock-${index}`} className="block text-sm font-medium text-gray-700">
+                      Remaining In Stock
+                    </label>
+                    <input
+                      type="number"
+                      id={`remainingStock-${index}`}
+                      value={sku.remainingStock}
+                      onChange={(e) => handleSkuChange(index, 'remainingStock', parseInt(e.target.value, 10))}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+                )
+              }
+
+              {hasLicenses && (
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={`lifetime-${index}`}
+                    checked={sku.lifetime}
+                    onChange={(e) => handleSkuChange(index, 'lifetime', e.target.checked)}
+                    className="h-4 w-4"
+                  />
+                  <label htmlFor={`lifetime-${index}`} className="text-sm font-medium text-gray-700">
+                    Lifetime
+                  </label>
+                </div>
+              )
+
+              }
             </div>
           </div>
         ))}

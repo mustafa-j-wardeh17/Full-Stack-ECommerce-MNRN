@@ -73,7 +73,11 @@ const page = async ({ params }: { params: paramsProp }) => {
                                             >
                                                 Update
                                             </Link>
-                                            <DeleteProductSkuLicenseButton licenseId={license._id} />
+                                            <DeleteProductSkuLicenseButton
+                                                productId={productId}
+                                                skuId={skuId}
+                                                licenseId={license._id}
+                                            />
                                         </div>
                                     </TableCell>
                                 </TableRow>

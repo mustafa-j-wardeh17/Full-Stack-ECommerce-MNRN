@@ -103,6 +103,7 @@ export type SkuDetail = {
     lifetime: boolean;
     stripePriceId: string;
     skuCode?: string;
+    remains: number
 };
 
 
@@ -123,6 +124,7 @@ export type Product = {
     requirementSpecification?: Record<string, any>[];
     highlights?: string[];
     stripeProductId: string;
+    hasLicenses: boolean
 };
 
 
