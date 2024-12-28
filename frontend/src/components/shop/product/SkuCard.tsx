@@ -3,7 +3,7 @@ import { HttpResponse, PostCartItemResponse, SkuDetail } from "@/util/types";
 import { useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { CiHeart } from "react-icons/ci";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useUserContext } from "@/context";
 import toast from "react-hot-toast";
 
@@ -18,6 +18,7 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
     const [quantity, setQuantity] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
+    const params = useParams()
     const { user } = useUserContext()
     const onSelect = (sku: SkuDetail) => {
         setSelectedSku(sku);
@@ -38,6 +39,7 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
             userId: user?.id,
             productName,
             productImage,
+            productId: params.productId,
             skuKey: selectedSku.skuName,
             skuPriceId: selectedSku.stripePriceId,
             skuPrice: selectedSku.price,

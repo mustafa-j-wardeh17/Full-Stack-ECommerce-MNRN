@@ -6,8 +6,6 @@ export type CartDocument = Cart & Document;
 
 @Schema({ timestamps: true })
 export class Cart extends Document {
-
-
     @Prop({ type: String, required: true })
     userId: string;
 
@@ -16,6 +14,9 @@ export class Cart extends Document {
     
     @Prop({ type: String, required: true })
     productImage: string;
+
+    @Prop({ type: String, required: true })
+    productId: string;
 
     @Prop({ type: String, required: true })
     skuKey: string;

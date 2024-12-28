@@ -19,6 +19,10 @@ import {
     @IsString()
     @IsNotEmpty()
     skuId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    productId: string;
   }
   
   export class checkoutDtoArr {

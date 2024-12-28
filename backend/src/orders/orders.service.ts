@@ -60,9 +60,18 @@ export class OrdersService {
         );
       }
 
+      // Adding metadata with SKU and Product IDs
+      const metadata = cartItems.reduce((acc, item, index) => {
+        acc[`skuId_${index}`] = item.skuId;
+        acc[`productId_${index}`] = item.productId;
+        acc[`quantity_${index}`] = item.quantity;
+        return acc;
+      }, {});
+
       const session = await this.stripeClient.checkout.sessions.create({
         line_items: lineItems,
         metadata: {
+          ...metadata,
           userId: user._id.toString(),
         },
         mode: 'payment',
@@ -168,6 +177,24 @@ export class OrdersService {
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
+
+        // Extract SKU and Product IDs from metadata
+        const metadata = session.metadata;
+        const skusAndProducts = Object.keys(metadata)
+        .reduce((acc, key) => {
+          const match = key.match(/(skuId|productId|quantity)_(\d+)/);
+          if (match) {
+            const [, field, index] = match;
+            acc[index] = acc[index] || {};
+            acc[index][field] = metadata[key];
+          }
+          return acc;
+        }, [])
+        .filter(item => item.skuId && item.productId && item.quantity); // Ensure only complete entries are included
+      
+
+        console.log('SKUs and Products from Metadata:', skusAndProducts);
+
         const orderData = await this.createOrderObject(session);
         const order = await this.create(orderData);
 
@@ -186,7 +213,7 @@ export class OrdersService {
             isOrderDelivered: true,
             ...orderData,
           });
-          const user = await this.userDB.findById(orderData.userId)         
+          const user = await this.userDB.findById(orderData.userId)
           this.sendOrderEmail(
             orderData.customerEmail,
             user.name,
