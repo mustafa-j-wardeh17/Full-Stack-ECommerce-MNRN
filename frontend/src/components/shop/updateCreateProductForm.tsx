@@ -1,5 +1,6 @@
 'use client';
 
+import { baseType, categoryType, platformType } from '@/util/constant';
 import { HttpResponse, Product } from '@/util/types';
 import { DeleteIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -7,33 +8,15 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { IoIosArrowDown } from 'react-icons/io';
 
-// Enums for dropdowns
-enum CategoryType {
-    OperatingSystem = 'Operating System',
-    ApplicationSoftware = 'Application Software',
-}
-
-enum PlatformType {
-    Windows = 'Windows',
-    Mac = 'Mac',
-    Linux = 'Linux',
-    Android = 'Android',
-    IOS = 'iOS',
-}
-
-enum BaseType {
-    Computer = 'Computer',
-    Mobile = 'Mobile',
-}
 
 const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'create' | 'update', product?: Product | null }) => {
     const router = useRouter();
     const [form, setForm] = useState({
         productName: product?.productName || '',
         description: product?.description || '',
-        category: product?.category || CategoryType.ApplicationSoftware, // Default category
-        platformType: product?.platformType || PlatformType.Windows, // Default platform
-        baseType: product?.baseType || BaseType.Computer, // Default base type
+        category: product?.category || categoryType.ApplicationSoftware, // Default category
+        platformType: product?.platformType || platformType.Windows, // Default platform
+        baseType: product?.baseType || baseType.Computer, // Default base type
         productUrl: product?.productUrl || '',
         downloadUrl: product?.downloadUrl || '',
         requirementSpecification: product?.requirementSpecification || [],
@@ -108,9 +91,9 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                 setForm({
                     productName: '',
                     description: '',
-                    category: CategoryType.ApplicationSoftware,
-                    platformType: PlatformType.Windows,
-                    baseType: BaseType.Computer,
+                    category: categoryType.ApplicationSoftware,
+                    platformType: platformType.Windows,
+                    baseType: baseType.Computer,
                     productUrl: '',
                     downloadUrl: '',
                     requirementSpecification: [{ key: '', value: '' }],
@@ -183,7 +166,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                             required
                         >
 
-                            {Object.values(CategoryType).map((category) => (
+                            {Object.values(categoryType).map((category) => (
                                 <option key={category} value={category}>
                                     {category}
                                 </option>
@@ -213,7 +196,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                             className="mt-2 block w-full relative p-3 border rounded-md appearance-none"
                             required
                         >
-                            {Object.values(PlatformType).map((platform) => (
+                            {Object.values(platformType).map((platform) => (
                                 <option key={platform} value={platform}>
                                     {platform}
                                 </option>
@@ -240,7 +223,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                             className="mt-2 block w-full p-3 border rounded-md appearance-none"
                             required
                         >
-                            {Object.values(BaseType).map((base) => (
+                            {Object.values(baseType).map((base) => (
                                 <option key={base} value={base}>
                                     {base}
                                 </option>
