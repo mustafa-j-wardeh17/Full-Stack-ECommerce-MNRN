@@ -23,7 +23,6 @@ export class AuthMiddleware implements NestMiddleware {
 
       const user = await this.userDB.findById(decodedData?.id);
 
-      console.log(`\n\n user from ${req.path}===>`, user,'\n\n')
       if (!user) {
         throw new UnauthorizedException('Unauthorized');
       }

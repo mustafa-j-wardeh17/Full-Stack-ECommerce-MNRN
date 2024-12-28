@@ -55,6 +55,12 @@ export class SkuDetails extends mongoose.Document {
 
   @Prop({})
   skuCode?: string;
+
+  @Prop({ default: false, required: true })
+  hasLicenses: boolean
+
+  @Prop({ default: 0, required: true })
+  remainingStock: number
 }
 
 export const skuDetailsSchema = SchemaFactory.createForClass(SkuDetails);
