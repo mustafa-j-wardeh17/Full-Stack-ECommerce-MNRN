@@ -1,11 +1,11 @@
 import { BreadcrumbWithCustomSeparator } from '@/components/breadcrumb'
 import { FaStar } from "react-icons/fa";
-import Image from 'next/image'
 import React from 'react'
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
 import { Product } from '@/util/types';
 import SkuCards from '@/components/shop/product/SkuCard';
+import ProductImageWithLens from '@/components/shop/product/ProductImageWithLens';
 
 interface ResultInterface {
   result: {
@@ -41,15 +41,13 @@ const page = async ({ params }: { params: tParams }) => {
         />
 
         <div className='flex lg:flex-row gap-6 flex-col my-6'>
-          <div className='flex items-center justify-center 2xl:w-2/5 lg:w-1/2 w-full bg-secondary border-[6px] border-primary/5 dark:bg-neutral-900'>
-            <Image
-              src={product.image}
-              alt={`Product ${product._id} image`}
-              width={400}
-              height={400}
-              className='w-full  object-fill aspect-square'
+          <div className=' border-[6px] border-primary/5 2xl:w-2/5 lg:w-1/2 w-full'>
+            <ProductImageWithLens
+              imageUrl={product.image}
+              id={product._id}
             />
           </div>
+
           <div className='flex flex-col justify-center gap-4 2xl:w-3/5 lg:w-1/2 w-full '>
             <div className='flex items-center justify-between'>
               <h1 className='text-2xl font-bold'>{product.productName}</h1>

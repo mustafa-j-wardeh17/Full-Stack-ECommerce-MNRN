@@ -48,7 +48,9 @@ export default async function Home() {
     return (
       <div >
         <Hero />
-        <ShopCategories />
+        {/* <div className="static w-full">
+          <ShopCategories />
+        </div> */}
         <BestSells
           isAdmin={isAdmin}
           type={'latest'}

@@ -1,98 +1,90 @@
+'use client'
 import { Product } from '@/util/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { FaEdit, FaEye, FaRegHeart } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
+import { TbHeartFilled } from "react-icons/tb";
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { FiShoppingCart } from 'react-icons/fi';
-import DeleteProductButton from './ProductCardDeleteButton';
-import { CiImageOn } from 'react-icons/ci';
+
+import { BackgroundGradient } from './ui/background-gradient';
+
+import { useUserContext } from '@/context';
 
 const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: Product, type?: 'default' | 'wishlist', isAdmin?: boolean }) => {
+    const { user } = useUserContext()
+
     return (
-        <div className="relative bg-white dark:bg-neutral-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out">
-            {/* Image Section */}
-            <div className="relative group w-full bg-gray-100 h-64 flex items-center justify-center overflow-hidden">
-                <Image
-                    src={product.image}
-                    alt={product.productName}
-                    fill
-                    className="object-center object-fill aspect-square transition-transform duration-300 group-hover:scale-105"
-                />
-                {/* Action Icons */}
-                <div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {type === 'default' && (
-                        <div className="flex items-center justify-center space-x-2">
-                            <div className='space-y-2'>
-                                <button className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center">
-                                    <FaRegHeart className="text-yellow-400" size={18} />
-                                </button>
-                                <Link href={`/shop/${product._id}`} className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center">
-                                    <FaEye className="text-gray-700" size={18} />
-                                </Link>
+        <BackgroundGradient className=" relative  bg-white flex flex-col justify-center dark:bg-zinc-900">
+            <Link href={`/shop/${product._id}`}>
+                {/* Image Section */}
+                <div className="relative group w-full  h-64 flex items-center justify-center overflow-hidden">
+                    <Image
+                        src={product.image}
+                        alt={product.productName}
+                        fill
+                        className="object-center object-fill aspect-square transition-transform duration-300 group-hover:scale-105"
+                    />
+                </div>
 
-                                <button className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center">
-                                    <FiShoppingCart className="text-gray-700" size={18} />
-                                </button>
-                            </div>
-                            <div className='space-y-2'>
-                                {
-                                    isAdmin && (
-                                        <>
-                                            <DeleteProductButton productId={product._id} />
-                                            <Link
-                                                href={`/dashboard/${product._id}/update-product`}
-                                                className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center"
-                                            >
-                                                <FaEdit className="text-blue-500" size={18} />
-                                            </Link>
-                                            <Link
-                                                href={`/dashboard/${product._id}/update-product-image`}
-                                                className="p-2 bg-white rounded-full shadow-md hover:shadow-lg flex items-center justify-center"
-                                            >
-                                                <CiImageOn className="text-green-500" size={18} />
-                                            </Link>
-                                        </>
-                                    )
-                                }
-                            </div>
+                {/* Product Details */}
+                <div className="pt-4 p-4 sm:p-5 w-full flex justify-between items-start">
+                    {/* Product Info */}
+                    <div className="flex w-full flex-col items-center space-y-3">
+                        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 truncate">
+                            {product.productName}
+                        </h3>
+                        <p className="text-sm text-gray-500 text-wrap text-center dark:text-gray-400 truncate">
+                            {product.description.length > 60 ? (product.description.slice(0, 60) + '...') : product.description}
+                        </p>
+                        <span className='flex'>
+                            {[...Array(5)].map((_, idx) => (
+                                <FaStar
+                                    key={idx}
+                                    className={idx < Math.floor(product.avgRating || 0) ? 'text-amber-500' : 'text-gray-300'}
+                                />
+                            ))}
+                        </span>
+                        <div className='flex justify-between items-center'>
+                            <p className="text-amber-500 text-sm font-semibold ">
+                                {product.skuDetails && product.skuDetails.length > 0
+                                    ? product.skuDetails
+                                        .reduce(
+                                            ([low, high], current) => [
+                                                current.price < low ? current.price : low,
+                                                current.price > high ? current.price : high,
+                                            ],
+                                            [Infinity, -Infinity]
+                                        )
+                                        .join(" - ") + ' $'
+                                    : "No prices available"}
+                            </p>
+
                         </div>
-                    )}
-                    {type === 'wishlist' && (
-                        <button className="p-2 bg-white rounded-full shadow-md hover:shadow-lg">
-                            <RiDeleteBin6Line className="text-red-500" size={18} />
-                        </button>
-                    )}
-                </div>
-            </div>
 
-            {/* Product Details */}
-            <div className="p-4 flex justify-between items-start">
-                {/* Product Info */}
-                <div className="flex flex-col space-y-1">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 truncate">
-                        {product.productName}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                        {product.description.length > 24 ? (product.description.slice(0, 24) + '...') : product.description}
-                    </p>
-                    <p className="text-md font-semibold text-primary mt-2">
-                        {product.skuDetails && product.skuDetails.length > 0
-                            ? product.skuDetails
-                                .reduce(
-                                    ([low, high], current) => [
-                                        current.price < low ? current.price : low,
-                                        current.price > high ? current.price : high,
-                                    ],
-                                    [Infinity, -Infinity]
-                                )
-                                .join(" - ") + ' $'
-                            : "No prices available"}
-                    </p>
-                </div>
+                    </div>
 
+                </div>
+            </Link>
+
+
+            <div className="absolute z-10 top-4 left-4 flex flex-col space-y-2 transition-opacity duration-300">
+                {type === 'default' && (
+                    <div className="flex flex-col items-start justify-center space-y-2">
+                        <div className='space-y-2'>
+                            <button className="p-[6px] border-[2px] border-gray-300 hover:border-red-300 text-gray-400  hover:text-red-500  rounded-full shadow-md hover:shadow-lg flex items-center justify-center">
+                                <TbHeartFilled size={17} />
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {type === 'wishlist' && (
+                    <button className="p-2 bg-white rounded-full shadow-md hover:shadow-lg">
+                        <RiDeleteBin6Line className="text-red-500" size={18} />
+                    </button>
+                )}
             </div>
-        </div>
+        </BackgroundGradient>
     );
 };
 

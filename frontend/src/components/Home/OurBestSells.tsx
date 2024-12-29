@@ -12,13 +12,15 @@ const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Produc
             </h2>
 
             {/* Grid for displaying the products */}
-            <div className='grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1  gap-6 '>
+            <div className='grid 2xl:grid-cols-4 lg:grid-cols-3 sm:place-items-start place-items-center sm:grid-cols-2 grid-cols-1  gap-6 '>
                 {bestSells.map((product: Product) => (
-                    <ProductCard
-                        key={product._id}
-                        product={product}
-                        isAdmin={isAdmin}
-                    />
+                    <div className='w-full max-w-[450px] h-full'>
+                        <ProductCard
+                            key={product._id}
+                            product={product}
+                            isAdmin={isAdmin}
+                        />
+                    </div>
                 ))}
             </div>
         </section>
