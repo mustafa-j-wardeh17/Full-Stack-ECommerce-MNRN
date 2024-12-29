@@ -1,4 +1,7 @@
-import CreateUpdateProductSkuLicenseForm from '@/components/shop/createUpdateProductSkuLicence'
+import DynamicLink from '@/components/Dashboard/DynamicLink'
+import PageWrapper from '@/components/Dashboard/pageWrapper'
+import CreateUpdateProductSkuLicenseForm from '@/components/shop/CreateProductSkuLicensesForm'
+import UpdateProductSkuLicenseForm from '@/components/shop/UpdateProductSkuLicenseForm'
 import { GetProductSkuLicensesResponse, License } from '@/util/types'
 import { cookies } from 'next/headers'
 import React from 'react'
@@ -39,14 +42,18 @@ const page = async ({ params }: { params: paramsProp }) => {
         return <div>{error.message}</div>
     }
     return (
-        <div className='my-[30px]'>
-            <CreateUpdateProductSkuLicenseForm
+        <PageWrapper title={'Update License For Product SKU'}>
+            <DynamicLink
+                label={'Licenses'}
+                url={`/dashboard/products/${productId}/skus/${skuId}/licenses`}
+            />
+            <UpdateProductSkuLicenseForm
                 productId={productId}
                 skuId={skuId}
                 licenseId={licenseId}
-                license={license?.licenseKey}
+                license={license?.licenseKey || ''}
             />
-        </div>
+        </PageWrapper>
     )
 }
 

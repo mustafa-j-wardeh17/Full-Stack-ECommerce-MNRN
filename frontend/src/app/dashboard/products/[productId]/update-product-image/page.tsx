@@ -1,5 +1,6 @@
 'use client';
 
+import DynamicLink from '@/components/Dashboard/DynamicLink';
 import PageWrapper from '@/components/Dashboard/pageWrapper';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
@@ -72,6 +73,10 @@ const Page = () => {
 
     return (
         <PageWrapper title='Update Product Image'>
+            <DynamicLink
+                label='Back'
+                url={`/dashboard/products`}
+            />
             <div className="w-full bg-primary-foreground rounded-lg shadow-lg md:p-10 p-5">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* File Input with Preview */}

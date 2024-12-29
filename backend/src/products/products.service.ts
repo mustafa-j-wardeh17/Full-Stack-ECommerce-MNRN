@@ -434,15 +434,15 @@ export class ProductsService {
     }
   }
 
-  async addProductSkuLicense(
+  async addProductSkuLicenses(
     productId: string,
     skuId: string,
-    licenseKey: string,
+    licenseKeys: string[],
   ): Promise<{
     message: string,
     success: boolean,
     result: {
-      license: License
+      license: License[]
     },
   }> {
     try {
@@ -460,10 +460,10 @@ export class ProductsService {
         throw new Error('Sku does not exist');
       }
 
-      const result = await this.productDb.createLicense(
+      const result = await this.productDb.createLicenses(
         productId,
         skuId,
-        licenseKey,
+        licenseKeys,
       );
 
       // Increment the remainingStock for the SKU

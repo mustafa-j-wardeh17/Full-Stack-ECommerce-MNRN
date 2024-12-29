@@ -97,15 +97,15 @@ export class ProductsController {
 
   @Post(':productId/skus/:skuId/license')
   @Roles(userTypes.ADMIN)
-  async addProductLicense(
+  async addProductLicenses(
     @Param('productId') productId: string,
     @Param('skuId') skuId: string,
-    @Body('licenseKey') licenseKey: string
+    @Body('licenseKeys') licenseKeys: string[]
   ) {
-    return await this.productsService.addProductSkuLicense(
+    return await this.productsService.addProductSkuLicenses(
       productId,
       skuId,
-      licenseKey
+      licenseKeys
     )
   }
 

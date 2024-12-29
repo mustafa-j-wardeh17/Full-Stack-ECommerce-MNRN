@@ -1,3 +1,4 @@
+import DynamicLink from '@/components/Dashboard/DynamicLink'
 import PageWrapper from '@/components/Dashboard/pageWrapper'
 import UpdateProductSkuForm from '@/components/shop/updateProductSkuForm'
 import { ProductResponse } from '@/util/types'
@@ -27,6 +28,10 @@ const page = async ({ params }: { params: paramsProp }) => {
     return (
 
         <PageWrapper title='Update Product Sku'>
+            <DynamicLink
+                label='Product SKUs'
+                url={`/dashboard/products/${productId}/skus`}
+            />
             <UpdateProductSkuForm
                 skuData={skuData}
                 productId={productId}

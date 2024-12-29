@@ -92,16 +92,17 @@ export class ProductRepository {
 
         return license;
     }
-    async createLicense(productId: string,
+    async createLicenses(productId: string,
         skuId: string,
-        licenseKey: string) {
+        licenseKeys: string[]) {
 
 
-        const license = await this.licenseModel.create({
+        const createdLicenses = licenseKeys.map(licenseKey => ({
             product: productId,
             productSku: skuId,
             licenseKey
-        })
+        }))
+        const license = await this.licenseModel.create(createdLicenses)
 
         return license;
     }

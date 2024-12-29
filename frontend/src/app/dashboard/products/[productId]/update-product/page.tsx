@@ -1,3 +1,4 @@
+import DynamicLink from '@/components/Dashboard/DynamicLink'
 import PageWrapper from '@/components/Dashboard/pageWrapper'
 import CreateUpdateProduct from '@/components/shop/updateCreateProductForm'
 import { Product, ProductResponse } from '@/util/types'
@@ -19,6 +20,10 @@ const page = async ({ params }: { params: tParams }) => {
   }
   return (
     <PageWrapper title='Update Product'>
+      <DynamicLink
+        label='Back'
+        url={`/dashboard/products`}
+      />
       <CreateUpdateProduct
         type='update'
         product={product}

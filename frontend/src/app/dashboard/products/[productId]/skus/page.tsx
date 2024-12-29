@@ -1,3 +1,4 @@
+import DynamicLink from '@/components/Dashboard/DynamicLink'
 import PageWrapper from '@/components/Dashboard/pageWrapper'
 import ProductsTable from '@/components/Dashboard/productsTable'
 import { ProductResponse } from '@/util/types'
@@ -19,6 +20,11 @@ const skus = async ({ params }: { params: tParams }) => {
         return (
             <PageWrapper title={`${data.result.product.productName} SKUs`}>
                 <div className='flex gap-4 items-center justify-between sm:flex-row flex-col'>
+                    <DynamicLink
+                        label='Products'
+                        url={`/dashboard/products`}
+                        className='w-11 h-11'
+                    />
                     <div className='flex sm:justify-end w-full justify-between gap-3 items-center'>
                         <Link
                             href={`/dashboard/products/${productId}/skus/create-sku`}

@@ -6,6 +6,7 @@ import { GetProductSkuLicensesResponse, License } from '@/util/types';
 import DeleteProductSkuLicenseButton from '@/components/shop/DeleteProductSkuLicenseButton';
 import PageWrapper from '@/components/Dashboard/pageWrapper';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import DynamicLink from '@/components/Dashboard/DynamicLink';
 
 
 
@@ -42,6 +43,10 @@ const page = async ({ params }: { params: paramsProp }) => {
 
         return (
             <PageWrapper title='SKU Licenses'>
+                <DynamicLink
+                    label='Product Skus'
+                    url={`/dashboard/products/${productId}/skus`}
+                />
                 <div className=' bg-white dark:bg-black w-full md:p-8 p-3 rounded-2xl shadow-md flex flex-col gap-8'>
                     <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                         Licenses for SKU
@@ -94,7 +99,7 @@ const page = async ({ params }: { params: paramsProp }) => {
 
                     <div className="mt-4">
                         <Link
-                            href={`/dashboard/products/${productId}/skus/${skuId}/licenses/create-license`}
+                            href={`/dashboard/products/${productId}/skus/${skuId}/licenses/create-licenses`}
                             className="bg-blue-600 sm:text-ms text-sm text-white sm:px-4 px-3 sm:py-2 py-1 rounded-lg hover:bg-blue-700"
                         >
                             Create License

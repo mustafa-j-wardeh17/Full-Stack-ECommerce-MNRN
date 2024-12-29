@@ -3,54 +3,47 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-interface CreateUpdateProductSkuFormProps {
+interface UpdateProductSkuLicenseFormProps {
     productId: string;
     skuId: string;
-    licenseId?: string; // Optional for update operations
-    license?: string; // Optional for update operations
+    licenseId: string;
+    license: string; // Single license key for update
 }
 
-const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProps> = ({
+const UpdateProductSkuLicenseForm: React.FC<UpdateProductSkuLicenseFormProps> = ({
     productId,
     skuId,
     licenseId,
     license,
 }) => {
-    const [licenseKey, setLicenseKey] = useState(license || '');
+    const [licenseKey, setLicenseKey] = useState(license);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
-    const isUpdate = Boolean(licenseId); // Determines if it's an update or create
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        const endpoint = isUpdate
-            ? `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}/licenses/${licenseId}`
-            : `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}/license`;
 
-        const method = isUpdate ? 'PUT' : 'POST';
+        const endpoint = `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}/licenses/${licenseId}`;
 
         try {
             const response = await fetch(endpoint, {
-                method,
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ licenseKey }),
+                body: JSON.stringify({ licenseKey }), // Send a single license key
                 credentials: 'include',
             });
 
             if (response.ok) {
-                toast.success(`License ${isUpdate ? 'updated' : 'created'} successfully!`);
+                toast.success('License updated successfully!');
                 router.push(`/dashboard/products/${productId}/skus/${skuId}/licenses`);
             } else {
                 const errorData = await response.json();
-                console.error(`Error ${isUpdate ? 'updating' : 'creating'} license:`, errorData);
                 toast.error(`Operation failed: ${errorData.message || 'Unknown error'}`);
             }
         } catch (error) {
-            console.error(`Error ${isUpdate ? 'updating' : 'creating'} license:`, error);
             toast.error('An error occurred. Please try again.');
         } finally {
             setLoading(false);
@@ -59,11 +52,8 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
 
     return (
         <div className="w-full dark:bg-black bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-primary mb-6">
-                {isUpdate ? 'Update License' : 'Create License'}
-            </h2>
+            <h2 className="text-2xl font-bold text-primary mb-6">Update License</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* License Key Input */}
                 <div>
                     <label htmlFor="licenseKey" className="block text-sm font-medium text-primary/80">
                         License Key
@@ -80,14 +70,13 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
                     />
                 </div>
 
-                {/* Submit Button */}
                 <div>
                     <button
                         type="submit"
                         className="w-full bg-primary text-secondary hover:bg-primary/80 font-semibold py-3 rounded-lg shadow-md focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
                         disabled={loading}
                     >
-                        {loading ? (isUpdate ? 'Updating...' : 'Creating...') : (isUpdate ? 'Update License' : 'Create License')}
+                        {loading ? 'Updating...' : 'Update License'}
                     </button>
                 </div>
             </form>
@@ -95,4 +84,4 @@ const CreateUpdateProductSkuLicenseForm: React.FC<CreateUpdateProductSkuFormProp
     );
 };
 
-export default CreateUpdateProductSkuLicenseForm;
+export default UpdateProductSkuLicenseForm;

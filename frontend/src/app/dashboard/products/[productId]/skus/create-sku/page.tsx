@@ -2,6 +2,7 @@ import React from 'react'
 import ProductSkuForm from '@/components/shop/createProductSkuForm'
 import PageWrapper from '@/components/Dashboard/pageWrapper'
 import { Product, ProductResponse } from '@/util/types'
+import DynamicLink from '@/components/Dashboard/DynamicLink'
 
 type paramsProp = Promise<{ productId: string }>
 const page = async ({ params }: { params: paramsProp }) => {
@@ -18,6 +19,10 @@ const page = async ({ params }: { params: paramsProp }) => {
         return (
 
             <PageWrapper title='Create Product SKU'>
+                <DynamicLink
+                    label='Product SKUs'
+                    url={`/dashboard/products/${productId}/skus`}
+                />
                 <ProductSkuForm
                     productId={productId}
                     hasLicenses={product.hasLicenses}
