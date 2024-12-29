@@ -34,7 +34,7 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 truncate">
                             {product.productName}
                         </h3>
-                        <p className="text-sm text-gray-500 text-wrap text-center dark:text-gray-400 truncate">
+                        <p className="text-sm text-gray-500 h-[60px] text-wrap text-center dark:text-gray-400 truncate">
                             {product.description.length > 60 ? (product.description.slice(0, 60) + '...') : product.description}
                         </p>
                         <span className='flex'>

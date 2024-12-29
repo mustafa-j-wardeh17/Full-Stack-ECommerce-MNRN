@@ -1,3 +1,5 @@
+import { baseType, categoryType, platformType } from "./constant";
+
 export interface HttpResponse {
     message: string;
     path: string;
@@ -48,24 +50,6 @@ export interface CheckoutSelectedCartItemResponse extends HttpResponse {
 
 
 
-enum CategoryType {
-    OperatingSystem = 'Operating System',
-    ApplicationSoftware = 'Application Software',
-}
-
-enum PlatformType {
-    Windows = 'Windows',
-    Mac = 'Mac',
-    Linux = 'Linux',
-    Android = 'Android',
-    IOS = 'iOS',
-}
-
-enum BaseType {
-    Computer = 'Computer',
-    Mobile = 'Mobile',
-}
-
 
 
 export type Cart = {
@@ -113,9 +97,9 @@ export type Product = {
     productName: string;
     description: string;
     image: string;
-    category: CategoryType;
-    platformType: PlatformType;
-    baseType: BaseType;
+    category: categoryType;
+    platformType: platformType;
+    baseType: baseType;
     productUrl: string;
     downloadUrl: string;
     avgRating?: number;

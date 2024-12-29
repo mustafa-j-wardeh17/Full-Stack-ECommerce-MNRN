@@ -64,7 +64,7 @@ const ProductSkuForm = ({ productId, hasLicenses }: { productId: string, hasLice
 
       if (response.ok) {
         toast.success('SKUs added successfully!');
-        router.push(`/dashboard/products/${productId}/skus`)
+        setSkuDetails([])
       } else {
         const errorData = await response.json();
         toast.error(`Failed to add SKUs: ${errorData.message || 'Unknown error'}`);

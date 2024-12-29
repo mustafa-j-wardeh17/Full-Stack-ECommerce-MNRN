@@ -113,12 +113,6 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                     highlights: [''],
                     hasLicenses: false
                 });
-                if (type === 'create') {
-                    const result: HttpResponse = await response.json();
-                    router.push(`/shop/${result.result.product._id}`);
-                } else {
-                    router.push(`/shop/${product?._id}`);
-                }
             } else {
                 const errorData = await response.json();
                 toast.error(`Failed to ${type === 'update' ? 'update' : 'create'} product: ${errorData.message || 'Unknown error'}`);
@@ -131,7 +125,7 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
     };
 
     return (
-        <div className="w-full overflow-hidden bg-white p-6 rounded-md shadow-md">
+        <div className="w-full overflow-hidden bg-white dark:bg-black p-6 rounded-md shadow-md">
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Product Details */}
                 <div>

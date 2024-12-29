@@ -57,7 +57,8 @@ const Page = () => {
 
             if (response.ok) {
                 toast.success('Image uploaded successfully!');
-                router.push(`/shop/${productId}`);
+                setPreviewImage(null)
+                setProductImage(null)
             } else {
                 const errorData = await response.json();
                 console.log('Error uploading image:', errorData);

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { UserProvider } from "@/context";
 import { Toaster } from "react-hot-toast";
+import '@fontsource/geist-mono';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

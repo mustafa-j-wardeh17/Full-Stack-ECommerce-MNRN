@@ -30,6 +30,16 @@ export enum categoryType {
   RAM = 'RAM',
   ExternalStorage = 'External Storage',
   BatteryBackup = 'Battery Backup',
+  Cable = 'Cable',
+  GamingChair = 'Gaming Chair',
+  Printer = 'Printer',
+  Keyboard = 'Keyboard',
+  Mouse = 'Mouse',
+  Speaker = 'Speaker',
+  Headphones = 'Headphones',
+  Monitor = 'Monitor',
+  Laptop = 'Laptop',
+  Headset='Headset'
 }
 
 export enum platformType {
@@ -49,6 +59,8 @@ export enum platformType {
   Unix = 'Unix',
   VRPlatform = 'VR Platform',
   ARPlatform = 'AR Platform',
+  Universal = 'Universal',
+  None='None'
 }
 
 export enum baseType {
@@ -72,7 +84,11 @@ export enum baseType {
   Battery = 'Battery',
   IoTDevice = 'IoT Device',
   CloudService = 'Cloud Service',
+  Furniture = 'Furniture',
+  None='None'
 }
+
+
 @Schema({ timestamps: true })
 export class Feedbackers extends mongoose.Document {
   @Prop({})
