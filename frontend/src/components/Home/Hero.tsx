@@ -2,49 +2,41 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { HeroHighlight, Highlight } from '../ui/hero-hightlight';
 
 const Hero = () => {
-    return (
-        <section className="relative bg-gradient-to-br from-primary-foreground to-gray-100 dark:from-neutral-800 dark:to-neutral-900 rounded-2xl mt-8 overflow-hidden shadow-lg">
-            {/* Content Wrapper */}
-            <div className="container mx-auto px-6 sm:px-8 lg:px-16 xl:px-20 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
-                    {/* Left Content */}
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary leading-tight">
-                            Welcome to <span className="text-green-500">PS Market</span>
-                        </h1>
-                        <p className="mt-6 text-lg sm:text-xl text-gray-700 dark:text-gray-300">
-                            Discover the best products at unbeatable prices. Shop from a wide variety of categories and enjoy fast, reliable delivery right to your doorstep.
-                        </p>
-                        <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                            <Link
-                                href="/shop"
-                                className="bg-green-500 text-white py-3 px-6 rounded-full text-lg font-medium shadow-md hover:bg-green-600 transition-transform transform hover:scale-105"
-                            >
-                                Shop Now
-                            </Link>
-                            <Link
-                                href="/about"
-                                className="bg-gray-200 text-gray-800 dark:bg-neutral-700 dark:text-gray-100 py-3 px-6 rounded-full text-lg font-medium shadow-md hover:bg-gray-300 dark:hover:bg-neutral-600 transition-transform transform hover:scale-105"
-                            >
-                                Learn More
-                            </Link>
-                        </div>
-                    </div>
 
-                    {/* Right Image */}
-                    <div className=" w-full flex items-center justify-center lg:w-3/4 mx-auto max-w-lg rounded-xl overflow-hidden">
-                        <Image
-                            src="/hero.png"
-                            alt="Featured Product"
-                            width={400}
-                            height={400}
-                            className="sm:w-[450px] w-[300px] rounded-xl object-contain"
-                        />
-                    </div>
-                </div>
+    return (
+        <section className="relative w-full h-[50vh] max-h-[700px] md:h-[70vh] lg:h-[80vh]  rounded-2xl mt-8 overflow-hidden shadow-primary-foreground shadow-xl">
+            {/* Background Image */}
+
+            <Image
+                src={'/hero-dark.webp'}
+                alt="hero image"
+                fill
+                className="object-cover object-center"
+            />
+
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gray-700/50 dark:bg-black/50 flex items-center justify-center">
+                {/* Text Content */}
+                <HeroHighlight>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: [0.4, 0.0, 0.2, 1],
+                        }}
+                        className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold 
+            [text-shadow:_0_4px_0_#000000a0,_0_12px_20px_#00000080] 
+            text-white dark:text-gray-100 max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto"
+                    >
+                        Empower your tech journey with the latest mobiles, computers, and gaming consoles at <Highlight className="text-yellow-400">TechShop</Highlight>!
+                    </motion.h1>
+                </HeroHighlight>
             </div>
         </section>
     );

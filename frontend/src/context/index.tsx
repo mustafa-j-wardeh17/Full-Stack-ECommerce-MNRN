@@ -23,6 +23,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [userType, setUserType] = useState<UserType>("guest");
+    
 
     // Load user data from local storage on initial render
     useEffect(() => {
