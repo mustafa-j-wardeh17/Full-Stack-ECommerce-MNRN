@@ -101,7 +101,7 @@ export function FilterBy() {
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full max-w-[300px] p-0">
+          <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
             <Command>
               <CommandInput placeholder="Search Category..." className="h-9" />
               <CommandList>
@@ -135,8 +135,8 @@ export function FilterBy() {
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full max-w-[300px] p-0">
-            <Command>
+          <PopoverContent className="w-[--radix-popover-trigger-width] p-0" >
+            <Command >
               <CommandInput placeholder="Search Base..." className="h-9" />
               <CommandList>
                 <CommandEmpty>No base found.</CommandEmpty>
@@ -157,7 +157,7 @@ export function FilterBy() {
       </div>
 
       {/* Platform */}
-      <div className="mb-6">
+      <div className="mb-6 w-full relative overflow-hidden">
         <h3 className="font-semibold text-lg mb-2">Platform</h3>
         <Popover open={isPlatformOpen} onOpenChange={setIsPlatformOpen}>
           <PopoverTrigger asChild>
@@ -169,7 +169,7 @@ export function FilterBy() {
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full max-w-[300px] p-0">
+          <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
             <Command>
               <CommandInput placeholder="Search Platform..." className="h-9" />
               <CommandList>

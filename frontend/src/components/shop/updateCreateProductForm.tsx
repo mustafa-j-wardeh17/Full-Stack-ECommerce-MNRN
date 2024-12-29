@@ -419,13 +419,13 @@ const ComboboxField = ({ label, name, options, value, onChange }: ComboboxFieldP
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="mt-2 w-full justify-between"
+                        className="mt-2 h-[50px] border dark:bg-[#141414] w-full justify-between"
                     >
                         {value || `Select ${label}`}
                         <ChevronsUpDown className="opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[94vw] p-0">
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                     <Command>
                         <CommandInput placeholder={`Search ${label}...`} className="h-9" />
                         <CommandList>
