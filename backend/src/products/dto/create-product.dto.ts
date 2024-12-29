@@ -48,8 +48,8 @@ export class CreateProductDto {
   productUrl: string;
 
   @IsString()
-  @IsNotEmpty()
-  downloadUrl: string;
+  @IsOptional()
+  downloadUrl?: string;
 
   @IsArray()
   @IsNotEmpty()

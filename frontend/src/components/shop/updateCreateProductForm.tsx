@@ -4,10 +4,24 @@ import { baseType, categoryType, platformType } from '@/util/constant';
 import { HttpResponse, Product } from '@/util/types';
 import { DeleteIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import toast from 'react-hot-toast';
-import { IoIosArrowDown } from 'react-icons/io';
-
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 
 const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'create' | 'update', product?: Product | null }) => {
     const router = useRouter();
@@ -74,7 +88,6 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-
 
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products${type === 'update' ? `/${product?._id}` : ''}`, {
@@ -152,89 +165,32 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                 </div>
 
                 {/* Category */}
-                <div className="relative">
-                    <label htmlFor="category" className="block text-sm font-medium text-primary/80">
-                        Category
-                    </label>
-                    <div className='relative mt-2 block w-full rounded-md'>
-                        <select
-                            name="category"
-                            id="category"
-                            value={form.category}
-                            onChange={handleInputChange}
-                            className="mt-2 block w-full relative p-3 border rounded-md appearance-none"
-                            required
-                        >
+                <ComboboxField
+                    label="Category"
+                    name="category"
+                    options={categoryType}
+                    value={form.category}
+                    onChange={handleInputChange}
+                />
 
-                            {Object.values(categoryType).map((category) => (
-                                <option key={category} value={category}>
-                                    {category}
-                                </option>
-                            ))}
-                        </select>
-                        {/* Custom Arrow Icon */}
-                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                            <IoIosArrowDown size={20} />
-                        </div>
-                    </div>
-
-
-                </div>
 
                 {/* Platform Type */}
-                <div>
-                    <label htmlFor="platformType" className="block text-sm font-medium text-primary/80">
-                        Platform Type
-                    </label>
-
-                    <div className='relative mt-2 block w-full rounded-md'>
-                        <select
-                            name="platformType"
-                            id="platformType"
-                            value={form.platformType}
-                            onChange={handleInputChange}
-                            className="mt-2 block w-full relative p-3 border rounded-md appearance-none"
-                            required
-                        >
-                            {Object.values(platformType).map((platform) => (
-                                <option key={platform} value={platform}>
-                                    {platform}
-                                </option>
-                            ))}
-                        </select>
-                        {/* Custom Arrow Icon */}
-                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                            <IoIosArrowDown size={20} />
-                        </div>
-                    </div>
-                </div>
+                <ComboboxField
+                    label="Platform Type"
+                    name="platformType"
+                    options={platformType}
+                    value={form.platformType}
+                    onChange={handleInputChange}
+                />
 
                 {/* Base Type */}
-                <div>
-                    <label htmlFor="baseType" className="block text-sm font-medium text-primary/80">
-                        Base Type
-                    </label>
-                    <div className='relative mt-2 block w-full rounded-md'>
-                        <select
-                            name="baseType"
-                            id="baseType"
-                            value={form.baseType}
-                            onChange={handleInputChange}
-                            className="mt-2 block w-full p-3 border rounded-md appearance-none"
-                            required
-                        >
-                            {Object.values(baseType).map((base) => (
-                                <option key={base} value={base}>
-                                    {base}
-                                </option>
-                            ))}
-                        </select>
-                        {/* Custom Arrow Icon */}
-                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                            <IoIosArrowDown size={20} />
-                        </div>
-                    </div>
-                </div>
+                <ComboboxField
+                    label="Base Type"
+                    name="baseType"
+                    options={baseType}
+                    value={form.baseType}
+                    onChange={handleInputChange}
+                />
 
                 {/* Other fields */}
                 <div>
@@ -263,7 +219,6 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                         value={form.downloadUrl}
                         onChange={handleInputChange}
                         className="mt-2 block w-full p-3 border rounded-md"
-                        required
                     />
                 </div>
                 <div className='flex items-center gap-2'>
@@ -430,6 +385,69 @@ const CreateUpdateProduct = ({ type = 'create', product = null }: { type?: 'crea
                 </div>
             </form >
         </div >
+    );
+};
+
+interface ComboboxFieldProps {
+    label: string;
+    name: string;
+    options: Record<string, string>;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+}
+const ComboboxField = ({ label, name, options, value, onChange }: ComboboxFieldProps) => {
+    const [open, setOpen] = useState(false);
+    const handleSelect = (selectedValue: string) => {
+        const event = {
+            target: {
+                name,
+                value: selectedValue,
+            },
+        } as ChangeEvent<HTMLInputElement | HTMLSelectElement>;
+
+        onChange(event);
+        setOpen(false);
+    };
+    return (
+        <div>
+            <label htmlFor={name} className="block text-sm font-medium text-primary/80">
+                {label}
+            </label>
+            <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className="mt-2 w-full justify-between"
+                    >
+                        {value || `Select ${label}`}
+                        <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[94vw] p-0">
+                    <Command>
+                        <CommandInput placeholder={`Search ${label}...`} className="h-9" />
+                        <CommandList>
+                            <CommandEmpty>No {label} found.</CommandEmpty>
+                            <CommandGroup>
+                                {Object.values(options).map((option) => (
+                                    <CommandItem key={option} onSelect={() => handleSelect(option)}>
+                                        {option}
+                                        <Check
+                                            className={cn(
+                                                "ml-auto",
+                                                value === option ? "opacity-100" : "opacity-0"
+                                            )}
+                                        />
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
+                    </Command>
+                </PopoverContent>
+            </Popover>
+        </div>
     );
 };
 

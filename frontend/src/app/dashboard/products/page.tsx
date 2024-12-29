@@ -58,11 +58,11 @@ const Dashboard = async ({ searchParams }: { searchParams: tSearchParams }) => {
             <div className='flex sm:justify-end w-full justify-between gap-3 items-center'>
               <DashboardCategoryFilter
                 type='category'
-                categories={[categoryType.applicationSoftware, categoryType.operatingSystem]}
+                categories={Object.values(categoryType)}
               />
               <DashboardCategoryFilter
                 type='platformType'
-                categories={[platformType.android, platformType.ios, platformType.linux, platformType.mac, platformType.windows]}
+                categories={Object.values(platformType)}
               />
 
               <Link

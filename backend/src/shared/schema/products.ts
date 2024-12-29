@@ -149,8 +149,8 @@ export class Products {
   @Prop({ required: true })
   productUrl: string;
 
-  @Prop({ required: true })
-  downloadUrl: string;
+  @Prop({ required: false })
+  downloadUrl?: string;
 
   @Prop({})
   avgRating: number;
