@@ -118,6 +118,8 @@ const ProductSkuForm = ({ productId, hasLicenses }: { productId: string, hasLice
                   value={sku.price}
                   onChange={(e) => handleSkuChange(index, 'price', parseFloat(e.target.value))}
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  min={0}
+                  step={0.01}
                   required
                 />
               </div>

@@ -83,6 +83,7 @@ const page = async ({ params }: { params: tParams }) => {
 
             <SkuCards
               productName={product.productName}
+              hasLicenses={product.hasLicenses}
               productImage={product.image}
               skus={product.skuDetails || null}
             />

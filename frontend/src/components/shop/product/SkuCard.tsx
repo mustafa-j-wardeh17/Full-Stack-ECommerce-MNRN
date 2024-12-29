@@ -11,31 +11,39 @@ interface SkuCardsProps {
     skus: SkuDetail[] | null;
     productName: string;
     productImage: string;
+    hasLicenses: boolean;
 }
 
-const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
+const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProps) => {
     const [selectedSku, setSelectedSku] = useState<SkuDetail | null>(skus ? skus[0] : null);
     const [quantity, setQuantity] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
-    const params = useParams()
-    const { user } = useUserContext()
+    const params = useParams();
+    const { user } = useUserContext();
+
     const onSelect = (sku: SkuDetail) => {
         setSelectedSku(sku);
-        setQuantity(1); // Reset quantity on SKU change
+        setQuantity(1); // Reset quantity when SKU changes
     };
 
-    const increaseQuantity = () => setQuantity((prev) => prev + 1);
-    const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+    const increaseQuantity = () => {
+        if (selectedSku && quantity < selectedSku.remainingStock) {
+            setQuantity((prev) => prev + 1);
+        }
+    };
+
+    const decreaseQuantity = () => {
+        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+    };
 
     const handleAddToCart = async () => {
         if (!selectedSku) {
-            alert("Please select a SKU to proceed with checkout.");
+            toast.error("Please select a SKU to proceed.");
             return;
         }
 
-        const addToCartDetails =
-        {
+        const addToCartDetails = {
             userId: user?.id,
             productName,
             productImage,
@@ -45,7 +53,7 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
             skuPrice: selectedSku.price,
             quantity,
             skuId: selectedSku._id,
-        }
+        };
 
         setLoading(true);
 
@@ -56,19 +64,19 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(addToCartDetails),
-                credentials: 'include'
+                credentials: "include",
             });
 
             if (response.ok) {
                 const data: PostCartItemResponse = await response.json();
-                toast.success(data.message)
+                toast.success(data.message);
             } else {
                 const errorData = await response.json();
                 toast.error(`Add to cart failed: ${errorData.message || "Unknown error"}`);
             }
         } catch (error) {
             console.error("Checkout Error:", error);
-            alert("An error occurred during checkout. Please try again.");
+            toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -82,15 +90,15 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
         <>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold">
-                    Total Price:{' '}
+                    Total Price:{" "}
                     <span>
                         {selectedSku && selectedSku.price
-                            ? (selectedSku.price * quantity).toFixed(2) + ' $'
+                            ? (selectedSku.price * quantity).toFixed(2) + " $"
                             : "No prices available"}
                     </span>
                 </h2>
                 <p className="text-xs text-gray-500">
-                    Selected Plan:{' '}
+                    Selected Plan:{" "}
                     <span className="text-sm font-bold">
                         {selectedSku && selectedSku.skuName
                             ? selectedSku.skuName
@@ -103,21 +111,27 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
                 {skus.map((sku) => (
                     <div
                         key={sku.stripePriceId}
-                        onClick={() => onSelect(sku)}
-                        className={`cursor-pointer border rounded-md shadow-sm p-3 flex flex-col items-center text-center gap-1 transition-all duration-300 
+                        onClick={() => sku.remainingStock > 0 && onSelect(sku)}
+                        className={`cursor-pointer border rounded-md shadow-sm p-3 flex flex-col items-center justify-center text-center gap-1 transition-all duration-300 
                             ${selectedSku?.stripePriceId === sku.stripePriceId
-                                ? "bg-primary  text-secondary shadow-md"
-                                : "bg-primary-foreground border-primary text-primary hover:bg-primary/10 hover:border-primary/50 hover:text-primary/80"
+                                ? "bg-primary text-secondary shadow-md"
+                                : sku.remainingStock > 0
+                                ? "bg-primary-foreground border-primary text-primary hover:bg-primary/10 hover:border-primary/50 hover:text-primary/80"
+                                : "bg-gray-200 border-gray-300 text-gray-500 cursor-not-allowed"
                             }`}
                     >
-                        <h4 className="font-medium text-md">{sku.skuName}</h4>
-                        <p className="text-base font-bold">${sku.price.toFixed(2)}</p>
-                        <p className="text-xs text-gray-500">
-                            {sku.lifetime ? "Lifetime Access" : `${sku.validity} days`}
-                        </p>
+                        <h4 className="font-medium text-sm">{sku.skuName}</h4>
+                        {hasLicenses && (
+                            <p className="text-xs text-gray-500">
+                                {sku.lifetime ? "Lifetime Access" : `${sku.validity} days`}
+                            </p>
+                        )}
+                        
                     </div>
                 ))}
             </div>
+
+            <p className="text-sm mt-4">Remaining in stock: <span className="font-extrabold">{selectedSku?.remainingStock}</span></p>
 
             <div className="flex mt-6 items-center justify-between sm:gap-6 gap-2">
                 {/* Quantity Controls */}
@@ -133,7 +147,7 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
                     <button
                         onClick={increaseQuantity}
                         className="text-primary/70 hover:text-primary transition"
-                        disabled={loading}
+                        disabled={loading || (selectedSku! && quantity >= selectedSku.remainingStock)}
                     >
                         <FiPlus size={20} />
                     </button>
@@ -143,7 +157,7 @@ const SkuCards = ({ skus, productName, productImage }: SkuCardsProps) => {
                 <button
                     onClick={handleAddToCart}
                     className="flex-1 bg-primary text-secondary py-3 rounded-lg hover:bg-primary/80 transition duration-150"
-                    disabled={loading}
+                    disabled={loading || (selectedSku! && selectedSku.remainingStock === 0)}
                 >
                     {loading ? "Processing..." : "Add To Cart"}
                 </button>
