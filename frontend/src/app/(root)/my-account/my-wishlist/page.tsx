@@ -51,7 +51,6 @@ const page = async () => {
 
         const wishlistProducts = await wishlistProductsResponse.json();
 
-        console.log('Result of fetching wishlist =====>', wishlistProducts.result);
 
         return (
             <div className="w-full grid 2xl:grid-cols-3 lg:grid-cols-2 sm:place-items-start place-items-center sm:grid-cols-2 grid-cols-1 gap-6">

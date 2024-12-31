@@ -13,6 +13,23 @@ interface ResultInterface {
     relatedProducts: Product[]
   }
 }
+export async function generateMetadata({ params }: { params: tParams }) {
+  const { productId } = await (params)
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
+  if (!response.ok) {
+    throw new Error(`Failed to fetch product: ${response.statusText}`);
+  }
+  const result: ResultInterface = await response.json()
+  const product = result.result.product
+  return {
+    title: product.productName,
+    description: product.description
+  };
+
+}
+
+
 type tParams = Promise<{ productId: string }>
 const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)

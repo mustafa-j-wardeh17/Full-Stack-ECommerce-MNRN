@@ -4,11 +4,15 @@ import { FilterBy } from '@/components/shop/FilterBy';
 import { SortBy } from '@/components/shop/SortBy';
 import { baseType, categoryType, platformType } from '@/util/constant';
 import { Product } from '@/util/types';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 import React from 'react';
 import { CiGrid41 } from "react-icons/ci";
-import { IoMdAdd } from "react-icons/io";
+
+export const metadata: Metadata = {
+    title: 'Your Ultimate Tech Shop',
+    description: 'Welcome to ByteVault, your trusted destination for the latest in tech! Founded and developed by Mustafa Abu Wardeh, ByteVault offers a wide range of top-quality products including mobile phones, computers, gaming consoles, laptops, accessories, and more. Whether you’re upgrading your gaming setup, looking for a new smartphone, or need essential tech accessories like chargers, headphones, RAM, or storage drives, we have you covered. Our mission is to empower your tech journey with the best products, exceptional service, and unbeatable prices. Explore our collection and elevate your tech experience today at ByteVault.',
+  };
 
 interface ProductsInterface {
     result: {
