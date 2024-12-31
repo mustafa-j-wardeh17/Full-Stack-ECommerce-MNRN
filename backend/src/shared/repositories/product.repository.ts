@@ -6,6 +6,18 @@ import { CreateProductDto } from "src/products/dto/create-product.dto";
 import { ParsedOptions } from "qs-to-mongo/dist/query/options-to-mongo";
 import { License } from "../schema/license";
 
+export interface wishlistItems {
+    wishlist: {
+        productName: string,
+        productImage: string;
+        productId: string;
+        skuKey: string;
+        skuId: string;
+        skuPrice: number;
+        skuPriceId: string
+        quantity: number
+    }[]
+}
 
 @Injectable()
 export class ProductRepository {
@@ -165,4 +177,46 @@ export class ProductRepository {
             return await this.licenseModel.deleteMany({ product: productId });
         return await this.licenseModel.deleteMany({ productSku: skuId });
     }
+
+    async getWishlistItems(wishlist: { productId: string; skuId: string }[]): Promise<wishlistItems> {
+        // Extract product IDs from the wishlist
+        const productIds = wishlist.map(item => item.productId);
+    
+        // Query products based on product IDs
+        const products = await this.productModel.find({ _id: { $in: productIds } }).exec();
+    
+        if (!products || products.length === 0) {
+            console.warn('No matching products found for the provided product IDs.');
+            return { wishlist: [] };
+        }
+    
+        // Map products to the required wishlistItems structure
+        const wishlistProducts = wishlist.map(({ productId, skuId }) => {
+            const product = products.find(p => p._id.toString() === productId);
+    
+            if (!product) {
+                return null;
+            }
+    
+            const skuDetail = product.skuDetails.find(sku => sku._id.toString() === skuId);
+    
+            if (!skuDetail) {
+                return null; 
+            }
+    
+            return {
+                productName: product.productName,
+                productImage: product.image,
+                productId: product._id.toString(),
+                skuKey: skuDetail.skuName,
+                skuId: skuDetail._id.toString(),
+                skuPrice: skuDetail.price,
+                skuPriceId: skuDetail.stripePriceId,
+                quantity: 1,
+            };
+        }).filter(Boolean); 
+    
+        return { wishlist: wishlistProducts };
+    }
+    
 }

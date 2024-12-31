@@ -174,4 +174,14 @@ export class ProductsController {
   ) {
     return await this.productsService.removeProductReview(productId, reviewId);
   }
+
+
+  @Post('/wishlist')
+  async getProductSkuData(
+    @Body('wishlist') wishlist: { productId: string, skuId: string }[]
+  ) {
+
+    console.log(wishlist)
+    return await this.productsService.getProductSkuData(wishlist)
+  }
 }

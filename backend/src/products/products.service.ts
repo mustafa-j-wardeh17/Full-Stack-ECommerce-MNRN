@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, UploadedFile } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductRepository } from 'src/shared/repositories/product.repository';
+import { ProductRepository, wishlistItems } from 'src/shared/repositories/product.repository';
 import { InjectStripeClient } from '@golevelup/nestjs-stripe';
 import Stripe from 'stripe';
 import { Products } from 'src/shared/schema/products';
@@ -711,6 +711,22 @@ export class ProductsService {
       };
     } catch (error) {
       throw error;
+    }
+  }
+
+
+  async getProductSkuData(productSkus: { productId: string, skuId: string }[]): Promise<{
+    result: wishlistItems,
+    message: string,
+    success: boolean
+  }> {
+    const wishlist = await this.productDb.getWishlistItems(productSkus)
+   
+    
+    return {
+      message: 'wishlist fetched successfully',
+      result: wishlist,
+      success: true
     }
   }
 }
