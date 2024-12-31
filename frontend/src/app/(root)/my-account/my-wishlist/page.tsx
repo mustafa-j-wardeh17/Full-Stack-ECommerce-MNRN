@@ -1,42 +1,48 @@
 import React from 'react'
 import ProductCard from '@/components/productCard';
 import { Product } from '@/util/types';
+import { cookies } from 'next/headers';
+import WishlistTable from '@/components/my-account/my-wishlist/wishlistTable';
 
-interface ResultInterface {
+interface GetUserWishlistInterface {
     result: {
-        products: [
-            {
-                latestProducts: Product[],
-                topRatedProducts: Product[]
-            }
-        ]
+        wishlist: {
+            productId: string,
+            skuId: string,
+        }[]
     }
 }
 
 const page = async () => {
+    const cookieStore = cookies()
+    const _digi_auth_token = (await cookieStore).get('_digi_auth_token')
+
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?homepage=true`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${_digi_auth_token?.value}`,
+
+            },
+            credentials: 'include',
+        })
 
         if (!response.ok) {
             throw new Error(`Failed to fetch products: ${response.statusText}`);
         }
-        const result: ResultInterface = await response.json() || ''
+        const result: GetUserWishlistInterface = await response.json() || ''
+        const wishlist = result.result.wishlist
 
-        return (
-            <div className='w-full  grid 2xl:grid-cols-3 lg:grid-cols-2 sm:place-items-start place-items-center sm:grid-cols-2 grid-cols-1 gap-6'>
-                {result.result.products[0].topRatedProducts.map((product) => (
-                    <div
-                        key={product._id}
-                        className='max-w-[400px]'
-                    >
-                        <ProductCard
-                            product={product}
-                            type='wishlist'
-                        />
-                    </div>
-                ))}
-            </div>
-        )
+        try {
+
+            return (
+                <div className='w-full  grid 2xl:grid-cols-3 lg:grid-cols-2 sm:place-items-start place-items-center sm:grid-cols-2 grid-cols-1 gap-6'>
+                    <WishlistTable />
+                </div>
+            )
+        } catch (error: any) {
+            throw new Error(error.message)
+        }
     } catch (error) {
         console.error('Error fetching products:', error);
         return (

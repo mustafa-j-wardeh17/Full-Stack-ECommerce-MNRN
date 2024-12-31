@@ -109,7 +109,6 @@ const CartPage = () => {
     };
 
     // Handle checkout for selected items
-    // Handle checkout for selected items
     const handleCheckout = async () => {
         if (selectedItems.size === 0) {
             toast.error('Please select at least one item to checkout.');
@@ -123,7 +122,7 @@ const CartPage = () => {
                 skuPriceId: item.skuPriceId, // Assuming this field exists in the cart item
                 quantity: item.quantity,
                 skuId: item.skuId,
-                productId:item.productId
+                productId: item.productId
             }));
 
         // Prepare the body for the checkout request
@@ -134,7 +133,7 @@ const CartPage = () => {
         console.log('selected items ===>', Array.from(selectedItems))
 
         try {
-            const response = await fetch('http://localhost:3100/api/v1/orders/checkout', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/orders/checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,6 +149,7 @@ const CartPage = () => {
                 router.push(data.result); // Example redirect, change as needed
             } else {
                 const errorData = await response.json();
+                console.log('failed checkout ===>', errorData)
                 toast.error(`Checkout failed: ${errorData.message || 'Unknown error'}`);
                 console.error('Checkout error:', errorData);
             }

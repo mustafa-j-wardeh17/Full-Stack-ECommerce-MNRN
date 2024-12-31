@@ -6,6 +6,15 @@ export enum userTypes {
     CUSTOMER = 'customer'
 }
 
+@Schema({ timestamps: true })
+export class WishlistItem {
+    @Prop({ required: true })
+    productId: string;
+
+    @Prop({ required: true })
+    skuId: string;
+}
+
 @Schema({
     timestamps: true
 })
@@ -31,6 +40,8 @@ export class Users extends Document {
     @Prop({ default: null })
     otpExpiryTime: Date;
 
+    @Prop([{ type: WishlistItem }])
+    wishlist: WishlistItem[]
 }
 
 export const UserSchema = SchemaFactory.createForClass(Users);

@@ -7,6 +7,10 @@ export interface User {
     email?: string;
     type?: string;
     id?: string;
+    wishlist?:{
+        productId:string,
+        skuId:string,
+    }[]
 }
 
 type UserType = "admin" | "customer" | "guest";

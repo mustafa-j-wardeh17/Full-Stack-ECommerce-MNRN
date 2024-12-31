@@ -125,4 +125,49 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
+
+
+  // Wishlist
+  @Get('/wishlist')
+  async getWishlist(@Req() req: any) {
+    const user: Users = req.user;
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return {
+      success: true,
+      result: {
+        wishlist: user.wishlist
+      }
+    }
+  }
+
+  @Post('/wishlist')
+  async addToWishlist(
+    @Req() req: any,
+    @Body('productId') productId: string,
+    @Body('skuId') skuId: string,
+  ) {
+    const user: Users = req.user;
+
+    console.log('wishlist post user===>',user)
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.usersService.addToWishlist(user, productId, skuId);
+  }
+
+  @Delete('/wishlist')
+  async removeFromWishlist(
+    @Req() req: any,
+    @Body('productId') productId: string,
+    @Body('skuId') skuId: string,
+  ) {
+    const user: any = req.user;
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.usersService.removeFromWishlist(user, productId, skuId);
+  }
 }

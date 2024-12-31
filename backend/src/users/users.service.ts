@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { userTypes } from 'src/shared/schema/users';
+import { Users, userTypes } from 'src/shared/schema/users';
 import config from 'config'
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import { comparePassword, generateHashPassword } from 'src/utility/password-manager';
@@ -310,4 +310,51 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  // Wishlist
+  async addToWishlist(user: any, productId: string, skuId: string) {
+    let userRow = await this.userDB.findById(user._id)
+
+    const exists = user.wishlist.some(
+      (item) =>
+        item.productId === productId && item.skuId === skuId,
+    );
+
+    if (!exists) {
+      userRow.wishlist.push({ productId, skuId });
+      await userRow.save();
+    }
+
+    return {
+      message: 'Product added successfully to wishlist',
+      success: true,
+      result: {
+        wishlist: userRow.wishlist
+      }
+    }
+  }
+
+  async removeFromWishlist(user: any, productId: string, skuId: string) {
+    let userRow = await this.userDB.findById(user._id);
+
+    // Filter and update the wishlist
+    const updatedWishlist = userRow.wishlist.filter(
+      (item: { productId: string; skuId: string }) =>
+        item.productId !== productId || item.skuId !== skuId
+    );
+
+    userRow.wishlist = updatedWishlist; // Update the database row
+    await userRow.save(); // Save changes to the database
+
+
+    return {
+      message: 'Product removed successfully to wishlist',
+      success: true,
+      result: {
+        wishlist: user.wishlist
+      }
+    }
+  }
+
+
 }

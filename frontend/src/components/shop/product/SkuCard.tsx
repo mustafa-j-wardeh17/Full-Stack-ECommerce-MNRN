@@ -1,11 +1,11 @@
 'use client';
-import { HttpResponse, PostCartItemResponse, SkuDetail } from "@/util/types";
-import { useState } from "react";
+import { PostCartItemResponse, SkuDetail } from "@/util/types";
+import { useEffect, useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { CiHeart } from "react-icons/ci";
 import { useParams, useRouter } from "next/navigation";
 import { useUserContext } from "@/context";
 import toast from "react-hot-toast";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 
 interface SkuCardsProps {
     skus: SkuDetail[] | null;
@@ -18,9 +18,20 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
     const [selectedSku, setSelectedSku] = useState<SkuDetail | null>(skus ? skus[0] : null);
     const [quantity, setQuantity] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const [isInWishlist, setIsInWishlist] = useState<boolean>(false); // State to track wishlist status
     const router = useRouter();
     const params = useParams();
-    const { user } = useUserContext();
+    const { user, setUser } = useUserContext();
+
+    useEffect(() => {
+        if (user && selectedSku) {
+            // Check if the selected SKU is in the user's wishlist
+            const isWishlistItem = user?.wishlist?.some(
+                (item) => item.productId === params.productId as string && item.skuId === selectedSku._id
+            );
+            setIsInWishlist(isWishlistItem!); // Set the button color based on wishlist status
+        }
+    }, [selectedSku, user, params.productId]);
 
     const onSelect = (sku: SkuDetail) => {
         setSelectedSku(sku);
@@ -47,7 +58,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
             userId: user?.id,
             productName,
             productImage,
-            productId: params.productId,
+            productId: params.productId as string,
             skuKey: selectedSku.skuName,
             skuPriceId: selectedSku.stripePriceId,
             skuPrice: selectedSku.price,
@@ -79,6 +90,63 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
             toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleAddRemoveWishlist = async () => {
+        if (!selectedSku) {
+            toast.error("Please select a SKU to proceed.");
+            return;
+        }
+
+        const wishlistItem = {
+            productId: params.productId as string,
+            skuId: selectedSku._id,
+        };
+
+        const isWishlistItem = user?.wishlist?.some(
+            (item) => item.productId === wishlistItem.productId && item.skuId === wishlistItem.skuId
+        );
+
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist`,
+                {
+                    method: isWishlistItem ? "DELETE" : "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(wishlistItem),
+                    credentials: "include",
+                }
+            );
+
+            if (response.ok) {
+                const updatedWishlist = isWishlistItem
+                    ? user!.wishlist?.filter(
+                        (item) =>
+                            item.productId !== wishlistItem.productId ||
+                            item.skuId !== wishlistItem.skuId
+                    )
+                    : [...(user!.wishlist || []), wishlistItem];
+
+                setUser({ ...user, wishlist: updatedWishlist });
+                setIsInWishlist(!isWishlistItem); // Toggle wishlist status
+                toast.success(
+                    isWishlistItem
+                        ? "Removed from wishlist successfully."
+                        : "Added to wishlist successfully."
+                );
+            } else {
+                const errorData = await response.json();
+                toast.error(
+                    `Failed to update wishlist: ${errorData.message || "Unknown error"}`
+                );
+            }
+        } catch (error) {
+            console.error("Wishlist Update Error:", error);
+            toast.error("An error occurred. Please try again.");
         }
     };
 
@@ -116,8 +184,8 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                             ${selectedSku?.stripePriceId === sku.stripePriceId
                                 ? "bg-primary text-secondary shadow-md"
                                 : sku.remainingStock > 0
-                                ? "bg-primary-foreground border-primary text-primary hover:bg-primary/10 hover:border-primary/50 hover:text-primary/80"
-                                : "bg-gray-200 border-gray-300 text-gray-500 cursor-not-allowed"
+                                    ? "bg-primary-foreground border-primary text-primary hover:bg-primary/10 hover:border-primary/50 hover:text-primary/80"
+                                    : "bg-gray-200 border-gray-300 text-gray-500 cursor-not-allowed"
                             }`}
                     >
                         <h4 className="font-medium text-sm">{sku.skuName}</h4>
@@ -126,7 +194,6 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                                 {sku.lifetime ? "Lifetime Access" : `${sku.validity} days`}
                             </p>
                         )}
-                        
                     </div>
                 ))}
             </div>
@@ -165,10 +232,25 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                 {/* Wishlist Button */}
                 <div className="text-right">
                     <button
-                        className="text-primary/60 border border-primary/90 hover:border-primary hover:text-primary p-2 flex items-center justify-center rounded-lg transition duration-150"
+                        onClick={handleAddRemoveWishlist}
+                        className={`text-white border-[2px] rounded-lg p-2  flex items-center justify-center transition duration-150
+                            ${isInWishlist
+                                ? "border-primary  "
+                                : "border-primary/60 hover:border-primary "
+                            }`}
                         disabled={loading}
                     >
-                        <CiHeart size={30} />
+                        {
+                            isInWishlist ? (
+                                <>
+                                    <IoMdHeart   size={30} className="text-primary" />
+                                </>
+                            ) : (
+                                <>
+                                    <IoMdHeartEmpty  size={30}  className="text-primary/60 hover:text-primary"/>
+                                </>
+                            )
+                        }
                     </button>
                 </div>
             </div>
