@@ -34,7 +34,7 @@ const Hero = () => {
             [text-shadow:_0_4px_0_#000000a0,_0_12px_20px_#00000080] 
             text-white dark:text-gray-100 max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto"
                     >
-                        Empower your tech journey with the latest mobiles, computers, and gaming consoles at <Highlight className="text-yellow-400">TechShop</Highlight>!
+                        Empower your tech journey with the latest mobiles, computers, and gaming consoles at <Highlight className="text-yellow-400">ByteVault</Highlight>!
                     </motion.h1>
                 </HeroHighlight>
             </div>

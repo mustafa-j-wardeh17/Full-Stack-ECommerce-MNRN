@@ -46,7 +46,7 @@ const Navbar = () => {
                         className="text-2xl font-extrabold text-primary cursor-pointer hover:text-primary transition"
                         onClick={() => router.push('/')}
                     >
-                        PS_Store
+                        ByteVault
                     </h3>
                 </div>
 

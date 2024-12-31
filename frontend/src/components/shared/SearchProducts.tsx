@@ -2,7 +2,7 @@ import { Product, ProductsResponse } from '@/util/types';
 import { HeartIcon, Search, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BsPersonCircle } from 'react-icons/bs';
 
 interface SearchProductsProps {
@@ -32,6 +32,17 @@ const SearchProducts = ({
 
     const [products, setProducts] = React.useState<Product[]>([]);
 
+    useEffect(() => {
+        if (showMenu) {
+            document.body.style.overflow = 'hidden'; // Disable scroll
+        } else {
+            document.body.style.overflow = 'auto'; // Re-enable scroll
+        }
+        return () => {
+            document.body.style.overflow = 'auto'; // Ensure scroll is re-enabled when the component is unmounted
+        };
+    }, [showMenu]);
+
     const onChangeText = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
         if (e.target.value === '') {
@@ -45,23 +56,24 @@ const SearchProducts = ({
                     return;
                 }
                 setProducts(data.result.products);
-
             } catch (error: any) {
                 console.log('Error fetching search results:', error.message);
             }
         }
     }
+
     return (
         <>
-
             {/* Mobile Navigation Menu */}
             {showMenu && (
-                <div className="absolute top-0 left-0 w-full h-screen bg-primary-foreground z-50 flex flex-col items-center gap-6 pt-16">
+                <div className="fixed top-0 left-0 w-full h-screen bg-primary-foreground z-50 flex flex-col items-center gap-6 pt-16">
                     <X
                         size={24}
-                        className="absolute z-10 top-4 right-4 cursor-pointer text-white transition"
+                        className="absolute z-10 top-4 right-4 cursor-pointer text-primary hover:text-primary/80 transition"
                         onClick={() => setShowMenu(false)}
                     />
+                    <h1 className="text-2xl font-bold text-primary/90 mb-6">ByteVault</h1>
+
                     <div className="flex flex-col w-full items-center px-4 gap-6">
                         <Link href="/" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
                             Home
@@ -129,7 +141,7 @@ const SearchProducts = ({
                 <div className="fixed inset-0 z-50 bg-black/80 flex flex-col py-[60px] items-center ">
                     <X
                         size={28}
-                        className="absolute top-4 right-4 text-white cursor-pointer hover:text-white/80 transition"
+                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary/80 transition"
                         onClick={() => setShowSearch(false)}
                     />
                     <div className="w-full max-w-md px-4">
@@ -171,11 +183,8 @@ const SearchProducts = ({
                     </div>
                 </div>
             )}
-
-
-
         </>
     )
 }
 
-export default SearchProducts
+export default SearchProducts;
