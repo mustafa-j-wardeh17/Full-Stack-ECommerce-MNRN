@@ -335,23 +335,23 @@ export class UsersService {
   }
 
   async removeFromWishlist(user: any, productId: string, skuId: string) {
-    let userRow = await this.userDB.findById(user._id);
 
-    // Filter and update the wishlist
-    const updatedWishlist = userRow.wishlist.filter(
-      (item: { productId: string; skuId: string }) =>
-        item.productId !== productId || item.skuId !== skuId
-    );
+    console.log('wishlist delete user===>', productId, skuId)
+    const wishlist = await this.userDB.removeSingleWishlistItem(user._id, productId, skuId);
+    return {
+      message: 'Product removed successfully to wishlist',
+      success: true,
+      result: wishlist
+    }
+  }
 
-    userRow.wishlist = updatedWishlist; // Update the database row
-    await userRow.save(); // Save changes to the database
-
-
+  async removeSelectedItemsFromWishlist(user: any, selectedItems: { productId: string, skuId: string }[]) {
+    const wishlist = await this.userDB.removeMultipleWishlistItems(user._id, selectedItems);
     return {
       message: 'Product removed successfully to wishlist',
       success: true,
       result: {
-        wishlist: user.wishlist
+        wishlist
       }
     }
   }

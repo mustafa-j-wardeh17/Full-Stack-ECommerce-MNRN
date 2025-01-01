@@ -181,7 +181,6 @@ export class ProductsController {
     @Body('wishlist') wishlist: { productId: string, skuId: string }[]
   ) {
 
-    console.log(wishlist)
     return await this.productsService.getProductSkuData(wishlist)
   }
 }

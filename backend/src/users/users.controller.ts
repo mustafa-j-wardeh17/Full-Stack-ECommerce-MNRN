@@ -150,8 +150,6 @@ export class UsersController {
     @Body('skuId') skuId: string,
   ) {
     const user: Users = req.user;
-
-    console.log('wishlist post user===>',user)
     if (!user) {
       throw new Error('User not found');
     }
@@ -161,13 +159,28 @@ export class UsersController {
   @Delete('/wishlist')
   async removeFromWishlist(
     @Req() req: any,
-    @Body('productId') productId: string,
-    @Body('skuId') skuId: string,
+    @Query('productId') productId: string,
+    @Query('skuId') skuId: string,
   ) {
+
     const user: any = req.user;
+
     if (!user) {
       throw new Error('User not found');
     }
     return this.usersService.removeFromWishlist(user, productId, skuId);
+  }
+
+  @Delete('/wishlist/selected-items')
+  async removeSelectedItemsFromWishlist(
+    @Req() req: any,
+    @Body('selectedItems') selectedItems: { skuId: string, productId: string }[],
+  ) {
+    const user: any = req.user;
+    console.log(user)
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.usersService.removeSelectedItemsFromWishlist(user, selectedItems);
   }
 }

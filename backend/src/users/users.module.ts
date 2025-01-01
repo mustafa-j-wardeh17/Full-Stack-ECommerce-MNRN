@@ -34,13 +34,10 @@ export class UsersModule implements NestModule {
           path: '/users', method: RequestMethod.GET,
         },
         {
-          path: '/users/wishlist', method: RequestMethod.GET,
+          path: '/users/wishlist', method: RequestMethod.ALL,
         },
         {
-          path: '/users/wishlist', method: RequestMethod.DELETE,
-        },
-        {
-          path: '/users/wishlist', method: RequestMethod.POST,
+          path: '/users/wishlist/selected-items', method: RequestMethod.DELETE,
         },
       );
   }

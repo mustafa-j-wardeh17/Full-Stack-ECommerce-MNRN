@@ -49,12 +49,14 @@ const page = async () => {
             throw new Error(`Failed to fetch wishlist products: ${wishlistProductsResponse.statusText}`);
         }
 
-        const wishlistProducts = await wishlistProductsResponse.json();
+        const result = await wishlistProductsResponse.json();
+
+        const wishlistProducts = result.result.wishlist;
 
 
         return (
-            <div className="w-full grid 2xl:grid-cols-3 lg:grid-cols-2 sm:place-items-start place-items-center sm:grid-cols-2 grid-cols-1 gap-6">
-                <WishlistTable />
+            <div className="w-full  gap-6">
+                <WishlistTable wishlist={wishlistProducts}/>
             </div>
         );
     } catch (error) {

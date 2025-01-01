@@ -28,4 +28,24 @@ export class UserRepository {
     async findById(id: string) {
         return await this.userModel.findById(id)
     }
+
+    // Remove a single wishlist item
+    async removeSingleWishlistItem(userId: string, productId: string, skuId: string): Promise<any> {
+        const result = await this.userModel.updateOne(
+            { _id: userId },
+            { $pull: { wishlist: { productId, skuId } } }
+        ).exec();
+
+        return result;
+    }
+
+    // Remove multiple wishlist items
+    async removeMultipleWishlistItems(userId: string, selectedItems: { productId: string; skuId: string }[]): Promise<any> {
+        const result = await this.userModel.updateOne(
+            { _id: userId },
+            { $pull: { wishlist: { $or: selectedItems } } }
+        ).exec();
+
+        return result;
+    }
 }
