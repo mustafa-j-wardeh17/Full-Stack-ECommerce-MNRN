@@ -7,12 +7,24 @@ import { Cart, CartDocument } from '../schema/cart';
 export class CartRepository {
   constructor(
     @InjectModel(Cart.name) private readonly cartModel: Model<CartDocument>,
-  ) {}
+  ) { }
 
-  // Function to create a cart item
+  // Function to create or update a cart item
   async createCartItem(cartData: Partial<Cart>): Promise<Cart> {
-    const cartItem = new this.cartModel(cartData);
-    return cartItem.save();
+    const { userId, productId, skuId } = cartData;
+
+    // Check if a cart item already exists for the user, product, and SKU
+    const existingCartItem = await this.cartModel.findOne({ userId, productId, skuId });
+
+    if (existingCartItem) {
+      // If the cart item exists, increase the quantity
+      existingCartItem.quantity += cartData.quantity || 1;
+      return existingCartItem.save();
+    } else {
+      // If the cart item does not exist, create a new one
+      const newCartItem = new this.cartModel(cartData);
+      return newCartItem.save();
+    }
   }
 
   // Function to find cart items by user

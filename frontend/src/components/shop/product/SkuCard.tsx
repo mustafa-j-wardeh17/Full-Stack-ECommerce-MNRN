@@ -86,7 +86,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                 toast.error(`Add to cart failed: ${errorData.message || "Unknown error"}`);
             }
         } catch (error) {
-            console.error("Checkout Error:", error);
+            console.error("Add to cart Error:", error);
             toast.error("An error occurred. Please try again.");
         } finally {
             setLoading(false);

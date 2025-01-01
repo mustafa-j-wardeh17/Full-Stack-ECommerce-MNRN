@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useUserContext } from "@/context";
+import { PostCartItemResponse } from "@/util/types";
 
 interface WishlistItem {
   productName: string;
@@ -37,7 +38,7 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
   const { user, setUser } = useUserContext()
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<
-    { productId: string; skuId: string }[]
+    any[]
   >([]);
 
   const handleCheckboxChange = (item: { productId: string; skuId: string }) => {
@@ -61,7 +62,7 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
     );
   };
 
-  const onRemoveSingle = async (productId: string, skuId: string) => {
+  const onRemoveSingle = async (productId: string, skuId: string, addToCart?: boolean) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist/selected-items`, {
         method: 'DELETE',
@@ -82,18 +83,48 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
           ? user.wishlist.filter(item => !selectedItems.some(selected => selected.productId === item.productId && selected.skuId === item.skuId))
           : []
       })
-      toast.success('Wishlist item removed successfully');
+
+
+      if (addToCart === false || addToCart === undefined) {
+        toast.success('Wishlist item removed successfully');
+      }
       router.refresh()
     } catch (error) {
       toast.error('Failed to remove wishlist item');
     }
   };
 
-  const onAddToCart = (productId: string, skuId: string) => {
-    console.log("Add to cart:", productId, skuId);
+  const onAddToCart = async (product: any) => {
+    if (!product) {
+      toast.error("Please select a SKU to proceed.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...product, userId: user?.id }),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data: PostCartItemResponse = await response.json();
+        toast.success(data.message);
+      } else {
+        const errorData = await response.json();
+        toast.error(`Add to cart failed: ${errorData.message || "Unknown error"}`);
+        throw new Error(`Add to cart failed: ${errorData.message || "Unknown error"}`);
+      }
+      await onRemoveSingle(product.productId, product.skuId, true);
+    } catch (error) {
+      console.error("Add to cart Error:", error);
+    }
   };
 
-  const onRemoveSelected = async (selectedItems: { productId: string; skuId: string }[]) => {
+  const onRemoveSelected = async (selectedItems: { productId: string; skuId: string }[], addToCart?: boolean) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist/selected-items`, {
         method: 'DELETE',
@@ -176,7 +207,7 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
                 <div className="flex gap-2">
                   <button
                     className="px-4 py-2 bg-green-500 text-white rounded"
-                    onClick={() => onAddToCart(item.productId, item.skuId)}
+                    onClick={() => onAddToCart(item)}
                   >
                     Add to Cart
                   </button>
