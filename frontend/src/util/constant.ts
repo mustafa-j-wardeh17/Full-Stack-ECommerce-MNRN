@@ -173,3 +173,91 @@ export const brands = [
     title: "Xiaomi",
   },
 ];
+
+
+export const baseTypesCategories = [
+  {
+    title: 'Computer',
+    image: '/base/computer.jpeg',
+  },
+  {
+    title: 'Mobile',
+    image: '/base/mobile.jpeg',
+  },
+  {
+    title: 'Tablet',
+    image: '/base/tablet.jpeg',
+  },
+  {
+    title: 'Wearable',
+    image: '/base/Wearable.jpeg',
+  },
+  {
+    title: 'Peripheral',
+    image: '/base/Peripheral.jpeg',
+  },
+  {
+    title: 'Software',
+    image: '/base/Software.jpeg',
+  },
+  {
+    title: 'Gaming Console',
+    image: '/base/Gaming Console.jpeg',
+  },
+  {
+    title: 'Accessory',
+    image: '/base/Accessory.jpeg',
+  },
+  {
+    title: 'Networking',
+    image: '/base/Networking.jpeg',
+  },
+  {
+    title: 'Smart Home',
+    image: '/base/Smart Home.jpeg',
+  },
+  {
+    title: 'Storage',
+    image: '/base/Storage.jpeg',
+  },
+  {
+    title: 'Cooling',
+    image: '/base/Cooling.jpeg',
+  },
+  {
+    title: 'Display',
+    image: '/base/Display.jpeg',
+  },
+  {
+    title: 'Audio',
+    image: '/base/Audio.jpeg',
+  },
+  {
+    title: 'Virtual Reality',
+    image: '/base/Virtual Reality.jpeg',
+  },
+  {
+    title: 'Augmented Reality',
+    image: '/base/Augmented Reality.jpeg',
+  },
+  {
+    title: 'Security',
+    image: '/base/Security.jpeg',
+  },
+  {
+    title: 'Battery',
+    image: '/base/Battery.jpeg',
+  },
+  {
+    title: 'IoT Device',
+    image: '/base/IoT Device.jpeg',
+  },
+  {
+    title: 'Cloud Service',
+    image: '/base/Cloud Service.jpeg',
+  },
+  {
+    title: 'Furniture',
+    image: '/base/Furniture.jpeg',
+  },
+];

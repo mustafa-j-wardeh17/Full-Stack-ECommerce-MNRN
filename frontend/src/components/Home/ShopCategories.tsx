@@ -1,4 +1,6 @@
 'use client';
+import { baseTypesCategories } from '@/util/constant';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 
@@ -6,16 +8,7 @@ const ShopCategories = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  const images = [
-    '/hero.png',
-    '/hero.png',
-    '/hero.png',
-    '/hero.png',
-    '/next.svg',
-    '/hero.png',
-    '/hero.png',
-    '/hero.png',
-  ];
+  const images = baseTypesCategories;
 
   const itemsPerRow = {
     large: 4,
@@ -53,56 +46,56 @@ const ShopCategories = () => {
   };
 
   return (
-    <div className="relative mt-12 px-4 lg:px-16">
-      {/* Header */}
+    <section className="my-20 px-4 lg:px-16">
+
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-primary/80">Shop by Categories</h2>
-        <div className="flex space-x-2">
+        <h2 className="sm:text-2xl text-lg font-bold text-primary/80 ">Shop by Categories</h2>
+
+        <div className='flex items-center space-x-4'>
           <button
             onClick={handlePrev}
-            className="bg-primary-foreground border p-3 rounded-full text-primary hover:bg-primary hover:text-secondary transition-all"
+            disabled={currentIndex === 0}
+            className="bg-primary-foreground flex items-center justify-center w-[45px] h-[45px] border rounded-full text-primary hover:bg-primary hover:text-secondary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            &#8592;
+            <ArrowLeft />
           </button>
           <button
             onClick={handleNext}
-            className="bg-primary-foreground border p-3 rounded-full text-primary hover:bg-primary hover:text-secondary transition-all"
+            disabled={currentIndex === images.length - getResponsiveItemCount()}
+            className="bg-primary-foreground flex items-center justify-center w-[45px] h-[45px] border rounded-full text-primary hover:bg-primary hover:text-secondary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            &#8594;
+            <ArrowRight />
           </button>
         </div>
       </div>
 
-      {/* Images Container */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        
         {getVisibleImages().map((image, index) => (
           <div
             key={index}
-            className="relative shadow-sm shadow-primary w-full lg:h-[280px] md:h-[210px] sm:h-[200px] h-[180px] hover:scale-105 transform transition-all duration-300 ease-in-out rounded-lg overflow-hidden group"
+            className="relative w-full aspect-[9/12] hover:scale-105 transform transition-all duration-300 ease-in-out rounded-lg overflow-hidden group"
           >
             <Image
-              src={image}
-              alt={`Category ${index + 1}`}
+              src={image.image}
+              alt={`baseType ${index + 1}`}
               fill
-              className=" rounded-lg"
+              className="rounded-lg"
             />
 
-            {/* Hover Effect and Button */}
-            <div className="absolute z-10 bottom-0 w-full bg-gradient-to-t from-primary to-transparent p-4">
-              <div className="flex items-center justify-center w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+            <div className="absolute z-10 bottom-0 w-full bg-gradient-to-t from-blue-950 to-transparent p-4">
+              <div className="flex items-center justify-center w-full h-full  transition-opacity duration-300 ease-in-out">
                 <a
-                  href={`/category/${index}`}
-                  className="text-secondary text-lg font-semibold px-4 py-2 bg-primary rounded-lg hover:bg-primary/80 transition-all"
+                  href={`/shop?baseType=${image.title}`}
+                  className="text-white sm:text-lg text-md font-semibold w-2/3 text-center sm:py-2 px-3 py-[6px] bg-gradient-to-r from-blue-800 to-blue-600 rounded-lg hover:opacity-85 transition-all"
                 >
-                  Category {index + 1}
+                  {image.title}
                 </a>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

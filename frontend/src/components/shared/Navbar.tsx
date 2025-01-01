@@ -43,7 +43,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <div className="flex items-center">
                     <h3
-                        className="text-2xl font-extrabold text-primary cursor-pointer hover:text-primary transition"
+                        className="text-3xl font-extrabold text-sky-800 dark:text-sky-500 cursor-pointer hover:opacity-80 transition"
                         onClick={() => router.push('/')}
                     >
                         ByteVault

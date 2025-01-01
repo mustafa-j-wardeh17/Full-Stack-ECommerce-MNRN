@@ -8,7 +8,7 @@ import { HeroHighlight, Highlight } from '../ui/hero-hightlight';
 const Hero = () => {
 
     return (
-        <section className="relative w-full h-[50vh] max-h-[700px] md:h-[70vh] lg:h-[80vh]  rounded-2xl mt-8 overflow-hidden shadow-primary-foreground shadow-xl">
+        <section className="relative mb-20 w-full h-[50vh] max-h-[700px] md:h-[70vh] lg:h-[80vh]  rounded-2xl mt-8 overflow-hidden shadow-primary-foreground shadow-xl">
             {/* Background Image */}
 
             <Image

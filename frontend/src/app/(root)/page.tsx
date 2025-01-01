@@ -2,6 +2,8 @@ import { InfiniteMovingCardsDemo } from "@/components/Home/BrandsInfiniteMoving"
 import Hero from "@/components/Home/Hero";
 import BestSells from "@/components/Home/OurBestSells";
 import ShopCategories from "@/components/Home/ShopCategories";
+import WhyChooseUs from "@/components/Home/WhyChooseUs";
+import { Separator } from "@/components/ui/separator";
 import { Product } from "@/util/types";
 import { cookies } from "next/headers";
 
@@ -49,15 +51,20 @@ export default async function Home() {
     return (
       <div >
         <Hero />
-        {/* <div className="static w-full">
-          <ShopCategories />
-        </div> */}
+        <ShopCategories />
+        <Separator />
         <InfiniteMovingCardsDemo />
+        <Separator />
+        <WhyChooseUs />
+
+        {/* bg for latest must graidiant */}
         <BestSells
           isAdmin={isAdmin}
           type={'latest'}
           bestSells={result.result.products[0].latestProducts}
         />
+
+        {/* bg for best must graidiant */}
         <BestSells
           isAdmin={isAdmin}
           bestSells={result.result.products[0].topRatedProducts}
