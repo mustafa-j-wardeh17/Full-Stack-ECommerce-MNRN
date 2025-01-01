@@ -1,6 +1,7 @@
 import React from 'react';
 import { Product } from '@/util/types';
 import ProductCard from '../productCard';
+import Link from 'next/link';
 
 const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Product[], type?: 'default' | 'latest', isAdmin: boolean }) => {
 
@@ -25,6 +26,16 @@ const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Produc
                     </div>
                 ))}
             </div>
+            {
+                type === 'default' && (
+                    <div className='w-full flex items-center justify-center mt-10'>
+                        <Link href='/shop' className='bg-primary px-4 py-2 rounded-md shadow-md hover:bg-primary/70 duration-150 '>
+                            <p className='block text-center text-secondary  font-semibold text-lg'>View All Products</p>
+                        </Link>
+                    </div>
+                )
+            }
+
         </section>
     );
 };

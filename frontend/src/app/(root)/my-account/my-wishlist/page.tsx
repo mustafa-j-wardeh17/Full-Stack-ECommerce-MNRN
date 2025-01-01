@@ -3,6 +3,7 @@ import ProductCard from '@/components/productCard';
 import { Product } from '@/util/types';
 import { cookies } from 'next/headers';
 import WishlistTable from '@/components/my-account/my-wishlist/wishlistTable';
+import Link from 'next/link';
 
 interface GetUserWishlistInterface {
     result: {
@@ -56,7 +57,19 @@ const page = async () => {
 
         return (
             <div className="w-full  gap-6">
-                <WishlistTable wishlist={wishlistProducts}/>
+                {wishlistProducts.length === 0 ? (
+                    <div className='w-full flex flex-col gap-4 items-center justify-center'>
+                        <p className="text-gray-500 text-center text-lg font-medium">
+                            Your wishlist is empty. Start adding your favorite items!
+                        </p>
+                        <Link href="/shop" className="">
+                            <span className="text-center text-blue-500 underline">Shop Now</span>
+                        </Link>
+                    </div>
+
+                ) : (
+                    <WishlistTable wishlist={wishlistProducts} />
+                )}
             </div>
         );
     } catch (error) {

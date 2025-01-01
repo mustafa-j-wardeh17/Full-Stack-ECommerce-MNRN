@@ -35,8 +35,11 @@ export class CartController {
 
   // Clear all cart items for a user
   @Delete('user/:userId')
-  async clearCartByUser(@Param('userId') userId: string) {
-    return this.cartService.clearCartByUser(userId);
+  async clearCartSelectedItemsByUser(
+    @Param('userId') userId: string,
+    @Body('cartIds') cartIds: string[],
+  ) {
+    return this.cartService.clearCartSelectedItemsByUser(userId,cartIds);
   }
 
   // Increment the quantity of a cart item
@@ -44,7 +47,7 @@ export class CartController {
   async incrementCartItemQuantity(
     @Param('cartId') cartId: string,
     @Body('incrementBy') incrementBy: number,
-  ): Promise<Cart | null> {
+  ) {
     return this.cartService.incrementCartItemQuantity(cartId, incrementBy);
   }
 }

@@ -3,6 +3,7 @@
 import { useUserContext } from '@/context';
 import { Cart, CheckoutSelectedCartItemResponse, GetCartItemsResponse, UpdateCartItemResponse } from '@/util/types';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -161,10 +162,16 @@ const CartPage = () => {
 
 
     // Clear the cart
-    const handleClearCart = async () => {
+    const handleClearSelectedItemsFromCart = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/cart/user/clear`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/cart/user/${user?.id}`, {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cartIds: Array.from(selectedItems),
+                }),
                 credentials: 'include',
             });
             if (response.ok) {
@@ -191,9 +198,26 @@ const CartPage = () => {
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6 text-primary">My Cart</h1>
             {cartItems.length === 0 ? (
-                <p className="text-primary/60">My cart is empty.</p>
+                <div className='w-full flex flex-col gap-4 items-center justify-center'>
+                    <p className="text-gray-500 text-center text-lg font-medium">
+                        Your cart is empty. Start adding your favorite items!
+                    </p>
+                    <Link href="/shop" className="">
+                        <span className="text-center text-blue-500 underline">Shop Now</span>
+                    </Link>
+                </div>
             ) : (
+
                 <div className="space-y-6">
+                    <div className="flex items-center my-12 ml-4">
+                        <input
+                            type="checkbox"
+                            checked={cartItems.length === selectedItems.size}
+                            onChange={(e) => handleSelectAll(e.target.checked)}
+                            className="w-4 h-4 border-primary rounded-md"
+                        />
+                        <span className="ml-2 text-primary">Select All</span>
+                    </div>
                     {cartItems.map((item) => (
                         <div
                             key={item._id}
@@ -244,16 +268,13 @@ const CartPage = () => {
                         </div>
                     ))}
                     {/* Checkout Section */}
-                    <div className="flex justify-between items-center pt-4">
-                        <div className="flex items-center">
-                            <input
-                                type="checkbox"
-                                checked={cartItems.length === selectedItems.size}
-                                onChange={(e) => handleSelectAll(e.target.checked)}
-                                className="w-4 h-4 border-primary rounded-md"
-                            />
-                            <span className="ml-2 text-primary">Select All</span>
-                        </div>
+                    <div className="flex justify-between items-center pt-8">
+                        <button
+                            onClick={handleClearSelectedItemsFromCart}
+                            className="px-6 py-2 bg-red-600 hover:bg-red-600/80 font-bold shadow-md text-secondary rounded-lg "
+                        >
+                            Clear Cart
+                        </button>
                         <button
                             onClick={handleCheckout}
                             className="px-6 py-2 bg-primary hover:bg-primary/80 shadow-md text-secondary rounded-lg font-medium"
@@ -261,14 +282,7 @@ const CartPage = () => {
                             Checkout
                         </button>
                     </div>
-                    <div className="flex justify-end mt-4">
-                        <button
-                            onClick={handleClearCart}
-                            className="px-6 py-2 bg-primary hover:bg-primary/80 shadow-md text-secondary rounded-lg font-medium"
-                        >
-                            Clear Cart
-                        </button>
-                    </div>
+
                 </div>
             )}
         </div>

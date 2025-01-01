@@ -31,7 +31,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
             );
             setIsInWishlist(isWishlistItem!); // Set the button color based on wishlist status
         }
-    }, [selectedSku, user, params.productId]);
+    }, [selectedSku, user, setUser, params.productId]);
 
     const onSelect = (sku: SkuDetail) => {
         setSelectedSku(sku);
@@ -243,11 +243,11 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                         {
                             isInWishlist ? (
                                 <>
-                                    <IoMdHeart   size={30} className="text-primary" />
+                                    <IoMdHeart size={30} className="text-primary" />
                                 </>
                             ) : (
                                 <>
-                                    <IoMdHeartEmpty  size={30}  className="text-primary/60 hover:text-primary"/>
+                                    <IoMdHeartEmpty size={30} className="text-primary/60 hover:text-primary" />
                                 </>
                             )
                         }

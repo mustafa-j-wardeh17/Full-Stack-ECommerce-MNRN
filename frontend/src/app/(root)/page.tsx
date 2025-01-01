@@ -1,3 +1,4 @@
+import { InfiniteMovingCardsDemo } from "@/components/Home/BrandsInfiniteMoving";
 import Hero from "@/components/Home/Hero";
 import BestSells from "@/components/Home/OurBestSells";
 import ShopCategories from "@/components/Home/ShopCategories";
@@ -51,6 +52,7 @@ export default async function Home() {
         {/* <div className="static w-full">
           <ShopCategories />
         </div> */}
+        <InfiniteMovingCardsDemo />
         <BestSells
           isAdmin={isAdmin}
           type={'latest'}

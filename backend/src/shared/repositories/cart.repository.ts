@@ -45,8 +45,14 @@ export class CartRepository {
   }
 
   // NEW: Function to clear all cart items for a specific user
-  async clearCartByUser(userId: string): Promise<{ deletedCount: number }> {
-    return this.cartModel.deleteMany({ userId }).exec();
+  async clearCartSelectedItemsByUser(userId: string, cartIds: string[]): Promise<{ deletedCount: number }> {
+    
+    const count = await this.cartModel.deleteMany({
+      userId,
+      _id: { $in: cartIds },
+    }).exec();
+
+    return count;
   }
 
   // NEW: Function to increment the quantity of a cart item

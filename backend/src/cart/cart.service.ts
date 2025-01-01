@@ -67,12 +67,12 @@ export class CartService {
   }
 
   // Clear all cart items for a user
-  async clearCartByUser(userId: string): Promise<{
+  async clearCartSelectedItemsByUser(userId: string, cartIds: string[]): Promise<{
     result: null,
     message: string,
     success: true
   }> {
-    await this.cartRepository.clearCartByUser(userId);
+    await this.cartRepository.clearCartSelectedItemsByUser(userId, cartIds);
 
     return {
       message: 'Cart has been reset successfully',
@@ -82,7 +82,16 @@ export class CartService {
   }
 
   // Increment the quantity of a cart item
-  async incrementCartItemQuantity(cartId: string, incrementBy: number): Promise<Cart | null> {
-    return this.cartRepository.incrementCartItemQuantity(cartId, incrementBy);
+  async incrementCartItemQuantity(cartId: string, incrementBy: number): Promise<{
+    result: null,
+    message: string,
+    success: true
+  }> {
+    await this.cartRepository.incrementCartItemQuantity(cartId, incrementBy);
+    return {
+      message: 'Increment the quantity of a cart item successfully',
+      result: null,
+      success: true
+    }
   }
 }
