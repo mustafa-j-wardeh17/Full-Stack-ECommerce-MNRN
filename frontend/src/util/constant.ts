@@ -84,3 +84,92 @@ export enum baseType {
   Furniture = 'Furniture',
   None='None'
 }
+
+
+
+export const brands = [
+  {
+    image: "/brands/acer-2.png",
+    title: "Acer",
+  },
+  {
+    image: "/brands/amd-ryzen-1.png",
+    title: "AMD Ryzen",
+  },
+  {
+    image: "/brands/anker-logo-1.svg",
+    title: "Anker Innovations",
+  },
+  {
+    image: "/brands/apple-11.svg",
+    title: "Apple",
+  },
+  {
+    image: "/brands/asus-logo.svg",
+    title: "Asus",
+  },
+  {
+    image: "/brands/corsair-3.svg",
+    title: "Corsair Gaming",
+  },
+  {
+    image: "/brands/dell-2.svg",
+    title: "Dell Technologies",
+  },
+  {
+    image: "/brands/gigabyte.png",
+    title: "Gigabyte Technology",
+  },
+  {
+    image: "/brands/hp-2.png",
+    title: "HP Inc.",
+  },
+  {
+    image: "/brands/huawei.svg",
+    title: "Huawei",
+  },
+  {
+    image: "/brands/lenovo-logo-2015-1.png",
+    title: "Lenovo",
+  },
+  {
+    image: "/brands/lg-logo-2015--1.png",
+    title: "LG Electronics",
+  },
+  {
+    image: "/brands/logitech-gaming-2.svg",
+    title: "Logitech International",
+  },
+  {
+    image: "/brands/microsoft-5.svg",
+    title: "Microsoft",
+  },
+  {
+    image: "/brands/msi-5.svg",
+    title: "MSI (Micro-Star International)",
+  },
+  {
+    image: "/brands/razer.svg",
+    title: "Razer Inc.",
+  },
+  {
+    image: "/brands/sony-2.svg",
+    title: "Sony Corporation",
+  },
+  {
+    image: "/brands/samsung.svg",
+    title: "Samsung Electronics",
+  },
+  {
+    image: "/brands/toshiba-3.svg",
+    title: "Toshiba Corporation",
+  },
+  {
+    image: "/brands/vivo-logo.svg",
+    title: "Vivo Mobile",
+  },
+  {
+    image: "/brands/xiao-mi.svg",
+    title: "Xiaomi",
+  },
+];
