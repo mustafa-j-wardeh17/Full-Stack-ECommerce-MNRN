@@ -178,15 +178,15 @@ export const brands = [
 export const baseTypesCategories = [
   {
     title: 'Computer',
-    image: '/base/computer.jpeg',
+    image: '/base/Computer.jpeg',
   },
   {
     title: 'Mobile',
-    image: '/base/mobile.jpeg',
+    image: '/base/Mobile.jpeg',
   },
   {
     title: 'Tablet',
-    image: '/base/tablet.jpeg',
+    image: '/base/Tablet.jpeg',
   },
   {
     title: 'Wearable',
