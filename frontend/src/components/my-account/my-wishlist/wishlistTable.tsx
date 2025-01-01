@@ -63,17 +63,25 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
 
   const onRemoveSingle = async (productId: string, skuId: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist?productId=${productId}&skuId=${skuId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/wishlist/selected-items`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
-      });
-      
+        body: JSON.stringify({ selectedItems: [{ productId, skuId }] }),
+        credentials: 'include'
+      })
+
       if (!response.ok) {
         throw new Error(`Failed to remove wishlist item: ${response.statusText}`);
       }
+      const selectedItems = [{ productId, skuId }];
+      setUser({
+        ...user,
+        wishlist: user?.wishlist
+          ? user.wishlist.filter(item => !selectedItems.some(selected => selected.productId === item.productId && selected.skuId === item.skuId))
+          : []
+      })
       toast.success('Wishlist item removed successfully');
       router.refresh()
     } catch (error) {
