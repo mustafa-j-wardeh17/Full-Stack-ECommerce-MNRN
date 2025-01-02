@@ -16,12 +16,13 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             },
             credentials: 'include',
         })
+        const data: HttpResponse = await response.json();
+
         if (response.ok) {
-            const data: HttpResponse = await response.json();
             if (data.result.type === 'admin') {
                 redirect('/dashboard')
             }
-            else{
+            else {
                 redirect('/my-account')
             }
         }
