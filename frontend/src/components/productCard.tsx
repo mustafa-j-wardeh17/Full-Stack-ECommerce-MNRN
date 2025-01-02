@@ -28,16 +28,16 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                 </div>
 
                 {/* Product Details */}
-                <div className="pt-4 p-4 sm:p-5 w-full flex justify-between items-start">
+                <div className="pt-4 p-4  w-full flex justify-between items-start">
                     {/* Product Info */}
-                    <div className="flex w-full flex-col items-center space-y-3">
-                        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 truncate">
+                    <div className="flex w-full flex-col items-center lg:space-y-3 space-y-2">
+                        <h3 className="xl:text-lg text-md font-semibold text-gray-800 dark:text-gray-200 truncate">
                             {product.productName}
                         </h3>
-                        <p className="text-sm text-gray-500 h-[60px] text-wrap text-center dark:text-gray-400 truncate">
+                        <p className="xl:text-sm text-xs text-gray-500   text-wrap text-center dark:text-gray-400 truncate">
                             {product.description.length > 60 ? (product.description.slice(0, 60) + '...') : product.description}
                         </p>
-                        <span className='flex'>
+                        <span className='flex xl:text-sm text-xs space-x-1 items-center'>
                             {[...Array(5)].map((_, idx) => (
                                 <FaStar
                                     key={idx}

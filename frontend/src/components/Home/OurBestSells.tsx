@@ -8,7 +8,7 @@ const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Produc
 
     return (
         <section className="my-20 px-4">
-            <h2 className="text-4xl font-bold text-primary/80 w-full text-center mb-10">
+            <h2 className="md:text-4xl text-2xl  font-bold text-primary/80 w-full text-center mb-10">
                 {type === 'default' ? 'Best Sells' : 'Latest Products'}
             </h2>
 
@@ -29,8 +29,17 @@ const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Produc
             {
                 type === 'default' && (
                     <div className='w-full flex items-center justify-center mt-10'>
-                        <Link href='/shop' className='bg-primary px-4 py-2 rounded-md shadow-md hover:bg-primary/70 duration-150 '>
-                            <p className='block text-center text-secondary  font-semibold text-lg'>View All Products</p>
+                        <Link href='/shop?sort=-avgRating' className='bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)] hover:opacity-80 px-4 py-2 rounded-md shadow-md hover:bg-primary/70 duration-150 '>
+                            <p className='block text-center text-white  font-semibold text-lg'>View All Products</p>
+                        </Link>
+                    </div>
+                )
+            }
+            {
+                type === 'latest' && (
+                    <div className='w-full flex items-center justify-center mt-10'>
+                        <Link href='/shop?sort=-createdAt' className='bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)] hover:opacity-80 px-4 py-2 rounded-md shadow-md hover:bg-primary/70 duration-150 '>
+                            <p className='block text-center text-white  font-semibold text-lg'>View All Products</p>
                         </Link>
                     </div>
                 )

@@ -250,7 +250,7 @@ export class OrdersService {
             orderData.customerEmail,
             user.name,
             orderData.orderId,
-            `${config.get('frontendbase')}my-account/my-orders/success`
+            `${config.get('frontendbase')}/my-account/my-orders/success`
           );
         }
 

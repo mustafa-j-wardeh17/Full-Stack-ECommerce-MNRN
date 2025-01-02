@@ -165,14 +165,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                             : "No prices available"}
                     </span>
                 </h2>
-                <p className="text-xs text-gray-500">
-                    Selected Plan:{" "}
-                    <span className="text-sm font-bold">
-                        {selectedSku && selectedSku.skuName
-                            ? selectedSku.skuName
-                            : "No plans available"}
-                    </span>
-                </p>
+
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">

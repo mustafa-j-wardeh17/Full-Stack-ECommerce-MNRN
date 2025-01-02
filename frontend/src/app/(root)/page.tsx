@@ -56,14 +56,14 @@ export default async function Home() {
         <InfiniteMovingCardsDemo />
         <Separator />
         <WhyChooseUs />
-
+        <Separator />
         {/* bg for latest must graidiant */}
         <BestSells
           isAdmin={isAdmin}
           type={'latest'}
           bestSells={result.result.products[0].latestProducts}
         />
-
+        <Separator />
         {/* bg for best must graidiant */}
         <BestSells
           isAdmin={isAdmin}

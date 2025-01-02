@@ -12,7 +12,7 @@ import { CiGrid41 } from "react-icons/ci";
 export const metadata: Metadata = {
     title: 'Your Ultimate Tech Shop',
     description: 'Welcome to ByteVault, your trusted destination for the latest in tech! Founded and developed by Mustafa Abu Wardeh, ByteVault offers a wide range of top-quality products including mobile phones, computers, gaming consoles, laptops, accessories, and more. Whether you’re upgrading your gaming setup, looking for a new smartphone, or need essential tech accessories like chargers, headphones, RAM, or storage drives, we have you covered. Our mission is to empower your tech journey with the best products, exceptional service, and unbeatable prices. Explore our collection and elevate your tech experience today at ByteVault.',
-  };
+};
 
 interface ProductsInterface {
     result: {
@@ -108,13 +108,19 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                         </div>
 
                         {/* Product Grid */}
-                        <div className="grid 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+                        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-6 sm:place-items-start place-items-center">
                             {result.result.products.map((product: Product) => (
-                                <ProductCard
+                                <div
                                     key={product._id}
-                                    product={product}
-                                    isAdmin={isAdmin}
-                                />
+                                    className='w-full max-w-[450px] h-full'
+                                >
+                                    <ProductCard
+                                        product={product}
+                                        isAdmin={isAdmin}
+                                    />
+
+                                </div>
+
                             ))}
                         </div>
 

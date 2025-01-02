@@ -1,102 +1,54 @@
-'use client';
-import { baseTypesCategories } from '@/util/constant';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React from 'react'
+import ShopCategoriesScroll from './CategoryScrollBtns'
+import { baseTypesCategories } from '@/util/constant'
+import Image from 'next/image'
 
 const ShopCategories = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  const images = baseTypesCategories;
-
-  const itemsPerRow = {
-    large: 4,
-    medium: 3,
-    small: 2,
-  };
-
-  const handleResize = () => setScreenWidth(window.innerWidth);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const getResponsiveItemCount = () => {
-    if (screenWidth >= 1024) return itemsPerRow.large; // Large screen
-    if (screenWidth >= 768) return itemsPerRow.medium; // Medium screen
-    return itemsPerRow.small; // Small screen
-  };
-
-  const handleNext = () => {
-    const maxIndex = images.length - getResponsiveItemCount();
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, maxIndex));
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  };
-
-  const getVisibleImages = () => {
-    const count = getResponsiveItemCount();
-    return images.slice(currentIndex, currentIndex + count);
-  };
-
   return (
-    <section className="my-20 px-4 lg:px-16">
+    <section className="my-20 ">
+      {/* Scroll Controls */}
+      <ShopCategoriesScroll scrollContainerClass="categories-scroll" />
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="sm:text-2xl text-lg font-bold text-primary/80 ">Shop by Categories</h2>
-
-        <div className='flex items-center space-x-4'>
-          <button
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            className="bg-primary-foreground flex items-center justify-center w-[45px] h-[45px] border rounded-full text-primary hover:bg-primary hover:text-secondary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ArrowLeft />
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={currentIndex === images.length - getResponsiveItemCount()}
-            className="bg-primary-foreground flex items-center justify-center w-[45px] h-[45px] border rounded-full text-primary hover:bg-primary hover:text-secondary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ArrowRight />
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {getVisibleImages().map((image, index) => (
+      {/* Scrollable Categories */}
+      <div className="categories-scroll flex w-full overflow-x-auto py-6 gap-4 sm:gap-6 lg:gap-8 scroll-smooth hide-scrollbar">
+        {baseTypesCategories.map((category, index) => (
           <div
             key={index}
-            className="relative w-full aspect-[9/12] hover:scale-105 transform transition-all duration-300 ease-in-out rounded-lg overflow-hidden group"
+            className="relative flex-none overflow-hidden w-[70%] sm:w-[48%] lg:w-[32%] xl:w-[24%] aspect-[9/12] hover:scale-105 transform transition-transform duration-300 ease-in-out rounded-lg group shadow-lg"
           >
+            {/* Category Image */}
             <Image
-              src={image.image}
-              alt={`baseType ${index + 1}`}
+              src={category.image}
+              alt={category.title}
               fill
-              className="rounded-lg"
+              className="rounded-lg object-cover"
             />
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/40 via-black/60 to-black/80 dark:from-gray-600/20 dark:via-gray-600/40 dark:to-gray-600/60 opacity-100 group-hover:opacity-0 transition-opacity duration-300 rounded-lg">
+              <a
+                href={`/shop?baseType=${category.title}`}
+                className="text-white text-3xl text-nowrap font-bold"
+              >
+                {category.title}
+              </a>
+            </div>
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
 
-            <div className="absolute z-10 bottom-0 w-full bg-gradient-to-t from-blue-950 to-transparent p-4">
-              <div className="flex items-center justify-center w-full h-full  transition-opacity duration-300 ease-in-out">
-                <a
-                  href={`/shop?baseType=${image.title}`}
-                  className="text-white sm:text-lg text-md font-semibold w-2/3 text-center sm:py-2 px-3 py-[6px] bg-gradient-to-r from-blue-800 to-blue-600 rounded-lg hover:opacity-85 transition-all"
-                >
-                  {image.title}
-                </a>
-              </div>
+            {/* Category Title & Link */}
+            <div className="absolute bottom-[-50px] group-hover:bottom-4 w-[150px] bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 left-1/2 transform -translate-x-1/2 text-center">
+              <a
+                href={`/shop?baseType=${category.title}`}
+                className="text-white md:text-md text-sm text-nowrap font-semibold"
+              >
+                Explore Now
+              </a>
             </div>
           </div>
+
         ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ShopCategories;
+export default ShopCategories
