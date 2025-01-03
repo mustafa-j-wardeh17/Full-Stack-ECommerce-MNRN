@@ -37,21 +37,15 @@ export class OrdersService {
       const lineItems = [];
       const cartItems = body.checkoutDetails;
       for (const item of cartItems) {
-        const itemsAreInStock = await this.productDB.findLicenses({
-          productSku: item.skuId,
-          isSold: false,
+        lineItems.push({
+          price: item.skuPriceId,
+          quantity: item.quantity,
+          adjustable_quantity: {
+            enabled: true,
+            maximum: 5,
+            minimum: 1,
+          },
         });
-        if (itemsAreInStock.length <= item.quantity) {
-          lineItems.push({
-            price: item.skuPriceId,
-            quantity: item.quantity,
-            adjustable_quantity: {
-              enabled: true,
-              maximum: 5,
-              minimum: 1,
-            },
-          });
-        }
       }
 
       if (lineItems.length === 0) {

@@ -16,7 +16,7 @@ const WhyChooseUs = () => {
                         </p>
                     </div>
                     <Image
-                        src='/choose-us/Tech-Savvy.jpg'
+                        src='https://res.cloudinary.com/dsos2uuov/image/upload/v1735930559/ps_store/why-choose/tech-savvy.jpg'
                         alt='Tech-Savvy'
                         fill
                         className='aspect-square'
@@ -30,7 +30,7 @@ const WhyChooseUs = () => {
                         </p>
                     </div>
                     <Image
-                        src='/choose-us/Trusted.jpg'
+                        src='https://res.cloudinary.com/dsos2uuov/image/upload/v1735930559/ps_store/why-choose/trusted.jpg'
                         alt='Trusted'
                         fill
                         className='aspect-square'
@@ -44,7 +44,7 @@ const WhyChooseUs = () => {
                         </p>
                     </div>
                     <Image
-                        src='/choose-us/Value-Driven.jpg'
+                        src='https://res.cloudinary.com/dsos2uuov/image/upload/v1735930559/ps_store/why-choose/value-driven.jpg'
                         alt='Value-Driven'
                         fill
                         className='aspect-square'
