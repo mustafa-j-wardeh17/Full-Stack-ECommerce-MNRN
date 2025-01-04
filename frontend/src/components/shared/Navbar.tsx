@@ -37,9 +37,9 @@ const Navbar = () => {
     const isIconActive = (path: string) => pathname === path
 
     return (
-        <>
+        <div className='fixed h-[70px] border-b-2 top-0 flex items-center justify-center left-0 w-full z-50  bg-white dark:bg-black '>
             {/* Top Header */}
-            <div className="flex  items-center justify-between py-3 px-4 ">
+            <div className=" flex container items-center justify-between py-3 px-4 ">
                 {/* Logo */}
                 <div className="flex items-center">
                     <h3
@@ -138,7 +138,7 @@ const Navbar = () => {
                 searchText={searchText}
                 setSearchText={setSearchText}
             />
-        </>
+        </div>
     );
 };
 

@@ -14,9 +14,9 @@ const Footer = () => {
                         <Image src="/logo.png" alt="PS Store" width={135} height={44} />
                     </div>
                     <ul className="space-y-4 text-sm">
-                        <li><a href="tel:+17045550127" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> (704) 555-0127</a></li>
-                        <li><a href="mailto:psstore@example.com" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-envelope mr-2"></i> krist@example.com</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> 3891 CA 62639</a></li>
+                        <li><a href="tel:+972569470288" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> +972 56-947-0288</a></li>
+                        <li><a href="mailto:mostafa.wardeh2000@gmail.com" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-envelope mr-2"></i> mostafa.wardeh2000@gmail.com</a></li>
+                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-map-marker-alt mr-2"></i> Palestine-Hebron</a></li>
                     </ul>
 
                 </div>
@@ -25,11 +25,11 @@ const Footer = () => {
                 <div className="flex flex-col space-y-6 text-sm">
                     <h3 className="text-lg font-semibold">Information</h3>
                     <ul className="space-y-3">
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">My Account</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Login</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">My Cart</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">My Wishlist</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Checkout</a></li>
+                        <li><a href="/my-account" className="hover:underline transition duration-300 ease-in-out">My Account</a></li>
+                        <li><a href="/sign-in" className="hover:underline transition duration-300 ease-in-out">Login</a></li>
+                        <li><a href="/my-account/my-cart" className="hover:underline transition duration-300 ease-in-out">My Cart</a></li>
+                        <li><a href="/my-account/my-wishlist" className="hover:underline transition duration-300 ease-in-out">My Wishlist</a></li>
+                        <li><a href="/my-account/my-orders" className="hover:underline transition duration-300 ease-in-out">Orders</a></li>
                     </ul>
                 </div>
 
@@ -37,11 +37,10 @@ const Footer = () => {
                 <div className="flex flex-col space-y-6 text-sm">
                     <h3 className="text-lg font-semibold">Services</h3>
                     <ul className="space-y-3">
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">About Us</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Careers</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Delivery Information</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Privacy Policy</a></li>
-                        <li><a href="#" className="hover:underline transition duration-300 ease-in-out">Terms & Conditions</a></li>
+                        <li><a href="/about-us" className="hover:underline transition duration-300 ease-in-out">About Us</a></li>
+                        <li><a href="/contact" className="hover:underline transition duration-300 ease-in-out">Contact</a></li>
+                        <li><a href="/privacy-policy" className="hover:underline transition duration-300 ease-in-out">Privacy Policy</a></li>
+                        <li><a href="/terms-and-conditions" className="hover:underline transition duration-300 ease-in-out">Terms & Conditions</a></li>
                     </ul>
                 </div>
 
@@ -76,7 +75,7 @@ const Footer = () => {
                             <Image src="/paypal.svg" alt="Paypal" width={20} height={12} />
                         </div>
                     </div>
-                    <p className="text-sm">©2024 PS_Store All Rights Reserved</p>
+                    <p className="text-sm">©2024 ByteVault All Rights Reserved</p>
                     <div className="flex justify-center space-x-4 text-primary">
                         <a href="#"><FaFacebookF size={18} className='hover:scale-110 hover:text-primary/80' /></a>
                         <a href="#"><FaInstagram size={18} className='hover:scale-110 hover:text-primary/80' /></a>
