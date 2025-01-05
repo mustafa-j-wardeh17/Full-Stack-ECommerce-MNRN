@@ -379,4 +379,48 @@ export class UsersService {
     }
     return { message: 'Subscriber deleted successfully.' };
   }
+
+  async contact(name: string, email: string, message: string) {
+    try {
+      await this.mailer.sendMail({
+        from: { name, address: email },
+        to: [
+          {
+            name: 'Support Team',
+            address: config.get('nodemailer.email'), // Define a support email in your config
+          },
+        ],
+        subject: `New Contact Request from ${name}`,
+        html: `
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+            <div style="background-color: #4a90e2; color: #fff; padding: 20px; text-align: center; font-size: 18px; font-weight: bold;">
+              New Contact Request
+            </div>
+            <div style="padding: 20px;">
+              <p style="margin: 0; font-size: 16px; color: #555;">
+                <strong>Name:</strong> ${name}
+              </p>
+              <p style="margin: 10px 0; font-size: 16px; color: #555;">
+                <strong>Email:</strong> <a href="mailto:${email}" style="color: #4a90e2; text-decoration: none;">${email}</a>
+              </p>
+              <p style="margin: 10px 0; font-size: 16px; color: #555;">
+                <strong>Message:</strong>
+              </p>
+              <div style="margin: 10px 0; padding: 15px; background-color: #f4f4f4; border-left: 4px solid #4a90e2; font-size: 15px; color: #333;">
+                ${message}
+              </div>
+            </div>
+            <div style="background-color: #f4f4f4; text-align: center; padding: 10px; font-size: 14px; color: #666;">
+              This is an automated message. Please do not reply.
+            </div>
+          </div>
+        `,
+      });
+
+      return { success: true, message: 'Your message has been sent successfully.' };
+    } catch (error) {
+      console.error('Error sending contact email:', error);
+      throw new Error('Failed to send your message. Please try again later.');
+    }
+  }
 }

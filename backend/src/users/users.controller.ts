@@ -223,5 +223,16 @@ export class UsersController {
     return result;
   }
 
+  @Post('/contact')
+  async contact(
+    @Body('name') name: string,
+    @Body('email') email: string,
+    @Body('message') message: string
+  ) {
+    await this.usersService.contact(name, email, message);
+    return{
+      message:'Email Send Successfully'
+    }
+  }
 
 }

@@ -40,10 +40,32 @@ const Contact = () => {
 
 
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success('Message send successfully')
-    };
+        setLoading(true);
+      
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/contact`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+          });
+      
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Something went wrong');
+          }
+      
+          toast.success('Message sent successfully!');
+          setForm({ name: '', email: '', message: '' }); // Reset the form
+        } catch (error: any) {
+          toast.error(error.message || 'Failed to send the message.');
+        } finally {
+          setLoading(false);
+        }
+      };
 
     return (
         <div className="flex relative overflow-hidden border my-20 rounded-xl flex-col  shadow-md  bg-gradient-to-b  from-black/90 via-blue-950 to-sky-800 py-[40px] gap-[30px]  text-white antialiased">
