@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import GoogleMapComp from "./GoogleMapComp";
 import { useRef, useState } from "react";
 import Link from "next/link";
-
-import Image from "next/image";
 import toast, { Toaster } from "react-hot-toast";
 import { BackgroundBeams } from "../background-beams";
 import { Facebook, Instagram, Locate, Mail, MessageCircle, Phone, User } from 'lucide-react';
@@ -39,29 +37,11 @@ const Contact = () => {
         });
     };
 
-    let NEXT_APP_EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_APP_EMAILJS_SERVICE_ID;
-    let NEXT_PUBLIC_APP_EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_APP_EMAILJS_TEMPLATE_ID;
-    let NEXT_APP_CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
-    let NEXT_APP_EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
 
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-
-        if (!NEXT_APP_EMAILJS_SERVICE_ID ||
-            !NEXT_PUBLIC_APP_EMAILJS_TEMPLATE_ID ||
-            !NEXT_APP_CONTACT_EMAIL ||
-            !NEXT_APP_EMAILJS_PUBLIC_KEY
-        ) {
-            alert("Ahh, something went wrong. Please try again.");
-            setForm({
-                name: "",
-                email: "",
-                message: "",
-            });
-            return
-        }
-        setLoading(true);
         toast.success('Message send successfully')
     };
 
