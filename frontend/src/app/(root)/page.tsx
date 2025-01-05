@@ -3,6 +3,7 @@ import Hero from "@/components/Home/Hero";
 import BestSells from "@/components/Home/OurBestSells";
 import ShopCategories from "@/components/Home/ShopCategories";
 import WhyChooseUs from "@/components/Home/WhyChooseUs";
+import Contact from "@/components/shared/Contact";
 import { Separator } from "@/components/ui/separator";
 import { Product } from "@/util/types";
 import { cookies } from "next/headers";
@@ -70,6 +71,8 @@ export default async function Home() {
           bestSells={result.result.products[0].topRatedProducts}
         />
 
+        <Separator />
+        <Contact />
       </div>
     );
   } catch (error) {
