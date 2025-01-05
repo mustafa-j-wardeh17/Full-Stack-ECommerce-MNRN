@@ -13,6 +13,7 @@ import { unlinkSync } from 'fs';
 import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 import { License } from 'src/shared/schema/license';
 import { OrdersRepository } from 'src/shared/repositories/order.repository';
+import { SubscriberRepository } from 'src/shared/repositories/subscriber.repository';
 
 
 @Injectable()
@@ -20,6 +21,7 @@ export class ProductsService {
   constructor(
     @Inject(ProductRepository) private readonly productDb: ProductRepository,
     @Inject(OrdersRepository) private readonly OrderDb: OrdersRepository,
+    @Inject(SubscriberRepository) private readonly subsicriberDb: SubscriberRepository,
     @InjectStripeClient() private readonly stripeClient: Stripe,
   ) {
     // setup cloudinary
@@ -48,6 +50,29 @@ export class ProductsService {
       }
 
       const createdProductInDB = await this.productDb.create(createProductDto)
+      
+      // Construct the email notification message
+      const notificationMessage = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <div style="background-color: #4a90e2; color: white; padding: 10px; text-align: center; font-size: 18px; font-weight: bold;">
+          New Product Alert from ByteVault!
+        </div>
+        <div style="padding: 20px;">
+          <h1 style="font-size: 20px; color: #4a90e2;">${createProductDto.productName}</h1>
+          <p><strong>Description:</strong> ${createProductDto.description}</p>
+          <p><strong>Category:</strong> ${createProductDto.category}</p>
+          <p><strong>Platform Type:</strong> ${createProductDto.platformType}</p>
+          <p><strong>Base Type:</strong> ${createProductDto.baseType}</p>
+          <p style="text-align: center;">Visit our website for more details!</p>
+        </div>
+        <div style="background-color: #f4f4f4; text-align: center; padding: 10px; font-size: 12px; color: #666;">
+          &copy; 2025 ByteVault. All rights reserved.
+        </div>
+      </div>
+    `;
+
+      // Send notification to all subscribers
+      await this.subsicriberDb.sendNotificationToAll(notificationMessage);
 
       return {
         message: "Product created successfully",
@@ -721,8 +746,8 @@ export class ProductsService {
     success: boolean
   }> {
     const wishlist = await this.productDb.getWishlistItems(productSkus)
-   
-    
+
+
     return {
       message: 'wishlist fetched successfully',
       result: wishlist,

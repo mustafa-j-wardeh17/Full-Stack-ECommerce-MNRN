@@ -14,11 +14,14 @@ import { RolesGuard } from 'src/middleware/roles.guard';
 import { License, LicenseSchema } from 'src/shared/schema/license';
 import { Orders, OrderSchema } from 'src/shared/schema/order';
 import { OrdersRepository } from 'src/shared/repositories/order.repository';
+import { SubscriberRepository } from 'src/shared/repositories/subscriber.repository';
+import { Subscriber, SubscriberSchema } from 'src/shared/schema/subscriber';
+import { MailerService } from 'src/middleware/mailer';
 
 @Module({
   controllers: [ProductsController],
 
-  providers: [ProductsService, ProductRepository, UserRepository, OrdersRepository, {
+  providers: [ProductsService, ProductRepository,MailerService, UserRepository, OrdersRepository, SubscriberRepository, {
     provide: APP_GUARD,
     useClass: RolesGuard
   }],
@@ -40,6 +43,10 @@ import { OrdersRepository } from 'src/shared/repositories/order.repository';
       {
         name: Orders.name,
         schema: OrderSchema
+      },
+      {
+        name: Subscriber.name,
+        schema: SubscriberSchema
       },
     ]),
     StripeModule.forRoot(StripeModule, {

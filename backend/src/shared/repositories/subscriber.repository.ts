@@ -3,6 +3,7 @@ import { Injectable, BadRequestException, Inject } from "@nestjs/common";
 import { Model } from "mongoose";
 import { Subscriber } from "../schema/subscriber";
 import { MailerService } from "src/middleware/mailer";
+import config from 'config'
 
 @Injectable()
 export class SubscriberRepository {
@@ -34,7 +35,7 @@ export class SubscriberRepository {
     async getSubscriberByEmail(email: string): Promise<Subscriber | null> {
         return this.subscriberModel.findOne({ email }).exec();
     }
-    
+
     async getAllSubscribers(): Promise<Subscriber[]> {
         return this.subscriberModel.find().exec();
     }
@@ -55,13 +56,25 @@ export class SubscriberRepository {
     async sendNotificationToAll(message: string): Promise<void> {
         const subscribers = await this.getAllSubscribers();
         if (subscribers.length === 0) {
-            console.log("No subscribers to notify.");
-            return;
+          console.log("No subscribers to notify.");
+          return;
         }
-
-        subscribers.forEach((subscriber) => {
-            console.log(`Notification sent to ${subscriber.email}: ${message}`);
-        });
-
-    }
+      
+        // Send emails in parallel
+        await Promise.all(
+          subscribers.map(async (subscriber) => {
+            try {
+              await this.mailer.sendMail({
+                from: { name: 'ByteVault', address: config.get('nodemailer.email') },
+                to: [{ name:'Subscriber',address: subscriber.email }],
+                subject: "New Product Alert from ByteVault!",
+                html: message,
+              });
+              console.log(`Notification sent to ${subscriber.email}`);
+            } catch (error) {
+              console.error(`Failed to send notification to ${subscriber.email}:`, error);
+            }
+          })
+        );
+      }
 }
