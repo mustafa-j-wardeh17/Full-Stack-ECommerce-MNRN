@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Res, Put, Query, Req, UnauthorizedException, UseGuards, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,7 +6,6 @@ import { Request, Response } from 'express'
 import { Roles } from 'src/middleware/role.decorator';
 import { Users, userTypes } from 'src/shared/schema/users';
 import { decodeAuthToken } from 'src/utility/token-generator';
-import { RolesGuard } from 'src/middleware/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -177,10 +176,52 @@ export class UsersController {
     @Body('selectedItems') selectedItems: { skuId: string, productId: string }[],
   ) {
     const user: any = req.user;
-    console.log(user)
     if (!user) {
       throw new Error('User not found');
     }
     return this.usersService.removeSelectedItemsFromWishlist(user, selectedItems);
   }
+
+
+
+  @Get('/subscriber')
+  async getEmailSubscriber(
+    @Req() req: any
+  ) {
+    const user = req.user
+    if (!user) {
+      throw new Error('Enter Your Account Email Address')
+    }
+    return this.usersService.getSubscriberByEmail(user.email)
+  }
+
+  @Post('/subscriber')
+  async addSubscriber(
+    @Body('email') email: string,
+    @Req() req: any
+  ) {
+    const user = req.user
+    if (!user || user.email !== email) {
+      throw new Error('Enter Your Account Email Address')
+    }
+    return this.usersService.addSubscriber(email)
+  }
+
+
+  @Patch('/subscriber')
+  async deleteEmailSubscriber(@Body('email') email: string, @Req() req: any) {
+    const user = req.user;
+    console.log('Received user:', user);
+    console.log('Received email:', email);
+
+    if (!user || user.email !== email) {
+      throw new BadRequestException('Enter Your Account Email Address');
+    }
+
+    const result = await this.usersService.deleteEmailSubscriber(email);
+    console.log('Delete result:', result);
+    return result;
+  }
+
+
 }

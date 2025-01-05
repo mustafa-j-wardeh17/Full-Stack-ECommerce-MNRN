@@ -8,20 +8,28 @@ import { RolesGuard } from 'src/middleware/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthMiddleware } from 'src/middleware/auth';
 import { MailerService } from 'src/middleware/mailer';
+import { SubscriberRepository } from 'src/shared/repositories/subscriber.repository';
+import { Subscriber, SubscriberSchema } from 'src/shared/schema/subscriber';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, UserRepository, MailerService,
+  providers: [UsersService, UserRepository, SubscriberRepository, MailerService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard
     }
   ],
   imports: [
-    MongooseModule.forFeature([{
+    MongooseModule.forFeature([
+      {
       name: Users.name,
       schema: UserSchema
-    }]),
+    },
+      {
+      name: Subscriber.name,
+      schema: SubscriberSchema
+    },
+  ]),
   ]
 })
 export class UsersModule implements NestModule {
@@ -38,6 +46,9 @@ export class UsersModule implements NestModule {
         },
         {
           path: '/users/wishlist/selected-items', method: RequestMethod.DELETE,
+        },
+        {
+          path: '/users/subscriber', method: RequestMethod.ALL,
         },
       );
   }

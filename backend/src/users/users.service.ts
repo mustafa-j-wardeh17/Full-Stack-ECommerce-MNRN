@@ -1,18 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Users, userTypes } from 'src/shared/schema/users';
+import { userTypes } from 'src/shared/schema/users';
 import config from 'config'
 import { UserRepository } from 'src/shared/repositories/user.repository';
 import { comparePassword, generateHashPassword } from 'src/utility/password-manager';
 import { generateAuthToken } from 'src/utility/token-generator';
 import { MailerService } from 'src/middleware/mailer';
+import { SubscriberRepository } from 'src/shared/repositories/subscriber.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(UserRepository) private readonly userDB: UserRepository,
-    @Inject(MailerService) private readonly mailer: MailerService
+    @Inject(MailerService) private readonly mailer: MailerService,
+    @Inject(SubscriberRepository) private readonly subsicriberDb: SubscriberRepository
   ) { }
 
   async create(createUserDto: CreateUserDto) {
@@ -357,4 +359,24 @@ export class UsersService {
   }
 
 
+
+  async addSubscriber(email: string) {
+    console.log('Adding Email:', email);
+    await this.subsicriberDb.addSubscriber(email);
+    return { message: 'Subscriber added successfully.' };
+
+  }
+
+  async getSubscriberByEmail(email: string) {
+    return this.subsicriberDb.getSubscriberByEmail(email);
+  }
+
+  async deleteEmailSubscriber(email: string) {
+    console.log('Deleting Email:', email);
+    const isDeleted = await this.subsicriberDb.deleteEmailSubscriber(email);
+    if (!isDeleted) {
+      throw new BadRequestException(`Subscriber with email ${email} not found.`);
+    }
+    return { message: 'Subscriber deleted successfully.' };
+  }
 }

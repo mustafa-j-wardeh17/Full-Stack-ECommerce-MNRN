@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ArrowRightIcon } from 'lucide-react';
 import { Separator } from '@radix-ui/react-dropdown-menu';
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
+import Subscribe from './Subscribe';
 
 const Footer = () => {
     return (
@@ -45,24 +46,13 @@ const Footer = () => {
                 </div>
 
                 {/* Subscribe Section */}
-                <div className="flex w-full max-w-[300px] flex-col space-y-4 text-sm">
-                    <h3 className="text-lg font-semibold">Subscribe</h3>
-                    <p className='text-xs text-primary/70'>
-                        Entre your email below to be the rirst to know about new collections and products launches.
-                    </p>
-                    <div className="flex flex-col  relative">
-                        <input type="email" placeholder="Your Email" className="p-3 rounded-lg border border-primary bg-primary-foreground text-primary focus:outline-none focus:ring-2 focus:ring-secondary transition duration-300" />
-                        <button className="absolute right-2 top-[50%] -translate-y-[50%]  transition duration-300 ease-in-out">
-                            <ArrowRightIcon size={18} />
-                        </button>
-                    </div>
-                </div>
+                <Subscribe />
             </div>
 
             {/* Footer Bottom */}
             <Separator color='white' />
             <div className="mx-auto w-full px-6 md:px-12 flex flex-col gap-6  mt-12">
-                <div className='w-full h-[1px] bg-primary/40'/>
+                <div className='w-full h-[1px] bg-primary/40' />
                 <div className='flex items-center w-full  justify-between'>
                     <div className="sm:flex hidden space-x-4 ">
                         <div className="w-10 h-[30px] py-1 bg-secondary border border-primary/40 flex items-center justify-center rounded-sm">
