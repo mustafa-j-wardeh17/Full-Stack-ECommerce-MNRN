@@ -39,6 +39,7 @@ export function FilterBy() {
     if (value === 'All') {
       query.delete(key); // Remove the filter if it's "All"
     } else {
+      query.delete('page')
       query.set(key, value); // Add or update the filter
     }
 

@@ -26,7 +26,7 @@ export function BreadcrumbWithCustomSeparator({ paths }: BreadcrumbProps) {
           const isLast = index === paths.length - 1;
 
           return (
-            <div key={path.label} className="flex items-center">
+            <div key={path.label} className="flex items-center gap-2">
               <BreadcrumbItem>
                 {isLast ? (
                   <BreadcrumbPage>{path.label}</BreadcrumbPage>

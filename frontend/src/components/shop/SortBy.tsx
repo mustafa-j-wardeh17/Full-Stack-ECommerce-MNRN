@@ -45,12 +45,12 @@ export function SortBy() {
                     </p>
                 </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent className="w-full">
                 {sortOptions.map(option => (
                     <DropdownMenuItem
                         key={option.value}
                         onSelect={() => handleSortChange(option.value)}
-                        className={`flex items-center gap-2 ${selectedSort === option.value ? "font-bold text-blue-500" : ""
+                        className={`flex items-center  ${selectedSort === option.value ? "font-bold text-blue-500" : ""
                             }`}
                     >
                         {option.icon}
