@@ -52,7 +52,7 @@ const SignUp = () => {
             }
 
         } catch (error: any) {
-            toast.error("Error: " + error.message);
+            toast.error(error.message);
         }
     };
 

@@ -99,20 +99,20 @@ select::after {
   /* Chrome, Safari, and Opera */
 }
 
-.loader {
+.loaderPage {
   position: relative;
 }
 
-.loader {
+.loaderPage {
   width: fit-content;
   font-weight: bold;
   font-family: monospace;
   font-size: 30px;
-  background: radial-gradient(circle closest-side, #0a638d 94%, #0000) right/calc(200% - 1em) 100%;
+  background: radial-gradient(circle closest-side, #13adf5 94%, #0000) right/calc(200% - 1em) 100%;
   animation: l24 1s infinite alternate linear;
 }
 
-.loader::before {
+.loaderPage::before {
   content: "Loading...";
   /* font-size: 2rem; */
   line-height: 1em;

@@ -157,9 +157,9 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
     return (
         <>
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold">
+                <h2 className="md:text-lg sm:text-md text-sm ">
                     Total Price:{" "}
-                    <span>
+                    <span className="font-bold">
                         {selectedSku && selectedSku.price
                             ? (selectedSku.price * quantity).toFixed(2) + " $"
                             : "No prices available"}
@@ -181,7 +181,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                                     : "bg-gray-200 border-gray-300 text-gray-500 cursor-not-allowed"
                             }`}
                     >
-                        <h4 className="font-medium text-sm">{sku.skuName}</h4>
+                        <h4 className="md:text-md sm:text-sm text-xs">{sku.skuName}</h4>
                         {hasLicenses && (
                             <p className="text-xs text-gray-500">
                                 {sku.lifetime ? "Lifetime Access" : `${sku.validity} days`}
@@ -195,13 +195,13 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
 
             <div className="flex mt-6 items-center justify-between sm:gap-6 gap-2">
                 {/* Quantity Controls */}
-                <div className="border border-gray-300 rounded-lg p-3 flex gap-3 items-center">
+                <div className="border md:text-lg sm:text-md text-sm border-gray-300 rounded-lg p-3 flex gap-3 items-center">
                     <button
                         onClick={decreaseQuantity}
                         className="text-primary/70 hover:text-primary transition"
                         disabled={loading}
                     >
-                        <FiMinus size={20} />
+                        <FiMinus className="lg:text-2xl md:text-xl sm:text-lg text-md" />
                     </button>
                     <p className="font-bold">{quantity}</p>
                     <button
@@ -209,7 +209,7 @@ const SkuCards = ({ hasLicenses, skus, productName, productImage }: SkuCardsProp
                         className="text-primary/70 hover:text-primary transition"
                         disabled={loading || (selectedSku! && quantity >= selectedSku.remainingStock)}
                     >
-                        <FiPlus size={20} />
+                        <FiPlus className="lg:text-2xl md:text-xl sm:text-lg text-md" />
                     </button>
                 </div>
 

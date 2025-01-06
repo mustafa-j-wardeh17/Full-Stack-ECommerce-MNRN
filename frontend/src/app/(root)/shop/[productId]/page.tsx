@@ -65,10 +65,10 @@ const page = async ({ params }: { params: tParams }) => {
 
           <div className='flex flex-col justify-center gap-4 2xl:w-3/5 lg:w-1/2 w-full '>
             <div className='flex items-center justify-between'>
-              <h1 className='text-2xl font-bold'>{product.productName}</h1>
-              <p className='p-2 rounded-md bg-green-200/40 text-green-500  font-bold text-xs flex items-center justify-center'>In Stock</p>
+              <h1 className='md:text-2xl sm:text-xl text-lg font-bold'>{product.productName}</h1>
+              <p className='p-2 rounded-md min-w-[90px] bg-green-200/40 text-green-500  font-bold text-xs flex items-center justify-center'>In Stock</p>
             </div>
-            <p>{product.description}</p>
+            <p className='md:text-lg sm:text-md text-sm'>{product.description}</p>
             <div className='flex items-center gap-2'>
               <span className='flex'>
                 {[...Array(5)].map((_, idx) => (
@@ -87,6 +87,7 @@ const page = async ({ params }: { params: tParams }) => {
                 product.highlights && product.highlights.map((item: string) => (
                   <li
                     key={item}
+                    className='md:text-lg sm:text-md text-sm'
                   >
                     {item}
                   </li>

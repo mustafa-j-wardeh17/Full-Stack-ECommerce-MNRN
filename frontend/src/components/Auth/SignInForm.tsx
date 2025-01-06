@@ -115,7 +115,7 @@ const Login = () => {
                             disabled={loading}
                         >
                             {loading ? (
-                                <span className="loader border-t-white"></span>
+                                <span className=" border-t-white">Signing In ...</span>
                             ) : (
                                 'Sign In'
                             )}
