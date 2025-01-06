@@ -98,3 +98,33 @@ select::after {
   display: none;
   /* Chrome, Safari, and Opera */
 }
+
+.loader {
+  position: relative;
+}
+
+.loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  background: radial-gradient(circle closest-side, #0ea5e9 94%, #0000) right/calc(200% - 1em) 100%;
+  animation: l24 1s infinite alternate linear;
+}
+
+.loader::before {
+  content: "Loading...";
+  /* font-size: 2rem; */
+  line-height: 1em;
+  color: #ebebeb9f;
+  background: inherit;
+  background-image: radial-gradient(circle closest-side, #ffee05 100%, #000);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes l24 {
+  100% {
+      background-position: left;
+  }
+}

@@ -3,16 +3,12 @@ import { FaStar } from "react-icons/fa";
 import React from 'react'
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
-import { Product } from '@/util/types';
+import { Product, ProductResponse } from '@/util/types';
 import SkuCards from '@/components/shop/product/SkuCard';
 import ProductImageWithLens from '@/components/shop/product/ProductImageWithLens';
+import { notFound } from 'next/navigation';
 
-interface ResultInterface {
-  result: {
-    product: Product,
-    relatedProducts: Product[]
-  }
-}
+
 export async function generateMetadata({ params }: { params: tParams }) {
   const { productId } = await (params)
 
@@ -20,7 +16,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
   if (!response.ok) {
     throw new Error(`Failed to fetch product: ${response.statusText}`);
   }
-  const result: ResultInterface = await response.json()
+  const result: ProductResponse = await response.json()
   const product = result.result.product
   return {
     title: product.productName,
@@ -35,10 +31,12 @@ const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
+    const result: ProductResponse = await response.json()
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch product: ${response.statusText}`);
+      throw new Error(result.message);
     }
-    const result: ResultInterface = await response.json()
+
     const product = result.result.product
     const relatedProducts = result.result.relatedProducts
 
@@ -117,14 +115,10 @@ const page = async ({ params }: { params: tParams }) => {
         <RelatedProducts relatedProducts={relatedProducts} />
       </div>
     )
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return (
-      <div className="text-center text-red-500">
-        <p>Error loading products. Please try again later.</p>
-      </div>
-    );
-
+  } catch (error: any) {
+    if (error) {
+      return notFound()
+    }
   }
 }
 
