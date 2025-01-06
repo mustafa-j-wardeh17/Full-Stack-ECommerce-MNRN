@@ -87,8 +87,8 @@ export function FilterBy() {
   };
 
   return (
-    <div ref={filterRef} className="lg:sticky top-0 lg:h-screen lg:w-full  rounded-lg  p-4 mb-6 lg:mb-0">
-      <h2 className="text-xl font-semibold mb-4">Filter By</h2>
+    <div ref={filterRef} className="lg:sticky top-20 lg:h-auto  lg:w-full  rounded-lg  p-4 mb-6 lg:mb-0">
+      <h2 className="text-xl font-semibold mb-4">Filter Products By</h2>
       {/* Category */}
       <div className="mb-6">
         <h3 className="font-semibold text-lg mb-2">Category</h3>
