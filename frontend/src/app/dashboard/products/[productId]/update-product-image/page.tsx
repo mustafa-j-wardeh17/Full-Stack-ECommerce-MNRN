@@ -85,7 +85,7 @@ const Page = () => {
                         <label htmlFor="productImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Product Image
                         </label>
-                        <div className="mt-2 flex justify-center items-center w-full lg:h-[500px] h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md relative">
+                        <div className="mt-2 flex justify-center items-center  w-full lg:aspect-[2/1] aspect-square border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md relative">
                             {previewImage ? (
                                 <Image
                                     src={previewImage}

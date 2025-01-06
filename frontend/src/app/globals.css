@@ -116,9 +116,8 @@ select::after {
   content: "Loading...";
   /* font-size: 2rem; */
   line-height: 1em;
-  color: #ebebeb9f;
   background: inherit;
-  background-image: radial-gradient(circle closest-side, #0089c9 100%, #000);
+  background-image: radial-gradient(circle closest-side, #0896d8d7 100%, #00000077);
   -webkit-background-clip: text;
   background-clip: text;
 }

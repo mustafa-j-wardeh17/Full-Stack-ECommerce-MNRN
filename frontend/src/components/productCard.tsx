@@ -32,7 +32,7 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                     {/* Product Info */}
                     <div className="flex w-full flex-col items-center lg:space-y-3 space-y-2">
                         <h3 className="xl:text-lg text-md font-semibold text-gray-800 dark:text-gray-200 truncate">
-                            {product.productName}
+                            {product.productName.length > 25 ? product.productName.slice(0, 25) + '...' : product.productName}
                         </h3>
                         <p className="xl:text-sm text-xs text-gray-500   text-wrap text-center dark:text-gray-400 truncate">
                             {product.description.length > 60 ? (product.description.slice(0, 60) + '...') : product.description}
