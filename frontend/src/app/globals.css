@@ -108,7 +108,7 @@ select::after {
   font-weight: bold;
   font-family: monospace;
   font-size: 30px;
-  background: radial-gradient(circle closest-side, #0ea5e9 94%, #0000) right/calc(200% - 1em) 100%;
+  background: radial-gradient(circle closest-side, #0a638d 94%, #0000) right/calc(200% - 1em) 100%;
   animation: l24 1s infinite alternate linear;
 }
 
@@ -118,7 +118,7 @@ select::after {
   line-height: 1em;
   color: #ebebeb9f;
   background: inherit;
-  background-image: radial-gradient(circle closest-side, #ffee05 100%, #000);
+  background-image: radial-gradient(circle closest-side, #0089c9 100%, #000);
   -webkit-background-clip: text;
   background-clip: text;
 }
