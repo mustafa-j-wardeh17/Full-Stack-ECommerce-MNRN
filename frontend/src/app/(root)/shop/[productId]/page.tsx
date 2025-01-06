@@ -112,7 +112,11 @@ const page = async ({ params }: { params: tParams }) => {
             product.feedbackDetails || []}
         />
 
-        <RelatedProducts relatedProducts={relatedProducts} />
+        {
+          relatedProducts.length > 0 && (
+            <RelatedProducts relatedProducts={relatedProducts} />
+          )
+        }
       </div>
     )
   } catch (error: any) {

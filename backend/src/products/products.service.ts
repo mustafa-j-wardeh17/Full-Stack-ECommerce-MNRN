@@ -14,6 +14,7 @@ import { ProductSkuDto, ProductSkuDtoArr } from './dto/product-sku.dto';
 import { License } from 'src/shared/schema/license';
 import { OrdersRepository } from 'src/shared/repositories/order.repository';
 import { SubscriberRepository } from 'src/shared/repositories/subscriber.repository';
+import mongoose from 'mongoose';
 
 
 @Injectable()
@@ -50,7 +51,7 @@ export class ProductsService {
       }
 
       const createdProductInDB = await this.productDb.create(createProductDto)
-      
+
       // Construct the email notification message
       const notificationMessage = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -142,7 +143,7 @@ export class ProductsService {
       const relatedProducts = await this.productDb.findRelatedProducts(
         {
           category: findProduct.category,
-          _id: { $ne: id } // without using this item
+          _id: { $ne: new mongoose.Types.ObjectId(id) } // Ensure id is an ObjectId
         }
       )
       return {
