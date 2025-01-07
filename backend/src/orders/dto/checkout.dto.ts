@@ -23,6 +23,10 @@ import {
     @IsString()
     @IsNotEmpty()
     productId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    productImage: string;
   }
   
   export class checkoutDtoArr {

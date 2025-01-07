@@ -59,6 +59,7 @@ export class OrdersService {
         acc[`skuId_${index}`] = item.skuId;
         acc[`productId_${index}`] = item.productId;
         acc[`quantity_${index}`] = item.quantity;
+        acc[`productImage_${index}`] = item.productImage;
         return acc;
       }, {});
 
@@ -178,9 +179,10 @@ export class OrdersService {
           skuId: string,
           productId: string,
           quantity: number,
+          productImage: string
         }[] = Object.keys(metadata)
           .reduce((acc, key) => {
-            const match = key.match(/(skuId|productId|quantity)_(\d+)/);
+            const match = key.match(/(skuId|productId|quantity|productImage)_(\d+)/);
             if (match) {
               const [, field, index] = match;
               acc[index] = acc[index] || {};
@@ -188,7 +190,7 @@ export class OrdersService {
             }
             return acc;
           }, [])
-          .filter(item => item.skuId && item.productId && item.quantity); // Ensure only complete entries are included
+          .filter(item => item.skuId && item.productId && item.quantity && item.productImage); // Ensure only complete entries are included
 
 
         console.log('SKUs and Products and Quantity from Metadata:', skusAndProducts);

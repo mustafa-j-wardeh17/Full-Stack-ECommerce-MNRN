@@ -38,6 +38,9 @@ export class OrderedItems {
     @Prop({ required: true })
     productName: string;
 
+    @Prop({ required: true })
+    productImage: string;
+    
     @Prop({ default: [] })
     licenses: string[];
 }
