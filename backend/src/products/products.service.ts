@@ -392,18 +392,23 @@ export class ProductsService {
       }
 
       if (data.price !== sku.price) {
+        const skuMetadata: Record<string, any> = {
+          skuCode: sku.skuCode,
+          productId: productId,
+          price: data.price,
+          productName: product.productName,
+          productImage: product.image,
+        };
+
+        // Add lifetime to metadata only if product.hasLicenses is true
+        if (product.hasLicenses) {
+          skuMetadata.lifetime = data.lifetime + '';
+        }
         const priceDetails = await this.stripeClient.prices.create({
           unit_amount: data.price * 100,
           currency: 'usd',
           product: product.stripeProductId,
-          metadata: {
-            skuCode: sku.skuCode,
-            lifetime: data.lifetime + '',
-            productId: productId,
-            price: data.price,
-            productName: product.productName,
-            productImage: product.image,
-          },
+          metadata: skuMetadata
         });
 
         data.stripePriceId = priceDetails.id;
