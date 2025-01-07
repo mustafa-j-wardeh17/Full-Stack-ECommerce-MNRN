@@ -11,7 +11,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/verify-token`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${_digi_auth_token?.value}`, // Add the token here
+                // 'Authorization': `Bearer ${_digi_auth_token?.value}`, // Add the token here
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
