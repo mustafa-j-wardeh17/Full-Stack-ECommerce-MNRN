@@ -155,9 +155,8 @@ const CartPage = () => {
                 toast.error(`Checkout failed: ${errorData.message || 'Unknown error'}`);
                 console.error('Checkout error:', errorData);
             }
-        } catch (error) {
-            toast.error('An error occurred during checkout.');
-            console.error('Error during checkout:', error);
+        } catch (error:any) {
+            toast.error('Error during checkout:', error.message);
         }
     };
 

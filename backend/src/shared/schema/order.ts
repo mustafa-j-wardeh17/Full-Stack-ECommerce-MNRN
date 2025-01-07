@@ -38,9 +38,9 @@ export class OrderedItems {
     @Prop({ required: true })
     productName: string;
 
-    @Prop({ required: true })
+    @Prop({ default: 'https://res.cloudinary.com/dsos2uuov/image/upload/v1736170548/ps_store/rmyfopgiyypbvf80olck.webp', required: true })
     productImage: string;
-    
+
     @Prop({ default: [] })
     licenses: string[];
 }

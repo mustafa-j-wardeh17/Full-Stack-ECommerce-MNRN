@@ -59,7 +59,6 @@ export class OrdersService {
         acc[`skuId_${index}`] = item.skuId;
         acc[`productId_${index}`] = item.productId;
         acc[`quantity_${index}`] = item.quantity;
-        acc[`productImage_${index}`] = item.productImage;
         return acc;
       }, {});
 
@@ -182,7 +181,7 @@ export class OrdersService {
           productImage: string
         }[] = Object.keys(metadata)
           .reduce((acc, key) => {
-            const match = key.match(/(skuId|productId|quantity|productImage)_(\d+)/);
+            const match = key.match(/(skuId|productId|quantity)_(\d+)/);
             if (match) {
               const [, field, index] = match;
               acc[index] = acc[index] || {};
@@ -190,7 +189,7 @@ export class OrdersService {
             }
             return acc;
           }, [])
-          .filter(item => item.skuId && item.productId && item.quantity && item.productImage); // Ensure only complete entries are included
+          .filter(item => item.skuId && item.productId && item.quantity); // Ensure only complete entries are included
 
 
         console.log('SKUs and Products and Quantity from Metadata:', skusAndProducts);
@@ -281,7 +280,8 @@ export class OrdersService {
   /**
    * Creates an order object from a Stripe checkout session.
    */
-  async createOrderObject(session: Stripe.Checkout.Session) {
+  async createOrderObject(session: Stripe.Checkout.Session
+  ) {
     try {
       const lineItems = await this.stripeClient.checkout.sessions.listLineItems(
         session.id,
@@ -303,7 +303,7 @@ export class OrdersService {
         checkoutSessionId: session.id,
         orderedItems: lineItems.data.map((item) => {
           item.price.metadata.quantity = item.quantity + '';
-          return item.price.metadata;
+          return item.price.metadata
         }),
       };
       return orderData;

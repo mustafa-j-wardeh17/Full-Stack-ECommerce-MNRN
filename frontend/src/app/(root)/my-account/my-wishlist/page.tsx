@@ -57,6 +57,7 @@ const page = async () => {
 
         return (
             <div className="w-full  gap-6">
+                <h1 className="text-3xl font-bold mb-6 text-primary">My Wishlist</h1>
                 {wishlistProducts.length === 0 ? (
                     <div className='w-full flex flex-col gap-4 items-center justify-center'>
                         <p className="text-gray-500 text-center text-lg font-medium">

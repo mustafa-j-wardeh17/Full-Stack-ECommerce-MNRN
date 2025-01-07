@@ -48,15 +48,18 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                         <div className='flex justify-between items-center'>
                             <p className="text-amber-500 text-sm font-semibold ">
                                 {product.skuDetails && product.skuDetails.length > 0
-                                    ? product.skuDetails
-                                        .reduce(
+                                    ? (() => {
+                                        const [low, high] = product.skuDetails.reduce(
                                             ([low, high], current) => [
                                                 current.price < low ? current.price : low,
                                                 current.price > high ? current.price : high,
                                             ],
                                             [Infinity, -Infinity]
-                                        )
-                                        .join(" - ") + ' $'
+                                        );
+
+                                        // If low and high are the same, show only one price
+                                        return low === high ? `${low} $` : `${low} - ${high} $`;
+                                    })()
                                     : "No prices available"}
                             </p>
 
