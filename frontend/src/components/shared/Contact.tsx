@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { BackgroundBeams } from "../background-beams";
-import { Facebook, Instagram, Locate, Mail, MessageCircle, Phone, User } from 'lucide-react';
+import { Facebook, Instagram, Locate, Mail, MessageCircle, Phone, Send, User } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa6';
 
 const Contact = () => {
@@ -43,29 +43,29 @@ const Contact = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-      
+
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/contact`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(form),
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Something went wrong');
-          }
-      
-          toast.success('Message sent successfully!');
-          setForm({ name: '', email: '', message: '' }); // Reset the form
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Something went wrong');
+            }
+
+            toast.success('Thank you for reaching out! We will get back to you shortly.');
+            setForm({ name: '', email: '', message: '' }); // Reset the form
         } catch (error: any) {
-          toast.error(error.message || 'Failed to send the message.');
+            toast.error('Failed to send the message.');
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      };
+    };
 
     return (
         <div className="flex w-full relative overflow-hidden border my-20 rounded-xl flex-col  shadow-md  bg-gradient-to-b  from-black/90 via-blue-950 to-sky-800 py-[40px] gap-[30px]  text-white antialiased">
@@ -134,7 +134,7 @@ const Contact = () => {
                                 onChange={handleChange}
                                 required
                                 placeholder={'Form Name'}
-                                className='bg-black/40  flex-1 py-4 px-6 placeholder:text-white/60 text-light rounded-lg outline-none border-none font-medium'
+                                className='bg-black/40  flex-1 py-4 px-6  placeholder:text-white/60 text-light rounded-lg outline-none border-none font-medium'
                             />
                         </motion.div>
                         <motion.div {...slideInFromTop(3)} className="flex flex-col ">
@@ -150,7 +150,8 @@ const Contact = () => {
                                 required
                                 placeholder={'Form Email'}
                                 className='bg-black/40  flex-1 py-4 px-6  placeholder:text-white/60 text-light rounded-lg outline-none border-none font-medium'
-                            />                        </motion.div>
+                            />
+                        </motion.div>
                         <motion.div {...slideInFromTop(4)} className="flex flex-col">
                             <div className={`flex  mb-4 items-center gap-2`}>
                                 <MessageCircle size={25} />
@@ -170,8 +171,11 @@ const Contact = () => {
                         <motion.div {...slideInFromTop(5)} className="w-full flex justify-center">
                             <button
                                 type='submit'
-                                className="bg-sky-900 text-lg py-3 px-8 text-white rounded-xl outline-none w-fit font-extrabold tracking-wider hover:bg-sky-900/60 shadow-black/60 shadow-sm "
-                            >{!loading ? "Contacting" : 'Sending'}</button>
+                                className="bg-sky-900 flex items-center gap-3 text-lg py-3 px-8 text-white rounded-xl outline-none w-fit font-semibold tracking-wider hover:bg-sky-900/60 shadow-black/60 shadow-sm "
+                            >
+                                {!loading ? "Send" : 'Sending'}
+                                <Send size={18} className='font-bold' />
+                            </button>
                         </motion.div>
                     </form>
                 </motion.div>

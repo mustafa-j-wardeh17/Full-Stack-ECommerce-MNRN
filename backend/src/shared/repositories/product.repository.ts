@@ -159,10 +159,10 @@ export class ProductRepository {
         );
     }
 
-    async incrementSkuRemainingStock(productId: string, skuId: string): Promise<void> {
+    async incrementSkuRemainingStock(productId: string, skuId: string, qty?: number): Promise<void> {
         await this.productModel.updateOne(
             { _id: productId, 'skuDetails._id': skuId },
-            { $inc: { 'skuDetails.$.remainingStock': 1 } },
+            { $inc: { 'skuDetails.$.remainingStock': qty ? qty : 1 } },
         );
     }
     async decrementSkuRemainingStock(productId: string, skuId: string, quantity?: number): Promise<void> {
@@ -181,29 +181,29 @@ export class ProductRepository {
     async getWishlistItems(wishlist: { productId: string; skuId: string }[]): Promise<wishlistItems> {
         // Extract product IDs from the wishlist
         const productIds = wishlist.map(item => item.productId);
-    
+
         // Query products based on product IDs
         const products = await this.productModel.find({ _id: { $in: productIds } }).exec();
-    
+
         if (!products || products.length === 0) {
             console.warn('No matching products found for the provided product IDs.');
             return { wishlist: [] };
         }
-    
+
         // Map products to the required wishlistItems structure
         const wishlistProducts = wishlist.map(({ productId, skuId }) => {
             const product = products.find(p => p._id.toString() === productId);
-    
+
             if (!product) {
                 return null;
             }
-    
+
             const skuDetail = product.skuDetails.find(sku => sku._id.toString() === skuId);
-    
+
             if (!skuDetail) {
-                return null; 
+                return null;
             }
-    
+
             return {
                 productName: product.productName,
                 productImage: product.image,
@@ -214,9 +214,9 @@ export class ProductRepository {
                 skuPriceId: skuDetail.stripePriceId,
                 quantity: 1,
             };
-        }).filter(Boolean); 
-    
+        }).filter(Boolean);
+
         return { wishlist: wishlistProducts };
     }
-    
+
 }

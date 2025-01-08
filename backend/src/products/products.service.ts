@@ -115,6 +115,46 @@ export class ProductsService {
           }
         )
       }
+
+
+      if (findProduct.skuDetails.length > 0) {
+        let skuDataForUpdate = []
+        // Now, update all SKU details in Stripe and in the database
+        for (const skuData of updateProduct.skuDetails) {
+          // Get corresponding SKU data from the passed `skuDetails` array
+
+          // Update Stripe prices for each SKU
+          const skuMetadata: Record<string, any> = {
+            skuCode: skuData.skuCode,
+            productId: id,
+            price: skuData.price,
+            productName: updateProductDto.productName,
+            productImage: findProduct.image,
+          };
+
+          if (updateProduct.hasLicenses) {
+            skuMetadata.lifetime = skuData.lifetime + '';
+          }
+
+          // Update Stripe price details for the SKU
+          const priceDetails = await this.stripeClient.prices.create({
+            unit_amount: skuData.price * 100, // convert to cents
+            currency: 'usd',
+            product: findProduct.stripeProductId,
+            metadata: skuMetadata,
+          });
+
+          skuData.stripePriceId = priceDetails.id;
+          skuDataForUpdate.push(skuData)
+        }
+
+        console.log('Num of sku updated ', skuDataForUpdate.length)
+        await this.productDb.findOneAndUpdate(
+          { _id: id },
+          { $set: { skuDetails: skuDataForUpdate } }, // use push to push data to empty element to avoid error
+        );
+      }
+
       return {
         message: 'Product updated successfully',
         result: {
@@ -293,7 +333,7 @@ export class ProductsService {
       unlinkSync(file.path);
 
       // upload to db
-      await this.productDb.findOneAndUpdate({
+      const updateProduct = await this.productDb.findOneAndUpdate({
         _id: id,
       },
         {
@@ -309,6 +349,44 @@ export class ProductsService {
           images: [resOfCloudinary.secure_url]
         }
       )
+
+      if (findProduct.skuDetails.length > 0) {
+        let skuDataForUpdate = []
+        // Now, update all SKU details in Stripe and in the database
+        for (const skuData of updateProduct.skuDetails) {
+          // Get corresponding SKU data from the passed `skuDetails` array
+
+          // Update Stripe prices for each SKU
+          const skuMetadata: Record<string, any> = {
+            skuCode: skuData.skuCode,
+            productId: id,
+            price: skuData.price,
+            productName: findProduct.productName,
+            productImage: resOfCloudinary.secure_url,
+          };
+
+          if (updateProduct.hasLicenses) {
+            skuMetadata.lifetime = skuData.lifetime + '';
+          }
+
+          // Update Stripe price details for the SKU
+          const priceDetails = await this.stripeClient.prices.create({
+            unit_amount: skuData.price * 100, // convert to cents
+            currency: 'usd',
+            product: findProduct.stripeProductId,
+            metadata: skuMetadata,
+          });
+
+          skuData.stripePriceId = priceDetails.id;
+          skuDataForUpdate.push(skuData)
+        }
+
+        console.log('Num of sku updated ', skuDataForUpdate.length)
+        await this.productDb.findOneAndUpdate(
+          { _id: id },
+          { $set: { skuDetails: skuDataForUpdate } }, // use push to push data to empty element to avoid error
+        );
+      }
 
       return {
         message: 'Image uploaded successfully',
@@ -437,6 +515,8 @@ export class ProductsService {
       throw error;
     }
   }
+
+
   async deleteProductSku(
     productId: string,
     skuId: string,
@@ -498,7 +578,7 @@ export class ProductsService {
       );
 
       // Increment the remainingStock for the SKU
-      await this.productDb.incrementSkuRemainingStock(productId, skuId);
+      await this.productDb.incrementSkuRemainingStock(productId, skuId, licenseKeys.length);
 
       return {
         message: 'License key added successfully',
