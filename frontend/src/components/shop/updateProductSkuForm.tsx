@@ -9,10 +9,12 @@ const UpdateProductSkuForm = ({
     productId,
     skuId,
     skuData,
+    hasLicenses
 }: {
     productId: string;
     skuId: string;
     skuData: SkuDetail | undefined,
+    hasLicenses: boolean
 }) => {
 
     const router = useRouter()
@@ -23,6 +25,7 @@ const UpdateProductSkuForm = ({
         price: skuData?.price || 0,
         validity: skuData?.validity || 0,
         lifetime: skuData?.lifetime || false,
+        remaining: skuData?.remainingStock || 0
     });
     const [loading, setLoading] = useState(false);
 
@@ -45,7 +48,22 @@ const UpdateProductSkuForm = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-
+        let requestData;
+        if (hasLicenses) {
+            requestData = {
+                skuName: formData.skuName,
+                price: formData.price,
+                validity: formData.validity,
+                lifetime: formData.lifetime,
+                remainingStock: skuData?.remainingStock,
+            };
+        } else {
+            requestData = {
+                skuName: formData.skuName,
+                price: formData.price,
+                remainingStock: formData.remaining,
+            };
+        }
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}`,
@@ -54,7 +72,7 @@ const UpdateProductSkuForm = ({
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData),
+                    body: JSON.stringify(requestData),
                     credentials: 'include',
                 }
             );
@@ -107,40 +125,76 @@ const UpdateProductSkuForm = ({
                         value={formData.price}
                         onChange={handleChange}
                         required
+                        min={0}
+                        step={0.01}
                         className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
                     />
                 </div>
 
+                {/* Stock Remaining */}
+                {
+                    !hasLicenses && (
+                        <div>
+                            <label htmlFor="remaining" className="block text-sm font-medium text-primary/80">
+                                Remaining In Stock
+
+                            </label>
+                            <input
+                                type="number"
+                                name="remaining"
+                                id="remaining"
+                                value={formData.remaining}
+                                onChange={handleChange}
+                                required
+                                min={0}
+                                className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                            />
+                        </div>
+                    )
+                }
                 {/* Validity */}
-                <div>
-                    <label htmlFor="validity" className="block text-sm font-medium text-primary/80">
-                        Validity (days)
-                    </label>
-                    <input
-                        type="number"
-                        name="validity"
-                        id="validity"
-                        value={formData.validity}
-                        onChange={handleChange}
-                        required
-                        className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                    />
-                </div>
+                {
+                    hasLicenses && (
+                        <div>
+                            <label htmlFor="validity" className="block text-sm font-medium text-primary/80">
+                                Validity (days)
+                            </label>
+                            <input
+                                type="number"
+                                name="validity"
+                                id="validity"
+                                value={formData.validity}
+                                onChange={handleChange}
+                                required
+                                min={0}
+                                className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                            />
+                        </div>
+                    )
+                }
+
+
 
                 {/* Lifetime */}
-                <div className="flex items-center space-x-3">
-                    <label htmlFor="lifetime" className="block text-sm font-medium text-primary/80">
-                        Lifetime
-                    </label>
-                    <input
-                        type="checkbox"
-                        name="lifetime"
-                        id="lifetime"
-                        checked={formData.lifetime}
-                        onChange={handleCheckboxChange}
-                        className="mt-1"
-                    />
-                </div>
+                {
+                    hasLicenses && (
+                        <div className="flex items-center space-x-3">
+                            <label htmlFor="lifetime" className="block text-sm font-medium text-primary/80">
+                                Lifetime
+                            </label>
+                            <input
+                                type="checkbox"
+                                name="lifetime"
+                                id="lifetime"
+                                checked={formData.lifetime}
+                                onChange={handleCheckboxChange}
+                                className="mt-1"
+
+                            />
+                        </div>
+                    )
+                }
+
 
                 {/* Submit Button */}
                 <div>

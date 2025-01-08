@@ -7,7 +7,9 @@ import React from 'react'
 type paramsProp = Promise<{ productId: string, skuId: string }>
 const page = async ({ params }: { params: paramsProp }) => {
     const { productId, skuId } = await params
-    let skuData = null
+    let skuData = null;
+    let productName = '';
+    let hasLicenses = false;
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`, {
             method: 'GET',
@@ -16,6 +18,8 @@ const page = async ({ params }: { params: paramsProp }) => {
         if (response.ok) {
             const data: ProductResponse = await response.json();
             skuData = data.result.product.skuDetails.find((sku) => sku._id === skuId)
+            productName = data.result.product.productName;
+            hasLicenses = data.result.product.hasLicenses;
         } else {
             const errorData = await response.json();
             return <div>{errorData.message || 'Unknown error'}</div>
@@ -27,7 +31,7 @@ const page = async ({ params }: { params: paramsProp }) => {
 
     return (
 
-        <PageWrapper title='Update Product Sku'>
+        <PageWrapper title={`Update ${productName} Sku`}>
             <DynamicLink
                 label='Product SKUs'
                 url={`/dashboard/products/${productId}/skus`}
@@ -36,6 +40,7 @@ const page = async ({ params }: { params: paramsProp }) => {
                 skuData={skuData}
                 productId={productId}
                 skuId={skuId}
+                hasLicenses={hasLicenses}
             />
         </PageWrapper>
     )
