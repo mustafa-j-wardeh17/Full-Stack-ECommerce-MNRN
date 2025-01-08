@@ -8,14 +8,19 @@ type paramsProp = Promise<{ productId: string, skuId: string }>
 const page = async ({ params }: { params: paramsProp }) => {
     const { productId, skuId } = await params
     let product: Product;
+    try {
+        const productresponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
 
-    const productresponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
-
-    const productdata: ProductResponse = await productresponse.json()
-    if (!productresponse.ok) {
-        throw new Error(productdata.message)
+        const productdata: ProductResponse = await productresponse.json()
+        if (!productresponse.ok) {
+            throw new Error(productdata.message)
+        }
+        product = productdata.result.product
+    } catch (error: any) {
+        return <h1>{error.message}</h1>
     }
-    product = productdata.result.product
+
+
     return (
         <PageWrapper title={`Create Licenses For ${product.skuDetails.find(item => item._id === skuId)?.skuName}`}>
             <DynamicLink
