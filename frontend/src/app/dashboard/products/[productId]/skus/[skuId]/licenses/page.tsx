@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { cookies } from 'next/headers';
-import { GetProductSkuLicensesResponse, License } from '@/util/types';
+import { GetProductSkuLicensesResponse, License, Product, ProductResponse } from '@/util/types';
 import DeleteProductSkuLicenseButton from '@/components/shop/DeleteProductSkuLicenseButton';
 import PageWrapper from '@/components/Dashboard/pageWrapper';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -17,7 +17,17 @@ const page = async ({ params }: { params: paramsProp }) => {
 
     const { productId, skuId } = await params
     let licenses: License[] = []
+    let product: Product;
+
     try {
+        const productresponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
+
+        const productdata: ProductResponse = await productresponse.json()
+        if (!productresponse.ok) {
+            throw new Error(productdata.message)
+        }
+        product = productdata.result.product
+
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}/skus/${skuId}/licenses`,
             {
@@ -42,14 +52,14 @@ const page = async ({ params }: { params: paramsProp }) => {
 
 
         return (
-            <PageWrapper title='SKU Licenses'>
+            <PageWrapper title={`SKU ${product.productName} Licenses`}>
                 <DynamicLink
                     label='Product Skus'
                     url={`/dashboard/products/${productId}/skus`}
                 />
                 <div className=' bg-white dark:bg-black w-full md:p-8 p-3 rounded-2xl shadow-md flex flex-col gap-8'>
                     <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                        Licenses for SKU
+                        Licenses for SKU {product.skuDetails.find(item => item._id === skuId)?.skuName}
                     </h1>
 
 

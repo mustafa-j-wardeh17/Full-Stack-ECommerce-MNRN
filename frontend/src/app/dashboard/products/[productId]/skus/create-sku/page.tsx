@@ -18,7 +18,7 @@ const page = async ({ params }: { params: paramsProp }) => {
         product = data.result.product
         return (
 
-            <PageWrapper title='Create Product SKU'>
+            <PageWrapper title={`Create ${product.productName} SKU`}>
                 <DynamicLink
                     label='Product SKUs'
                     url={`/dashboard/products/${productId}/skus`}

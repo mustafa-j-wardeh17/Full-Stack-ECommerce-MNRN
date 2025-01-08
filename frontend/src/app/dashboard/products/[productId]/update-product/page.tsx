@@ -15,11 +15,11 @@ const page = async ({ params }: { params: tParams }) => {
       throw new Error(`Failed to fetch product: ${result.message}`)
     }
     product = result.result.product;
-  } catch (error) {
-
+  } catch (error: any) {
+    return <h1>{error.message}</h1>
   }
   return (
-    <PageWrapper title='Update Product'>
+    <PageWrapper title={`Update ${product?.productName}`}>
       <DynamicLink
         label='Back'
         url={`/dashboard/products`}
