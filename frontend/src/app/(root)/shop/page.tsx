@@ -5,7 +5,6 @@ import { SortBy } from '@/components/shop/SortBy';
 import { baseType, categoryType, platformType } from '@/util/constant';
 import { Product } from '@/util/types';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import React from 'react';
 import { CiGrid41 } from "react-icons/ci";
 
@@ -26,26 +25,6 @@ interface ProductsInterface {
 type tSearchParams = Promise<{ [key: string]: string | undefined }>;
 
 const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
-    const cookieStore = cookies();
-    const _digi_auth_token = (await cookieStore).get('_digi_auth_token');
-    let isAdmin = false;
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/users/is-admin`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${_digi_auth_token?.value}`, // Add the token here
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
-        if (response.ok) {
-            isAdmin = true;
-        } else {
-            isAdmin = false;
-        }
-    } catch (error) {
-        isAdmin = false;
-    }
     const resolvedSearchParams = await searchParams;
 
     const category = (Object.values(categoryType).includes(resolvedSearchParams.category as categoryType)
@@ -115,7 +94,6 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                                 >
                                     <ProductCard
                                         product={product}
-                                        isAdmin={isAdmin}
                                     />
 
                                 </div>

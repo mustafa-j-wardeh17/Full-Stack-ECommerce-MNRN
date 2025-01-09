@@ -56,7 +56,7 @@ const page = async ({ params }: { params: tParams }) => {
         />
 
         <div className='flex lg:flex-row gap-6 flex-col my-6'>
-          <div className=' border-[6px] border-primary/5 2xl:w-2/5 lg:w-1/2 w-full'>
+          <div className=' border-[6px] border-primary/5 2xl:w-2/5 aspect-square max-h-[650px] overflow-hidden lg:w-1/2 w-full'>
             <ProductImageWithLens
               imageUrl={product.image}
               id={product._id}

@@ -3,7 +3,7 @@ import { Product } from '@/util/types';
 import ProductCard from '../productCard';
 import Link from 'next/link';
 
-const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Product[], type?: 'default' | 'latest', isAdmin: boolean }) => {
+const BestSells = ({ bestSells, type = 'default' }: { bestSells: Product[], type?: 'default' | 'latest'}) => {
 
 
     return (
@@ -21,7 +21,6 @@ const BestSells = ({ bestSells, type = 'default', isAdmin }: { bestSells: Produc
                     >
                         <ProductCard
                             product={product}
-                            isAdmin={isAdmin}
                         />
                     </div>
                 ))}

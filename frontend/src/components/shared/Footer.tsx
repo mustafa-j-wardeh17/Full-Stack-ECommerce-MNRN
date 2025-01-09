@@ -12,7 +12,7 @@ const Footer = () => {
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
                     <div className='relative w-[135px] h-[44px] flex justify-start dark:invert'>
-                        <Image src="/logo.png" alt="PS Store" width={135} height={44} />
+                        <h1 className='font-extrabold text-3xl text-sky-600'>ByteVault</h1>
                     </div>
                     <ul className="space-y-4 text-sm">
                         <li><Link href="tel:+972569470288" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> +972 56-947-0288</Link></li>

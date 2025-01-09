@@ -2,18 +2,21 @@
 import { Product } from '@/util/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import { TbHeartFilled } from "react-icons/tb";
 import { RiDeleteBin6Line } from 'react-icons/ri';
 
 import { BackgroundGradient } from './ui/background-gradient';
 
 import { useUserContext } from '@/context';
 
-const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: Product, type?: 'default' | 'wishlist', isAdmin?: boolean }) => {
+const ProductCard = ({ product, type = 'default' }: { product: Product, type?: 'default' | 'wishlist' }) => {
     const { user } = useUserContext()
+    const [loadImage, setloadImage] = useState(true)
 
+    const handleLoad = () => {
+        setloadImage(false)
+    }
     return (
         <BackgroundGradient className=" relative  bg-white flex flex-col justify-center dark:bg-zinc-900">
             <Link href={`/shop/${product._id}`}>
@@ -24,7 +27,15 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                         alt={product.productName}
                         fill
                         className="object-center object-fill aspect-square transition-transform duration-300 group-hover:scale-105"
+                        onLoad={handleLoad}
                     />
+                    {
+                        loadImage && (
+                            <div className='w-full h-full flex items-center justify-center'>
+                                <div className='w-[40px] h-[40px] rounded-full border-primary border-t-[2px] animate-spin' />
+                            </div>
+                        )
+                    }
                 </div>
 
                 {/* Product Details */}

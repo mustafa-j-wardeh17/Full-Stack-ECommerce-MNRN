@@ -51,7 +51,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Navigation Links (Hidden on Small Devices) */}
-                <div className="hidden md:flex items-center gap-6">
+                <div className="hidden lg:flex items-center gap-6">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
@@ -118,7 +118,7 @@ const Navbar = () => {
 
                     {/* Hamburger Menu Icon (Visible on Small Devices) */}
                     <Menu
-                        className="text-primary/70 cursor-pointer hover:text-primary transition md:hidden"
+                        className="text-primary/70 cursor-pointer hover:text-primary transition lg:hidden"
                         size={24}
                         onClick={() => setShowMenu(!showMenu)}
                     />
