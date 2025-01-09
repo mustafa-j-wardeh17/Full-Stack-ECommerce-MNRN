@@ -56,6 +56,12 @@ const MyAccountNavigation = () => {
                     <IoPersonOutline size={26} /> Personal Information
                 </Link>
                 <Link
+                    href="/my-account/my-wishlist"
+                    className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-wishlist') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                >
+                    <CiHeart size={26} />My Wishlist
+                </Link>
+                <Link
                     href="/my-account/my-cart"
                     className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-cart') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
@@ -66,12 +72,6 @@ const MyAccountNavigation = () => {
                     className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-orders') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <BsBoxSeam size={22} />My Orders
-                </Link>
-                <Link
-                    href="/my-account/my-wishlist"
-                    className={`py-3 px-5 flex items-center gap-4  ${pathName.endsWith('my-wishlist') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
-                >
-                    <CiHeart size={26} />My Wishlist
                 </Link>
                 <button
                     onClick={handleLogout}

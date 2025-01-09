@@ -90,24 +90,23 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                 {/* BreadCrumb */}
                 <div className="flex lg:flex-row relative flex-col gap-6 my-20">
                     {/* Filter Sidebar */}
-                    <div className="lg:w-1/5 w-full">
+                    <div className="lg:w-1/5  lg:block hidden">
                         <FilterBy />
                     </div>
 
                     {/* Product List */}
                     <div className={`${result.result.metadata.total !== 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full flex-col gap-6`}>
                         {/* Sorting and Product Count */}
-                        <div className="flex flex-wrap gap-4 justify-between md:text-[14px] text-[12px]">
-                            <div className="flex  items-center gap-3">
+                        <div className="flex flex-wrap sm:gap-4 gap-2 justify-between md:text-[14px] text-[12px]">
+                            <div className="flex  items-center sm:gap-3 gap-1">
                                 <CiGrid41 size={20} />
                                 <p>Showing 1-{Math.min(result.result.products.length, 16)} of {result.result.products.length} items</p>
                             </div>
-                            <div className=' flex justify-start  items-center gap-3'>
-                                <SortBy />
-                            </div>
+                            <SortBy />
                         </div>
-
-                        {/* Product Grid */}
+                        <div className="lg:w-1/5  lg:hidden block ">
+                            <FilterBy />
+                        </div>                        {/* Product Grid */}
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-6 sm:place-items-start place-items-center">
                             {result.result.products.map((product: Product) => (
                                 <div

@@ -35,7 +35,7 @@ const ShopCategories = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
 
             {/* Category Title & Link */}
-            <div className="absolute bottom-[-50px] group-hover:bottom-4 w-[150px] bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 left-1/2 transform -translate-x-1/2 text-center">
+            <div className="absolute bottom-[-50px] opacity-0 group-hover:opacity-100 group-hover:bottom-4 w-[150px] bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 left-1/2 transform -translate-x-1/2 text-center">
               <a
                 href={`/shop?baseType=${category.title}`}
                 className="text-white md:text-md text-sm text-nowrap font-semibold"

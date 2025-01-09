@@ -72,7 +72,7 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
 
 
             <div className="absolute z-10 top-4 left-4 flex flex-col space-y-2 transition-opacity duration-300">
-                {type === 'default' && (
+                {/* {type === 'default' && (
                     <div className="flex flex-col items-start justify-center space-y-2">
                         <div className='space-y-2'>
                             <button className="p-[6px] border-[2px] border-gray-300 hover:border-red-300 text-gray-400  hover:text-red-500  rounded-full shadow-md hover:shadow-lg flex items-center justify-center">
@@ -80,7 +80,7 @@ const ProductCard = ({ product, type = 'default', isAdmin = false }: { product: 
                             </button>
                         </div>
                     </div>
-                )}
+                )} */}
                 {type === 'wishlist' && (
                     <button className="p-2 bg-white rounded-full shadow-md hover:shadow-lg">
                         <RiDeleteBin6Line className="text-red-500" size={18} />

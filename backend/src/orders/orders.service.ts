@@ -204,6 +204,9 @@ export class OrdersService {
           for (const product of skusAndProducts) {
             const findProduct = await this.productDB.findById(product.productId);
 
+            // Remove cart items or quantity
+
+            
             // Update remaining stock for the SKU
             await this.productDB.decrementSkuRemainingStock(product.productId, product.skuId, product.quantity);
 

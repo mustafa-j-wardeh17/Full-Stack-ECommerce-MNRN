@@ -87,11 +87,11 @@ export function FilterBy() {
   };
 
   return (
-    <div ref={filterRef} className="lg:sticky top-20 lg:h-auto  lg:w-full  rounded-lg  p-4 mb-6 lg:mb-0">
-      <h2 className="text-xl font-semibold mb-4">Filter Products By</h2>
+    <div ref={filterRef} className="lg:sticky top-20 lg:h-auto  lg:w-full lg:block flex flex-wrap justify-between gap-4  rounded-lg  lg:p-4 mb-6 lg:mb-0">
+      <h2 className="xs:text-xl text-lg font-semibold mb-6 lg:block hidden">Filter Products By</h2>
       {/* Category */}
-      <div className="mb-6">
-        <h3 className="font-semibold text-lg mb-2">Category</h3>
+      <div className="lg:mb-6 lg:block flex-1 min-w-[200xp]">
+        <h3 className="font-semibold text-md mb-2 lg:block hidden">Category</h3>
         <Popover open={isCategoryOpen} onOpenChange={setIsCategoryOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -103,9 +103,9 @@ export function FilterBy() {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-            <Command>
+            <Command className='sm:h-full h-[250px]'>
               <CommandInput placeholder="Search Category..." className="h-9" />
-              <CommandList>
+              <CommandList >
                 <CommandEmpty>No category found.</CommandEmpty>
                 <CommandGroup className="w-full">
                   <CommandItem
@@ -124,8 +124,8 @@ export function FilterBy() {
       </div>
 
       {/* Base */}
-      <div className="mb-6">
-        <h3 className="font-semibold text-lg mb-2">Base</h3>
+      <div className="lg:mb-6 lg:block flex-1 min-w-[200xp]">
+        <h3 className="font-semibold text-md mb-2 lg:block hidden">Base</h3>
         <Popover open={isBaseOpen} onOpenChange={setIsBaseOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -137,7 +137,7 @@ export function FilterBy() {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[--radix-popover-trigger-width] p-0" >
-            <Command >
+            <Command className='sm:h-full h-[250px]'>
               <CommandInput placeholder="Search Base..." className="h-9" />
               <CommandList>
                 <CommandEmpty>No base found.</CommandEmpty>
@@ -158,8 +158,8 @@ export function FilterBy() {
       </div>
 
       {/* Platform */}
-      <div className="mb-6 w-full relative overflow-hidden">
-        <h3 className="font-semibold text-lg mb-2">Platform</h3>
+      <div className="lg:mb-6 lg:block flex-1 min-w-[200xp]">
+        <h3 className="font-semibold text-md mb-2 lg:block hidden">Platform</h3>
         <Popover open={isPlatformOpen} onOpenChange={setIsPlatformOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -171,7 +171,7 @@ export function FilterBy() {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-            <Command>
+            <Command className='sm:h-full h-[250px]'>
               <CommandInput placeholder="Search Platform..." className="h-9" />
               <CommandList>
                 <CommandEmpty>No platform found.</CommandEmpty>
