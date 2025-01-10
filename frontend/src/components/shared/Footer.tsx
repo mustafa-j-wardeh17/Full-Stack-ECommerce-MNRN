@@ -68,9 +68,18 @@ const Footer = () => {
                     </div>
                     <p className="text-sm text-primary/80 hover:text-primary">©2024 ByteVault All Rights Reserved</p>
                     <div className="flex justify-center space-x-4 text-primary">
-                        <Link href="https://www.facebook.com/mustafa.j.wardeh17"><FaFacebookF size={18} className='hover:scale-110 hover:text-primary/80' /></Link>
-                        <Link href="https://www.instagram.com/mustafa.j.wardeh17"><FaInstagram size={18} className='hover:scale-110 hover:text-primary/80' /></Link>
-                        <Link href="https://wa.me/+972569470288"><FaWhatsapp size={18} className='hover:scale-110 hover:text-primary/80' /></Link>
+                        <Link href="https://www.facebook.com/mustafa.j.wardeh17" aria-label="Visit Mustafa's Facebook profile">
+                            <FaFacebookF size={18} className='hover:scale-110 hover:text-primary/80' />
+                        </Link>
+
+                        <Link href="https://www.instagram.com/mustafa.j.wardeh17" aria-label="Visit Mustafa's Instagram profile">
+                            <FaInstagram size={18} className='hover:scale-110 hover:text-primary/80' />
+                        </Link>
+
+                        <Link href="https://wa.me/+972569470288" aria-label="Message Mustafa on WhatsApp">
+                            <FaWhatsapp size={18} className='hover:scale-110 hover:text-primary/80' />
+                        </Link>
+
                     </div>
                 </div>
             </div>

@@ -60,10 +60,10 @@ const Subscribe = () => {
                 <button
                     onClick={handleSubscribe}
                     disabled={loading}
-                    className="absolute right-2 top-[50%] -translate-y-[50%] transition duration-300 ease-in-out"
+                    className="absolute right-2 top-[50%] p-2 -translate-y-[50%] transition duration-300 ease-in-out"
                     aria-label="Subscribe"
                 >
-                    <ArrowRightIcon size={18} />
+                    <ArrowRightIcon size={18} className='hover:scale-110'/>
                 </button>
             </div>
             {message && <p className={`text-xs mt-2 ${message.includes('successful') ? 'text-green-500' : 'text-red-500'}`}>{message}</p>}

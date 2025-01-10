@@ -57,7 +57,7 @@ const ProductCard = ({ product, type = 'default' }: { product: Product, type?: '
                             ))}
                         </span>
                         <div className='flex justify-between items-center'>
-                            <p className="text-amber-500 text-sm font-semibold ">
+                            <p className="dark:text-amber-500 text-[#be7c09] text-sm font-semibold ">
                                 {product.skuDetails && product.skuDetails.length > 0
                                     ? (() => {
                                         const [low, high] = product.skuDetails.reduce(
