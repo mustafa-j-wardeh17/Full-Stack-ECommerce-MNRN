@@ -7,8 +7,8 @@ const PersonalInformation = () => {
 
     return (
         <div className='w-full'>
-            <Tabs defaultValue='account' className='defaultValue="w-full  bg-primary-foreground p-6 rounded-lg shadow-lg"'>
-                <TabsList className='flex justify-between '>
+            <Tabs defaultValue='account' >
+                <TabsList className='flex justify-between py-6'>
                     <TabsTrigger className='w-1/2 text-lg' value="account">Account</TabsTrigger>
                     <TabsTrigger className='w-1/2 text-lg' value="subscribe">Subscription</TabsTrigger>
                 </TabsList>

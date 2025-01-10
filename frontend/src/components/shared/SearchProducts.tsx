@@ -2,8 +2,10 @@ import { Product, ProductsResponse } from '@/util/types';
 import { HeartIcon, Search, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { BsPersonCircle } from 'react-icons/bs';
+import { Separator } from '../ui/separator';
+import { usePathname } from 'next/navigation';
 
 interface SearchProductsProps {
     showMenu: boolean,
@@ -29,16 +31,27 @@ const SearchProducts = ({
     router,
     isIconActive
 }: SearchProductsProps) => {
-
+    const pathname = usePathname()
     const [products, setProducts] = React.useState<Product[]>([]);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (showMenu) {
-            document.body.style.overflow = 'hidden'; // Disable scroll
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'auto'; // Re-enable scroll
+            document.body.style.overflow = 'auto';
         }
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setShowMenu(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
         return () => {
+            document.removeEventListener('click', handleClickOutside);
             document.body.style.overflow = 'auto'; // Ensure scroll is re-enabled when the component is unmounted
         };
     }, [showMenu]);
@@ -66,25 +79,33 @@ const SearchProducts = ({
         <>
             {/* Mobile Navigation Menu */}
             {showMenu && (
-                <div className="fixed top-0 left-0 w-full h-screen bg-primary-foreground z-50 flex flex-col items-center gap-6 pt-16">
+                <div ref={menuRef} className="fixed top-0 border-l sm:shadow-lg p-2 right-0 md:w-2/5 sm:w-1/2 md:shadow-md w-full h-screen bg-primary-foreground  z-50 flex flex-col items-center gap-6 pt-16">
                     <X
                         size={24}
-                        className="absolute z-10 top-4 right-4 cursor-pointer text-primary hover:text-primary/80 transition"
+                        className="absolute z-50 top-4 right-4 cursor-pointer border-2 rounded-md hover:bg-primary/10 text-primary hover:text-primary/80 transition"
                         onClick={() => setShowMenu(false)}
                     />
-                    <h1 className="text-2xl font-bold text-primary/90 mb-6">ByteVault</h1>
-
+                    <h1 className="text-3xl font-extrabold text-sky-800 dark:text-sky-500  ">ByteVault</h1>
+                    <Separator className='my-4' />
                     <div className="flex flex-col w-full items-center px-4 gap-6">
-                        <Link href="/" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
+                        <Link href="/" className={`text-lg border p-2 rounded-md w-full max-w-[240px] text-center  ${pathname === '/' ? 'border-primary bg-primary text-secondary shadow-md' : 'text-primary/85 '} hover:text-secondary hover:border-primary hover:bg-primary  hover:shadow-md transition duration-200`}
+                            onClick={() => setShowMenu(false)}
+                        >
                             Home
                         </Link>
-                        <Link href="/shop" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
+                        <Link href="/shop" className={`text-lg border p-2 rounded-md w-full max-w-[240px] text-center  ${pathname === '/shop' ? 'border-primary bg-primary text-secondary shadow-md' : 'text-primary/85 '} hover:text-secondary hover:border-primary hover:bg-primary  hover:shadow-md transition duration-200`}
+                            onClick={() => setShowMenu(false)}
+                        >
                             Shop
                         </Link>
-                        <Link href="/about-us" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
+                        <Link href="/about-us" className={`text-lg border p-2 rounded-md w-full max-w-[240px] text-center  ${pathname === '/about-us' ? 'border-primary bg-primary text-secondary shadow-md' : 'text-primary/85 '} hover:text-secondary hover:border-primary hover:bg-primary  hover:shadow-md transition duration-200`}
+                            onClick={() => setShowMenu(false)}
+                        >
                             About Us
                         </Link>
-                        <Link href="/contact" className="text-lg border p-2 rounded-md w-full max-w-[300px] text-center text-primary/85 hover:text-primary hover:bg-secondary/90 transition duration-100" onClick={() => setShowMenu(false)}>
+                        <Link href="/contact" className={`text-lg border p-2 rounded-md w-full max-w-[240px] text-center  ${pathname === '/contact' ? 'border-primary bg-primary text-secondary shadow-md' : 'text-primary/85 '} hover:text-secondary hover:border-primary hover:bg-primary  hover:shadow-md transition duration-200`}
+                            onClick={() => setShowMenu(false)}
+                        >
                             Contact Us
                         </Link>
                     </div>
@@ -141,7 +162,7 @@ const SearchProducts = ({
                 <div className="fixed inset-0 z-50 bg-black/80 flex flex-col py-[60px] items-center ">
                     <X
                         size={28}
-                        className="absolute top-4 right-4 text-primary cursor-pointer hover:text-primary/80 transition"
+                        className="absolute top-4 right-4 text-white cursor-pointer hover:text-white/80 transition"
                         onClick={() => setShowSearch(false)}
                     />
                     <div className="w-full max-w-md px-4">

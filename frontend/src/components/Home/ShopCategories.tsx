@@ -10,7 +10,7 @@ const ShopCategories = () => {
       <ShopCategoriesScroll scrollContainerClass="categories-scroll" />
 
       {/* Scrollable Categories */}
-      <div className="categories-scroll flex w-full overflow-x-auto py-6 gap-4 sm:gap-6 lg:gap-8 scroll-smooth hide-scrollbar">
+      <div className="categories-scroll px-4 flex w-full overflow-x-auto py-6 gap-4 sm:gap-6 lg:gap-8 scroll-smooth hide-scrollbar">
         {baseTypesCategories.map((category, index) => (
           <div
             key={index}
@@ -26,7 +26,7 @@ const ShopCategories = () => {
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/40 via-black/60 to-black/80 dark:from-gray-600/20 dark:via-gray-600/40 dark:to-gray-600/60 opacity-100 group-hover:opacity-0 transition-opacity duration-300 rounded-lg">
               <a
                 href={`/shop?baseType=${category.title}`}
-                className="text-white text-3xl text-nowrap font-bold"
+                className="text-white md:text-3xl sm:text-2xl text-xl text-nowrap font-bold"
               >
                 {category.title}
               </a>

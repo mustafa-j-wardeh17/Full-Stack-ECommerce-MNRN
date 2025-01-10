@@ -11,8 +11,8 @@ const Footer = () => {
             <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center md:gap-8 gap-6">
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
-                    <div className='relative w-[135px] h-[44px] flex justify-start dark:invert'>
-                        <h1 className='font-extrabold text-3xl text-sky-600'>ByteVault</h1>
+                    <div className='relative w-[135px] h-[44px] flex justify-start'>
+                        <Link href={'/'} className='font-extrabold text-3xl  text-sky-800 dark:text-sky-500 hover:text-sky-600  hover:dark:text-sky-300'>ByteVault</Link>
                     </div>
                     <ul className="space-y-4 text-sm">
                         <li><Link href="tel:+972569470288" className="hover:underline transition duration-300 ease-in-out"><i className="fas fa-phone mr-2"></i> +972 56-947-0288</Link></li>
