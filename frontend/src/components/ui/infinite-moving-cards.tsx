@@ -88,11 +88,17 @@ export const InfiniteMovingCards = ({
         {items.map((item, idx) => (
           <li
             className="relative rounded-2xl w-[100px] h-[80px] flex items-center justify-center  flex-shrink-0 "
-            
+
             key={item.image}
           >
-           <Image src={item.image} alt={item.title} fill className="object-contain" />
-            
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              className="object-contain"
+              loading="lazy"
+            />
+
           </li>
         ))}
       </ul>

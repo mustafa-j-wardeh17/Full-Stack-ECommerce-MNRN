@@ -25,7 +25,7 @@ const Footer = () => {
 
                 {/* Information Links */}
                 <div className="flex flex-col space-y-6 text-sm">
-                    <h3 className="text-lg font-semibold">Information</h3>
+                    <h2 className="text-lg font-semibold">Information</h2>
                     <ul className="space-y-3">
                         <li><Link href="/my-account" className="hover:underline text-primary/80 hover:text-primary transition duration-300 ease-in-out">My Account</Link></li>
                         <li><Link href="/sign-in" className="hover:underline text-primary/80 hover:text-primary transition duration-300 ease-in-out">Login</Link></li>
@@ -37,7 +37,7 @@ const Footer = () => {
 
                 {/* Services Links */}
                 <div className="flex flex-col space-y-6 text-sm">
-                    <h3 className="text-lg font-semibold">Services</h3>
+                    <h2 className="text-lg font-semibold">Services</h2>
                     <ul className="space-y-3">
                         <li><Link href="/about-us" className="hover:underline text-primary/80 hover:text-primary transition duration-300 ease-in-out">About Us</Link></li>
                         <li><Link href="/contact" className="hover:underline text-primary/80 hover:text-primary transition duration-300 ease-in-out">Contact</Link></li>

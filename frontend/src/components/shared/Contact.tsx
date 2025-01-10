@@ -68,7 +68,7 @@ const Contact = () => {
     };
 
     return (
-        <div className="flex w-full relative overflow-hidden border my-20 rounded-xl flex-col  shadow-md  bg-gradient-to-b  from-black/90 via-blue-950 to-sky-800 py-[40px] gap-[30px]  text-white antialiased">
+        <div className="flex w-full relative overflow-hidden border my-14 rounded-xl flex-col  shadow-md  bg-gradient-to-b  from-black/90 via-blue-950 to-sky-800 py-[40px] gap-[30px]  text-white antialiased">
             <div className="flex relative z-10 lg:flex-row flex-col lg:gap-0 gap-[70px] xl:px-[120px] lg:px-[80px] sm:px-[60px] px-[20px]">
                 <motion.div
                     {...slideInFromTop(0)}

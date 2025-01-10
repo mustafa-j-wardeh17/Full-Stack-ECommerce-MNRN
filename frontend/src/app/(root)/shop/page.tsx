@@ -67,7 +67,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
         return (
             <div>
                 {/* BreadCrumb */}
-                <div className="flex lg:flex-row relative flex-col gap-6 my-20">
+                <div className="flex lg:flex-row relative flex-col gap-6 my-14">
                     {/* Filter Sidebar */}
                     <div className="lg:w-1/5  lg:block hidden">
                         <FilterBy />

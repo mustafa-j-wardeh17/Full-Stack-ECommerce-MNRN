@@ -16,6 +16,8 @@ const Hero = () => {
                 alt="hero image"
                 fill
                 className="object-cover object-center"
+                loading='eager'
+                priority  
             />
 
 

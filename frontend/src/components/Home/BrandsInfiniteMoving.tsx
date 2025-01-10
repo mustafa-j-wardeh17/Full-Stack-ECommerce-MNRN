@@ -8,8 +8,8 @@ export function InfiniteMovingCardsDemo() {
   return (
     <div className="rounded-md flex flex-col antialiased my-20 items-center justify-center relative overflow-hidden">
 
-<h2 className="md:text-4xl text-2xl  font-bold text-primary/80 w-full text-center mb-10">
-Our Trusted Brands
+      <h2 className="md:text-4xl text-2xl  font-bold text-primary/80 w-full text-center mb-10">
+        Our Trusted Brands
       </h2>
       <InfiniteMovingCards
         items={brands}

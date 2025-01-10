@@ -9,6 +9,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { BackgroundGradient } from './ui/background-gradient';
 
 import { useUserContext } from '@/context';
+import RatingStars from './RatingStars';
 
 const ProductCard = ({ product, type = 'default' }: { product: Product, type?: 'default' | 'wishlist' }) => {
     const { user } = useUserContext()
@@ -48,16 +49,9 @@ const ProductCard = ({ product, type = 'default' }: { product: Product, type?: '
                         <p className="xl:text-sm text-xs text-gray-500   text-wrap text-center dark:text-gray-400 truncate">
                             {product.description.length > 60 ? (product.description.slice(0, 60) + '...') : product.description}
                         </p>
-                        <span className='flex xl:text-sm text-xs space-x-1 items-center'>
-                            {[...Array(5)].map((_, idx) => (
-                                <FaStar
-                                    key={idx}
-                                    className={idx < Math.floor(product.avgRating || 0) ? 'text-amber-500' : 'text-gray-300'}
-                                />
-                            ))}
-                        </span>
+                        <RatingStars avgRating={product.avgRating!} />
                         <div className='flex justify-between items-center'>
-                            <p className="dark:text-amber-500 text-[#be7c09] text-sm font-semibold ">
+                            <p className="text-primary text-sm font-semibold ">
                                 {product.skuDetails && product.skuDetails.length > 0
                                     ? (() => {
                                         const [low, high] = product.skuDetails.reduce(

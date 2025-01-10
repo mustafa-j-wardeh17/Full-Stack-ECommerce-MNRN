@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <div className="flex relative flex-col items-center w-full  my-20 overflow-hidden">
+    <div className="flex relative flex-col items-center w-full   sm:my-20 my-14 overflow-hidden">
 
       {/* Heading and Description */}
       <div className="text-center lg:w-4/5 px-5 w-full">
