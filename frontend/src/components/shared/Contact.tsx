@@ -101,13 +101,13 @@ const Contact = () => {
                         {...slideInFromTop(1)}
                         className='flex gap-6 lg:pt-12  pt-4 text-white justify-start j w-full  items-center'
                     >
-                        <Link href={'https://www.facebook.com/mustafa.j.wardeh17'} className='p-2  flex rounded-full justify-center items-center  transition-all duration-75 hover:scale-125'>
+                        <Link aria-label='facebook link' href={'https://www.facebook.com/mustafa.j.wardeh17'} className='p-2  flex rounded-full justify-center items-center  transition-all duration-75 hover:scale-125'>
                             <Facebook size={25} />
                         </Link>
-                        <Link href={'https://www.instagram.com/mustafa.j.wardeh17'} className='p-2  flex rounded-full justify-center items-center   transition-all duration-75 hover:scale-125'>
+                        <Link aria-label='instagram link' href={'https://www.instagram.com/mustafa.j.wardeh17'} className='p-2  flex rounded-full justify-center items-center   transition-all duration-75 hover:scale-125'>
                             <Instagram size={25} />
                         </Link>
-                        <Link href={'https://wa.me/+972569470288'} className='p-2 flex rounded-full justify-center items-center transition-all duration-75 hover:scale-125'>
+                        <Link aria-label='whatsapp link' href={'https://wa.me/+972569470288'} className='p-2 flex rounded-full justify-center items-center transition-all duration-75 hover:scale-125'>
                             <FaWhatsapp size={25} />
                         </Link>
 

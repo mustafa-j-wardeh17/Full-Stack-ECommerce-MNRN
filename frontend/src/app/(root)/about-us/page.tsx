@@ -47,8 +47,8 @@ const AboutUs = () => {
         viewport={{ once: true }}
         className="max-w-5xl mx-auto text-center space-y-6"
       >
-        <h2 className="text-4xl font-bold text-sky-500">Welcome to ByteVault</h2>
-        <p className="text-lg leading-relaxed">
+        <h2 className="text-4xl font-bold text-sky-700 dark:text-sky-300">Welcome to ByteVault</h2>
+        <p className="text-lg leading-relaxed text-primary/70">
           At ByteVault, we are dedicated to revolutionizing how technology enthusiasts, gamers, and professionals access the latest innovations.
           Founded by Mustafa Abu Wardeh, our mission is to provide top-tier products and services that make technology accessible, affordable, and enjoyable for everyone.
         </p>
@@ -78,11 +78,11 @@ const AboutUs = () => {
           </div>
           <div className="flex-1 space-y-6">
             <h3 className="text-3xl font-semibold text-sky-500 leading-tight">Our Mission</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-primary/70 leading-relaxed">
               At ByteVault, our mission is to empower individuals and businesses by providing access to cutting-edge technology that enhances productivity, innovation, and connectivity.
               We strive to offer high-quality tech products at competitive prices, ensuring our customers are always ahead of the curve.
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-primary/70 leading-relaxed">
               By fostering a customer-centric approach, we aim to simplify the tech-buying experience and build lasting relationships with our clients.
             </p>
           </div>
@@ -103,11 +103,11 @@ const AboutUs = () => {
           </div>
           <div className="flex-1 space-y-6">
             <h3 className="text-3xl font-semibold text-sky-500 leading-tight">Our Vision</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-primary/70 leading-relaxed">
               To become a globally recognized leader in the tech e-commerce industry by consistently delivering innovation, reliability, and trust.
               We envision a world where technology is accessible and affordable for everyone, driving progress and enhancing everyday life.
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-primary/70 leading-relaxed">
               ByteVault aspires to be a beacon of excellence in the digital marketplace, fostering a community of tech enthusiasts and professionals.
             </p>
           </div>
@@ -128,10 +128,10 @@ const AboutUs = () => {
           </div>
           <div className="flex-1 space-y-6">
             <h3 className="text-3xl font-semibold text-sky-500 leading-tight">Our Core Values</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-primary/70 leading-relaxed">
               At ByteVault, we are guided by a commitment to integrity, innovation, and customer satisfaction. Our core values include:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+            <ul className="list-disc list-inside space-y-2 text-lg text-primary/70">
               <li><strong>Integrity:</strong> Upholding honesty and transparency in all interactions.</li>
               <li><strong>Customer-Centricity:</strong> Prioritizing customer needs and delivering exceptional service.</li>
               <li><strong>Innovation:</strong> Embracing the latest trends and technological advancements.</li>
@@ -165,10 +165,10 @@ const AboutUs = () => {
         className="max-w-7xl mx-auto text-center space-y-8 py-16"
       >
         <h2 className="text-3xl font-semibold text-sky-500">Why ByteVault is the Right Choice for You</h2>
-        <p className="text-lg text-gray-700">
+        <p className="text-lg text-primary/70">
           ByteVault offers a unique combination of reliability, innovation, and customer service. We are committed to ensuring that our customers have access to the best technology solutions available. Whether you are looking for the latest gadgets, reliable hardware, or exceptional customer service, ByteVault has you covered.
         </p>
-        <p className="text-lg text-gray-700">
+        <p className="text-lg text-primary/70">
           Our dedication to quality and customer satisfaction is reflected in everything we do, from our hand-picked product selection to our easy-to-navigate online store. Join the ByteVault community today and experience the difference for yourself!
         </p>
         <div className='flex items-center justify-center w-full'>

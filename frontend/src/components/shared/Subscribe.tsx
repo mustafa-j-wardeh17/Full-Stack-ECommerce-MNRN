@@ -29,7 +29,7 @@ const Subscribe = () => {
             });
 
             if (!response.ok) {
-                const errorData: HttpResponse = await response.json();console.log(errorData)
+                const errorData: HttpResponse = await response.json(); console.log(errorData)
                 toast.error(errorData.message)
                 throw new Error(errorData.message || 'Failed to subscribe. Please try again.');
             }
@@ -61,6 +61,7 @@ const Subscribe = () => {
                     onClick={handleSubscribe}
                     disabled={loading}
                     className="absolute right-2 top-[50%] -translate-y-[50%] transition duration-300 ease-in-out"
+                    aria-label="Subscribe"
                 >
                     <ArrowRightIcon size={18} />
                 </button>
