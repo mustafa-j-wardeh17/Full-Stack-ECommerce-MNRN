@@ -29,12 +29,11 @@ const MyAccountNavigation = () => {
             }
             toast.success('Logout Successfully')
             router.push('/sign-in')
-        } catch (error) {
-            console.error('Logout error:', error);
-        } finally {
-            // Reset user and userType regardless of the API response
             setUser(null);
             setUserType('guest');
+        } catch (error: any) {
+            toast.success(error.message)
+
         }
     }
     return (

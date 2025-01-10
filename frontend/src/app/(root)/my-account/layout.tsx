@@ -38,8 +38,8 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
                 </div>
             </div>
         )
-    } catch (error) {
-        return <div>Something went wrong</div>
+    } catch (error:any) {
+        return <div>Something went wrong{error.message}</div>
     }
 }
 
