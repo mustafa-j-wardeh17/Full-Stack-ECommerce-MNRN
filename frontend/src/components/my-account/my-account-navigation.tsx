@@ -58,31 +58,31 @@ const MyAccountNavigation = () => {
             <nav className="flex lg:flex-col lg:overflow-x-hidden overflow-x-scroll lg:gap-4 gap-2 lg:w-auto w-full">
                 <Link
                     href="/my-account/personal-information"
-                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-0 rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('personal-information') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-none rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center xl:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('personal-information') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <IoPersonOutline size={26} /> Personal Information
                 </Link>
                 <Link
                     href="/my-account/my-wishlist"
-                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-0 rounded-md flex lg:flex-row flex-col lg:justify-start  justify-center text-center items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('my-wishlist') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-none rounded-md flex lg:flex-row flex-col lg:justify-start  justify-center text-center items-center xl:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('my-wishlist') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <CiHeart size={26} />My Wishlist
                 </Link>
                 <Link
                     href="/my-account/my-cart"
-                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-0 rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('my-cart') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                    className={`lg:py-3 flex-1  lg:px-5 p-2 lg:rounded-none rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center xl:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2 w-auto   ${pathName.endsWith('my-cart') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <MdOutlineShoppingCart size={22} />My Cart
                 </Link>
                 <Link
                     href="/my-account/my-orders"
-                    className={`lg:py-3  flex-1 lg:px-5 p-2 lg:rounded-0 rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2  w-auto  ${pathName.endsWith('my-orders') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
+                    className={`lg:py-3  flex-1 lg:px-5 p-2 lg:rounded-none rounded-md flex lg:flex-row flex-col lg:justify-start justify-center text-center items-center xl:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2  w-auto  ${pathName.endsWith('my-orders') && 'bg-primary text-secondary'} hover:bg-primary hover:text-secondary transition duration-200 `}
                 >
                     <BsBoxSeam size={22} />My Orders
                 </Link>
                 <button
                     onClick={handleLogout}
-                    className="lg:flex  flex-1 hidden lg:py-3 lg:px-5 p-2 lg:rounded-0 rounded-md  items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2   hover:bg-primary hover:text-secondary transition duration-200"
+                    className="lg:flex  flex-1 hidden lg:py-3 lg:px-5 p-2 lg:rounded-none rounded-md  items-center lg:text-lg md:text-md sm:text-sm text-xs lg:gap-4 gap-2   hover:bg-primary hover:text-secondary transition duration-200"
                 >
                     <CiLogout size={26} />Logout
                 </button>
