@@ -4,11 +4,13 @@ import Link from 'next/link';
 import React from 'react';
 
 const OrderItem = ({ order }: { order: Order }) => {
+    console.log(order)
+
     return (
         <div className="flex flex-col gap-8 w-full">
-            {order.orderedItems.map((item,idx) => {
+            {order.orderedItems.map((item, idx) => {
                 // Calculate total price for the specific item
-                const itemTotalPrice = ((+item.price ) * +item.quantity).toFixed(2);
+                const itemTotalPrice = ((+item.price) * +item.quantity).toFixed(2);
 
                 return (
                     <div
@@ -37,19 +39,19 @@ const OrderItem = ({ order }: { order: Order }) => {
                                 </div>
                             </div>
                             <div className="flex flex-col items-end lg:items-start justify-between gap-2 w-full 2xl:w-1/3 lg:w-2/5">
-                                <h2 className="font-bold text-xl text-primary">
+                                <h2 className="font-bold lg:text-xl md:text-lg sm:text-md text-sm text-primary">
                                     Total: ${itemTotalPrice}
                                 </h2>
-                                <div className="flex flex-row sm:w-[280px] w-full items-center sm:items-start gap-4">
+                                <div className="flex flex-row md:w-[280px] w-full items-center sm:items-start gap-4">
                                     <button
-                                        className="sm:w-[130px] w-full text-center px-4 py-2 text-sm font-medium border rounded-md text-primary hover:bg-primary-foreground hover:text-primary/70 transition duration-200"
+                                        className="md:w-[120px]  text-xs w-full text-center px-3 py-2 sm:text-sm font-medium border rounded-md text-primary hover:bg-primary-foreground hover:text-primary/70 transition duration-200"
                                     >
                                         View Order
                                     </button>
                                     {order.orderStatus === "completed" && (
                                         <Link
                                             href={`/shop/${item.productId}`}
-                                            className="sm:w-[130px] w-full text-center px-4 py-2 text-sm font-medium text-secondary bg-primary rounded-md hover:bg-primary/70 transition duration-200"
+                                            className="md:w-[120px]  text-xs w-full text-center px-3 py-2 sm:text-sm font-medium text-secondary bg-primary rounded-md hover:bg-primary/70 transition duration-200"
                                         >
                                             Write A Review
                                         </Link>
@@ -61,13 +63,12 @@ const OrderItem = ({ order }: { order: Order }) => {
                         {/* Status Section */}
                         <div className="flex items-center gap-4">
                             <span
-                                className={`px-3 py-1 text-sm font-semibold rounded-md ${
-                                    order.orderStatus === "completed"
-                                        ? "bg-green-100 text-green-600"
-                                        : "bg-yellow-100 text-yellow-600"
-                                }`}
+                                className={`px-3 py-1 text-sm font-semibold rounded-md ${order.orderStatus === "completed"
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-yellow-100 text-yellow-600"
+                                    }`}
                             >
-                                {order.orderStatus === "completed" ? "Delivered" : "In Process"}
+                                {Object.hasOwn(item,'lifetime') ? "Delivered" : "In Process"}
                             </span>
                             <p className="sm:text-sm text-xs text-gray-600">
                                 {order.orderStatus === "completed"

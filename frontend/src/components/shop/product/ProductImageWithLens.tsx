@@ -12,7 +12,7 @@ const ProductImageWithLens = ({ imageUrl, id }: { imageUrl: string, id: string }
     }
     return (
         <Lens hovering={hovering} setHovering={setHovering}>
-            <div className='flex items-center justify-center w-full h-full '>
+            <div className='relative flex items-center justify-center w-full h-full '>
                 <Image
                     src={imageUrl}
                     alt={`Product ${id} image`}
@@ -23,7 +23,7 @@ const ProductImageWithLens = ({ imageUrl, id }: { imageUrl: string, id: string }
                 />
                 {
                     loadImage && (
-                        <div className='w-full h-full flex items-center justify-center'>
+                        <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
                             <div className='w-[40px] h-[40px] rounded-full border-primary border-t-[2px] animate-spin' />
                         </div>
                     )

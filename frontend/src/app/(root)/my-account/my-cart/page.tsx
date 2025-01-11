@@ -238,29 +238,29 @@ const CartPage = () => {
                                     className="rounded-md"
                                 />
                                 <div>
-                                    <h2 className="font-semibold text-primary text-lg">{item.productName}</h2>
-                                    <p className="text-sm text-primary/70">SKU: {item.skuKey}</p>
-                                    <p className="text-sm text-primary/70">Price: ${item.skuPrice}</p>
+                                    <h2 className="font-semibold text-primary lg:text-lg md:text-md sm:text-sm text-xs">{item.productName}</h2>
+                                    <p className="sm:text-sm text-xs text-primary/70">SKU: {item.skuKey}</p>
+                                    <p className="sm:text-sm text-xs text-primary/70">Price: ${item.skuPrice}</p>
                                 </div>
                             </div>
-                            <div className="flex w-full justify-end items-center gap-3">
+                            <div className="flex w-full justify-end items-center gap-3 sm:text-sm text-xs">
                                 <button
                                     onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}
                                     disabled={item.quantity <= 1}
-                                    className={`${item.quantity <= 1 && 'cursor-not-allowed'} px-3 py-2 bg-primary hover:bg-primary/90 hover:shadow-sm hover:shadow-primary text-secondary rounded-lg disabled:opacity-50`}
+                                    className={`${item.quantity <= 1 && 'cursor-not-allowed'} sm:px-3 sm:py-2 py-1 px-2 bg-primary hover:bg-primary/90 hover:shadow-sm hover:shadow-primary text-secondary rounded-lg disabled:opacity-50`}
                                 >
                                     -
                                 </button>
                                 <p className="text-primary font-semibold">{item.quantity}</p>
                                 <button
                                     onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
-                                    className="px-3 py-2 bg-primary hover:bg-primary/90 text-secondary rounded-lg"
+                                    className="sm:px-3 sm:py-2 py-1 px-2 bg-primary hover:bg-primary/90 text-secondary rounded-lg"
                                 >
                                     +
                                 </button>
                                 <button
                                     onClick={() => handleRemoveItem(item._id)}
-                                    className="px-4 py-2 bg-primary hover:bg-primary/80 text-secondary rounded-lg"
+                                    className="sm:px-3 sm:py-2 py-1 px-2 bg-primary hover:bg-primary/80 text-secondary rounded-lg"
                                 >
                                     Remove
                                 </button>
@@ -271,13 +271,13 @@ const CartPage = () => {
                     <div className="flex justify-between items-center pt-8">
                         <button
                             onClick={handleClearSelectedItemsFromCart}
-                            className="px-6 py-2 bg-red-600 hover:bg-red-600/80 font-bold shadow-md text-secondary rounded-lg "
+                            className="sm:px-6 sm:py-2 py-1 px-3 text-sm sm:text-md bg-red-600 hover:bg-red-600/80 font-bold shadow-md text-secondary rounded-lg "
                         >
                             Clear Cart
                         </button>
                         <button
                             onClick={handleCheckout}
-                            className="px-6 py-2 bg-primary hover:bg-primary/80 shadow-md text-secondary rounded-lg font-medium"
+                            className="sm:px-6 sm:py-2 py-1 px-3 text-sm sm:text-md bg-primary hover:bg-primary/80 shadow-md text-secondary rounded-lg font-medium"
                         >
                             Checkout
                         </button>

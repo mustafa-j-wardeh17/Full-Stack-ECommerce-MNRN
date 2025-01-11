@@ -167,7 +167,7 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
                 onChange={handleSelectAll}
               />
             </TableHead>
-            <TableHead>Image</TableHead>
+            <TableHead className="sm:table-cell hidden">Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>SKU Name</TableHead>
             <TableHead>Price</TableHead>
@@ -193,7 +193,7 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
                   }
                 />
               </TableCell>
-              <TableCell>
+              <TableCell className="sm:table-cell hidden">
                 <img
                   src={item.productImage}
                   alt={item.productName}
@@ -206,13 +206,13 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
               <TableCell>
                 <div className="flex gap-2">
                   <button
-                    className="px-4 py-2 bg-green-500 text-white rounded"
+                    className="px-4 py-2 bg-sky-500 text-white rounded sm:px-6 sm:py-2 text-xs sm:text-md"
                     onClick={() => onAddToCart(item)}
                   >
                     Add to Cart
                   </button>
                   <button
-                    className="px-4 py-2 bg-red-500 text-white rounded"
+                    className="px-4 py-2 bg-red-500 text-white rounded sm:px-6 sm:py-2 text-xs sm:text-md"
                     onClick={() => onRemoveSingle(item.productId, item.skuId)}
                   >
                     Remove
@@ -225,16 +225,16 @@ const WishlistTable: React.FC<WishlistTableProps> = ({
         <TableFooter>
           <TableRow>
             <TableCell colSpan={6}>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between  items-center">
                 <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                  className="px-4 py-2 sm:text-md text-sm bg-sky-600 text-white rounded"
                   disabled={selectedItems.length === 0}
                   onClick={() => onAddSelectedToCart(selectedItems)}
                 >
                   Add Selected to Cart
                 </button>
                 <button
-                  className="px-4 py-2 bg-red-500 text-white rounded"
+                  className="px-4 py-2 sm:text-md text-sm bg-red-600 text-white rounded"
                   disabled={selectedItems.length === 0}
                   onClick={() => onRemoveSelected(selectedItems)}
                 >
