@@ -135,13 +135,14 @@ const Sidebar = () => {
                                 <button onClick={() => { setLoading(true); handleLogout(); setLoading(false); }} className='absolute bottom-0 text-primary shadow-md transform transition-all delay-0 duration-0 hover:bg-red-500 hover:text-white text-center cursor-pointer w-full flex flex-row justify-center items-center gap-2 bg-primary-foreground  p-4 rounded-md'>
 
                                     {loading ? (
-                                        <>
-                                            <MdOutlineLogout className='duration-0' />
-                                        </>
-                                    ) : (
                                         <div className='flex gap-2 justify-center items-center'>
                                             <div className='w-[31px] h-[31px] rounded-full border-t-2 border-dark animate-spin' />
                                         </div>
+                                    ) : (
+
+                                        <>
+                                            <MdOutlineLogout className='duration-0' />
+                                        </>
                                     )}
                                 </button>
                             </TooltipTrigger>
