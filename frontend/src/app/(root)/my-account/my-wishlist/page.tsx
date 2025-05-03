@@ -75,11 +75,8 @@ const page = async () => {
         );
     } catch (error) {
         console.error('Error:', error);
-        return (
-            <div className="text-center text-red-500">
-                <p>Error loading products. Please try again later.</p>
-            </div>
-        );
+        throw new Error('Failed to fetch products');
+
     }
 };
 
