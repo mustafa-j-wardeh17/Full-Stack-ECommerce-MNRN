@@ -23,6 +23,7 @@ const page = async () => {
         'Content-Type': 'application/json'
       },
       credentials: 'include', // Ensure cookies are sent if required
+      cache:'force-cache'
     });
 
     const result: orderInterface = await response.json();

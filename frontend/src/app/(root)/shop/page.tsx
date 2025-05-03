@@ -55,7 +55,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
     if (search) queryParams.append('search', search);
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?${queryParams.toString()}`, {
-            cache: 'no-store', // Avoid caching for fresh data
+            cache: 'force-cache' // Avoid caching for fresh data
         });
 
         if (!response.ok) {

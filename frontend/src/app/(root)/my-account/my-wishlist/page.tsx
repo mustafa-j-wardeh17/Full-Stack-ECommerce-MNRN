@@ -25,6 +25,8 @@ const page = async () => {
             headers: {
                 'Authorization': `Bearer ${_digi_auth_token?.value}`,
             },
+            cache:'force-cache'
+
         });
 
         if (!userWishlistResponse.ok) {
