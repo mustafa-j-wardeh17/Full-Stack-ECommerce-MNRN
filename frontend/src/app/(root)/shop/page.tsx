@@ -110,7 +110,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                         </div>
                     </div >
                     {/* No Products Found */}
-                    <div className={`${result.result.metadata.total === 0 ? 'flex' : 'hidden'}  lg:w-4/5 z-10 absolute right-0 bottom-0 h-[30vh]  w-full items-center justify-center p-4  rounded-lg`}>
+                    <div className={`${result.result.metadata.total === 0 ? 'flex' : 'hidden'}  lg:w-4/5 z-0 absolute right-0 bottom-0 sm:h-[70vh] h-[45vh] w-full items-center justify-center p-4  rounded-lg`}>
                         <div className="text-center text-xl font-semibold space-y-4">
                             <h1 className='sm:text-2xl text-xl'>No products available at the moment.</h1>
                             <p className="text-sm text-primary/50">Please check back later or try refining your search or filter.</p>

@@ -98,7 +98,10 @@ export function FilterBy() {
               variant="outline"
               className="w-full flex justify-between items-center text-left"
             >
-              {searchParams.get('category') || 'Select Category'}
+              {(() => {
+                const category = searchParams.get('category');
+                return category && category.length > 15 ? category.slice(0, 15) : category || 'Select Category';
+              })()}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -132,7 +135,12 @@ export function FilterBy() {
               variant="outline"
               className="w-full flex justify-between items-center text-left"
             >
-              {searchParams.get('baseType') || 'Select Base'}
+              {
+                (() => {
+                  const category = searchParams.get('baseType');
+                  return category && category.length > 15 ? category.slice(0, 15) : category || 'Select Base';
+                })()
+              }
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -164,9 +172,14 @@ export function FilterBy() {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full flex justify-between items-center text-left"
+              className="w-full flex justify-between items-center text-left "
             >
-              {searchParams.get('platformType') || 'Select Platform'}
+              {
+                (() => {
+                  const category = searchParams.get('platformType');
+                  return category && category.length > 15 ? category.slice(0, 15) : category || 'Select Platform';
+                })()
+              }
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
