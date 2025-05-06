@@ -67,26 +67,26 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
         return (
             <div>
                 {/* BreadCrumb */}
-                <div className="flex lg:flex-row relative flex-col gap-6 my-14">
+                < div className="flex lg:flex-row relative flex-col gap-6 my-14 min-h-[70vh]" >
                     {/* Filter Sidebar */}
-                    <div className="lg:w-1/5  lg:block hidden">
+                    <div  className="lg:w-1/5  lg:block hidden" >
                         <FilterBy />
                     </div>
 
                     {/* Product List */}
-                    <div className={`${result.result.metadata.total !== 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full flex-col gap-6`}>
+                    < div className={`flex lg:w-4/5  w-full flex-col gap-6`}>
                         {/* Sorting and Product Count */}
-                        <div className="flex flex-wrap sm:gap-4 gap-2 justify-between md:text-[14px] text-[12px]">
+                        <div className={`${result.result.metadata.total !== 0 ? 'flex' : 'hidden'} flex flex-wrap sm:gap-4 gap-2 justify-between md:text-[14px] text-[12px]`}>
                             <div className="flex  items-center sm:gap-3 gap-1">
                                 <CiGrid41 size={20} />
                                 <p>Showing 1-{Math.min(result.result.products.length, 16)} of {result.result.products.length} items</p>
                             </div>
                             <SortBy />
-                        </div>
-                        <div className="lg:w-1/5  lg:hidden block ">
+                        </div >
+                        <div className={`lg:w-1/5  lg:hidden block `}>
                             <FilterBy />
                         </div>                        {/* Product Grid */}
-                        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-6 sm:place-items-start place-items-center">
+                        <div className={`${result.result.metadata.total !== 0 ? 'grid' : 'hidden'} lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-6 sm:place-items-start place-items-center`}>
                             {result.result.products.map((product: Product) => (
                                 <div
                                     key={product._id}
@@ -102,25 +102,24 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
                         </div>
 
                         {/* Pagination */}
-                        <div className='w-full justify-center'>
+                        <div className={`${result.result.metadata.total === 0 && 'hidden'} w-full justify-center `}>
                             <Pagination
                                 searchParams={resolvedSearchParams}
                                 totalPages={result.result.metadata.pages}
                             />
                         </div>
-                    </div>
+                    </div >
                     {/* No Products Found */}
-                    <div className={`${result.result.metadata.total === 0 ? 'flex' : 'hidden'} lg:w-4/5 w-full items-center justify-center p-4  rounded-lg`}>
+                    <div className={`${result.result.metadata.total === 0 ? 'flex' : 'hidden'}  lg:w-4/5 z-10 absolute right-0 bottom-0 h-[30vh]  w-full items-center justify-center p-4  rounded-lg`}>
                         <div className="text-center text-xl font-semibold space-y-4">
                             <h1 className='sm:text-2xl text-xl'>No products available at the moment.</h1>
                             <p className="text-sm text-primary/50">Please check back later or try refining your search or filter.</p>
                         </div>
                     </div>
 
-                </div>
+                </div >
 
-            </div>
-        );
+            </div >);
     } catch (error) {
         console.error('Error fetching products:', error);
         throw new Error('Failed to fetch products');
