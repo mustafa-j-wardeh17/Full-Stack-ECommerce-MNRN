@@ -8,6 +8,7 @@ import { ModeToggle } from '../theme-toggle';
 import Link from 'next/link';
 import { useUserContext } from '@/context';
 import SearchProducts from './SearchProducts';
+import { SITE_CONTENT_CLASS } from '@/util/constant';
 
 const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -39,7 +40,7 @@ const Navbar = () => {
     return (
         <div className='fixed h-[70px] border-b-2 top-0 flex items-center justify-center left-0 w-full z-50  bg-white dark:bg-black '>
             {/* Top Header */}
-            <div className=" flex container items-center justify-between py-3 px-4 ">
+            <div className={`flex items-center justify-between py-3 ${SITE_CONTENT_CLASS}`}>
                 {/* Logo */}
                 <div className="flex items-center">
                     <h3

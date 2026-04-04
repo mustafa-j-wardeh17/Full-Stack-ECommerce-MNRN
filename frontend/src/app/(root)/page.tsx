@@ -7,6 +7,9 @@ import Contact from "@/components/shared/Contact";
 import { Separator } from "@/components/ui/separator";
 import { Product } from "@/util/types";
 
+/** Avoid build-time static generation (Vercel was timing out when the API was slow). */
+export const dynamic = "force-dynamic";
+
 interface ResultInterface {
   result: {
     products: [
@@ -22,7 +25,7 @@ interface ResultInterface {
 export default async function Home() {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?homepage=true`, {
-      cache: 'force-cache'
+      cache: "no-store",
     })
     if (!response.ok) {
       throw new Error(`Failed to fetch products: ${response.statusText}`);

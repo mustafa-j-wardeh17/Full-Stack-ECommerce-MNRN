@@ -8,6 +8,9 @@ import { Metadata } from 'next';
 import React from 'react';
 import { CiGrid41 } from "react-icons/ci";
 
+/** Search and filters must not be stuck behind a single cached build snapshot. */
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: 'Your Ultimate Tech Shop',
     description: 'Welcome to ByteVault, your trusted destination for the latest in tech! Founded and developed by Mustafa Abu Wardeh, ByteVault offers a wide range of top-quality products including mobile phones, computers, gaming consoles, laptops, accessories, and more. Whether you’re upgrading your gaming setup, looking for a new smartphone, or need essential tech accessories like chargers, headphones, RAM, or storage drives, we have you covered. Our mission is to empower your tech journey with the best products, exceptional service, and unbeatable prices. Explore our collection and elevate your tech experience today at ByteVault.',
@@ -55,7 +58,7 @@ const page = async ({ searchParams }: { searchParams: tSearchParams }) => {
     if (search) queryParams.append('search', search);
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products?${queryParams.toString()}`, {
-            cache: 'force-cache' // Avoid caching for fresh data
+            cache: "no-store",
         });
 
         if (!response.ok) {

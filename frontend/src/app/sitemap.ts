@@ -1,51 +1,47 @@
 import { MetadataRoute } from "next";
 
+/** Build-time sitemap generation was timing out when the API was slow or unreachable. */
+export const dynamic = "force-dynamic";
+
+const staticEntries = (baseUrl: string): MetadataRoute.Sitemap => [
+    { url: `${baseUrl}/` },
+    { url: `${baseUrl}/about-us` },
+    { url: `${baseUrl}/contact` },
+    { url: `${baseUrl}/sign-in` },
+    { url: `${baseUrl}/sign-up` },
+    { url: `${baseUrl}/forgot-password` },
+    { url: `${baseUrl}/shop` },
+];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    let shopItems: string[] = []
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "";
+    let shopItems: string[] = [];
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/sitemap`)
-        if(response.ok){
-            const result = await response.json()
-            shopItems = result.result.productsIds
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/sitemap`,
+            {
+                next: { revalidate: 3600 },
+                signal: AbortSignal.timeout(15_000),
+            }
+        );
+        if (response.ok) {
+            const result = await response.json();
+            shopItems = result.result?.productsIds ?? [];
         }
-        
-    } catch (error:any) {
-        console.log(error.message)
+    } catch (error: unknown) {
+        console.error(
+            "sitemap: product IDs fetch failed, using static URLs only",
+            error instanceof Error ? error.message : error
+        );
+        return staticEntries(baseUrl);
     }
 
 
 
 
     const urlShopEntries: MetadataRoute.Sitemap = shopItems.map((productId) => ({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/shop/${productId}`,
+        url: `${baseUrl}/shop/${productId}`,
     }));
 
-    // Concatenate fixed URLs first, followed by the dynamically generated ones
-    return [
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
-
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/about-us`,
-
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/contact`,
-
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/sign-in`,
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/sign-up`,
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/forgot-password`,
-        },
-        {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/shop`,
-        },
-        ...urlShopEntries // Shop entries appended last
-    ];
+    return [...staticEntries(baseUrl), ...urlShopEntries];
 }

@@ -5,11 +5,12 @@ import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 import Subscribe from './Subscribe';
 import Link from 'next/link';
 import { FaWhatsapp } from 'react-icons/fa6';
+import { SITE_CONTENT_CLASS } from '@/util/constant';
 
 const Footer = () => {
     return (
         <footer className="text-primary bg-primary-foreground py-6 border-t">
-            <div className="container mx-auto px-6 md:px-12 flex flex-row  flex-wrap justify-between items-start md:items-center md:gap-8 gap-6">
+            <div className={`${SITE_CONTENT_CLASS} flex flex-row flex-wrap justify-between items-start md:items-center md:gap-8 gap-6`}>
                 {/* Logo and Contact */}
                 <div className="flex flex-col items-start space-y-6">
                     <div className='relative w-[135px] h-[44px] flex justify-start'>
@@ -52,7 +53,7 @@ const Footer = () => {
 
             {/* Footer Bottom */}
             <Separator color='white' />
-            <div className="mx-auto w-full px-6 md:px-12 flex flex-col gap-6  mt-12">
+            <div className={`${SITE_CONTENT_CLASS} flex flex-col gap-6 mt-12`}>
                 <div className='w-full h-[1px] bg-primary/40' />
                 <div className='flex items-center w-full  justify-between'>
                     <div className="sm:flex hidden space-x-4 ">

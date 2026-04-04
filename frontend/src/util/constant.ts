@@ -261,3 +261,7 @@ export const baseTypesCategories = [
     image: '/base/Furniture.jpeg',
   },
 ];
+
+/** Shared horizontal padding and max width for navbar, main, and footer */
+export const SITE_CONTENT_CLASS =
+  'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8';

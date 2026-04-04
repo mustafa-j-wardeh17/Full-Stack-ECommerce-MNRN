@@ -3,16 +3,21 @@ import { FaStar } from "react-icons/fa";
 import React from 'react'
 import ProductDescriptionsRequiermentsReviews from '@/components/shop/product/ProductDescriptionsRequiermentsReviews';
 import RelatedProducts from '@/components/shop/product/RelatedProducts';
-import { Product, ProductResponse } from '@/util/types';
+import { ProductResponse } from '@/util/types';
 import SkuCards from '@/components/shop/product/SkuCard';
 import ProductImageWithLens from '@/components/shop/product/ProductImageWithLens';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 60;
+
+const productFetchInit = {
+  next: { revalidate: 60 } as const,
+};
 
 export async function generateMetadata({ params }: { params: tParams }) {
   const { productId } = await (params)
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`, productFetchInit)
   if (!response.ok) {
     throw new Error(`Failed to fetch product: ${response.statusText}`);
   }
@@ -30,7 +35,7 @@ type tParams = Promise<{ productId: string }>
 const page = async ({ params }: { params: tParams }) => {
   const { productId } = await (params)
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_PREFIX}/products/${productId}`, productFetchInit)
     const result: ProductResponse = await response.json()
 
     if (!response.ok) {
@@ -41,7 +46,7 @@ const page = async ({ params }: { params: tParams }) => {
     const relatedProducts = result.result.relatedProducts
 
     return (
-      <div className='2xl:px-10 my-8'>
+      <div className='my-8'>
         <BreadcrumbWithCustomSeparator
           paths={[
             {
