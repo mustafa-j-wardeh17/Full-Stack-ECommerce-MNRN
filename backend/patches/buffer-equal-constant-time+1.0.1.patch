@@ -1,0 +1,37 @@
+diff --git a/node_modules/buffer-equal-constant-time/index.js b/node_modules/buffer-equal-constant-time/index.js
+index 5462c1f..d5f7208 100644
+--- a/node_modules/buffer-equal-constant-time/index.js
++++ b/node_modules/buffer-equal-constant-time/index.js
+@@ -1,6 +1,7 @@
+ /*jshint node:true */
+ 'use strict';
+ var Buffer = require('buffer').Buffer; // browserify
++// SlowBuffer was removed in Node 21+ (DEP0160); guard for compatibility
+ var SlowBuffer = require('buffer').SlowBuffer;
+ 
+ module.exports = bufferEq;
+@@ -28,14 +29,21 @@ function bufferEq(a, b) {
+ }
+ 
+ bufferEq.install = function() {
+-  Buffer.prototype.equal = SlowBuffer.prototype.equal = function equal(that) {
++  var equalFn = function equal(that) {
+     return bufferEq(this, that);
+   };
++  Buffer.prototype.equal = equalFn;
++  if (SlowBuffer && SlowBuffer.prototype) {
++    SlowBuffer.prototype.equal = equalFn;
++  }
+ };
+ 
+ var origBufEqual = Buffer.prototype.equal;
+-var origSlowBufEqual = SlowBuffer.prototype.equal;
++var origSlowBufEqual =
++  SlowBuffer && SlowBuffer.prototype ? SlowBuffer.prototype.equal : undefined;
+ bufferEq.restore = function() {
+   Buffer.prototype.equal = origBufEqual;
+-  SlowBuffer.prototype.equal = origSlowBufEqual;
++  if (SlowBuffer && SlowBuffer.prototype && origSlowBufEqual !== undefined) {
++    SlowBuffer.prototype.equal = origSlowBufEqual;
++  }
+ };

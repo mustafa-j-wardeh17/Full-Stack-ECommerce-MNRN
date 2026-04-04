@@ -19,8 +19,12 @@ async function bootstrap() {
 
   app.setGlobalPrefix(config.get('appPrefix'));
   app.useGlobalInterceptors(new TransformationInterception());
-  await app.listen(config.get('port'), () => {
-    return console.log(`Server is running on port ${config.get('port')}`);
-  });
+  const port = config.get<string | number>('port');
+  await app.listen(port);
+  console.log(`Server is running on port ${port}`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

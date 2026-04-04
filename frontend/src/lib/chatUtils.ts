@@ -18,7 +18,7 @@ export const sendMessageToWebhook = async (messageFromUser: string, chatId: stri
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-        const response = await fetch(process.env.CHATBOT_WEBHOOK as string, {
+        const response = await fetch("http://localhost:5678/webhook/8ca7233e-9790-40c6-8254-99416ac4f95d", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

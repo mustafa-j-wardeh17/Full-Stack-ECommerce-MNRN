@@ -19,7 +19,7 @@ const ChatMessages = ({ messages, isTyping }: ChatMessagesProps) => {
   }, [messages, isTyping]);
 
   return (
-    <div className="chat-messages dark:bg-[#1e1e2f] bg-white dark:text-white text-black overflow-y-auto flex-1 p-4">
+    <div className="chat-messages overflow-x-hidden dark:bg-[#1e1e2f] bg-white dark:text-white text-black overflow-y-auto flex-1 p-4">
       {messages.map((msg, index) => (
         <ChatMessage 
           key={index} 
